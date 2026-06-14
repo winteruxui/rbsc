@@ -94,8 +94,8 @@ These five drive every layout/component choice. When unsure, optimize for these:
 | Page top padding | `--s6` (32) |
 
 - **Container:** `max-width:1200px`, centered, `--s4` side padding (`.container`).
-- **Card radius:** `--radius` (10px). Buttons 8px. Chips 999px (pill).
-- **Shadow:** one elevation only — `--shadow` (soft green-tinted). Don't invent new shadows.
+- **Card radius:** `--radius` (10px) default; `--radius-lg` (14px) for hero, primary modules, and dense-table containers. Buttons 8px. Chips 999px (pill).
+- **Shadow:** two elevations — `--shadow` (resting cards/tables) and `--shadow-lg` (hero `today` module + hover-lifted cards). `--shadow-lg` is the only "raised" state; don't invent others.
 
 ---
 
@@ -131,7 +131,11 @@ Each shared component already exists in `index.html`. Reuse these classes — do
 | Traffic-light form bar | `.form-bar` + `span.g/.w/.b` | 6 segments, latest on right. |
 | Form tag | `.tag .tag-good/.tag-warn/.tag-bad` | Plain-language: ฟอร์มดี / กำลังพัฒนา / ห่างหาย. |
 | Demo badge | `.badge-demo` | Mark dead/out-of-scope links inline. |
+| Feature badge | `.badge-feat` | Gold pill + star icon for the feature race. |
+| Icon | `icon(name,size)` JS helper → `.ico` | **All icons are inline SVG** (24px viewBox, 1.75 stroke, `currentColor`). **No emoji.** Set via `ICON_PATHS` map. Color inherits from parent; wrap in a coloured/disc container for emphasis (see `.cond-card .cc-ico`). |
+| Silks swatch | `.silks` / `.silks-lg` | Jockey colours: pass `style="--sc:#hex"`; renders a swatch with a diagonal sash. |
 | Modal | `openModal(title,node)` / `placeholder(msg)` | All placeholder feedback + video. Never silent. |
+| Empty state | `.empty-state` / `.search-empty` | No-data states (icon + message), e.g. search no-results. |
 | Gradient hero/media | `.gradient-hero` / `.placeholder-media` | All imagery (no external URLs). |
 
 **Layout utilities:** `.flex .between .center .wrap .gap2/3/4 .grid .section-gap .muted .text-gold .mono`.
@@ -145,7 +149,8 @@ Each shared component already exists in `index.html`. Reuse these classes — do
 - **One transition:** `var(--tr)` = `0.18s ease`. Apply to hover/expand/toggle only. No other durations/easings.
 - **States required on every interactive element:** hover, active (nav), `:focus-visible` (gold ring — already global). 
 - **Touch target ≥44×44px** for every button/link/chip on mobile.
-- **Allowed motion:** accordion expand/collapse, tooltip fade, view-toggle, page fade-in (`@keyframes fade`). **Nothing else.**
+- **Allowed motion:** accordion expand/collapse, tooltip fade, view-toggle, page fade-in (`@keyframes fade`), card hover-lift (`translateY(-2px)` + `--shadow-lg`), button/chip press (`translateY(1px)`). **Nothing else.**
+- **Reduced motion:** a global `@media(prefers-reduced-motion:reduce)` disables all transitions/animations/lifts. Keep new motion inside this guard.
 - **Placeholders give feedback:** PDF / video / tickets / stream / dead links → `placeholder()` or `openModal()`. Never a dead click.
 
 ---
