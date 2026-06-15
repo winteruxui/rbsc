@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RBSC Racing — Prototype</title>
+<title>MRC Racing — Prototype</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Serif+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
 :root{
   /* spacing — 4px grid */
   --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:48px; --s8:64px;
-  /* color — RBSC navy/gold (matches rbsc.org). var names kept "green-*" but hold navy now */
+  /* color — navy/gold. var names kept "green-*" but hold navy now */
   --green-900:#264068; --green-700:#30528A; --green-50:#EAEEF5;
   --gold-500:#BF942D;
   --ink-900:#1A1A1A; --ink-600:#5C5C5C; --line:#D9D5CF;
@@ -35,7 +35,7 @@ html{-webkit-text-size-adjust:100%}
 body{
   font-family:var(--font-ui); font-weight:400; font-size:1rem;
   line-height:1.6; color:var(--ink-900); background:var(--bg);
-  -webkit-font-smoothing:antialiased;
+  -webkit-font-smoothing:antialiased; overflow-x:clip;
 }
 h1,h2,h3{line-height:1.3; font-weight:600; color:var(--green-900)}
 h1{font-size:2rem} h2{font-size:1.5rem} h3{font-size:1.25rem}
@@ -183,7 +183,7 @@ footer.site .heritage{border-top:1px solid rgba(255,255,255,.15); padding-top:va
 .gap2{gap:var(--s2)} .gap3{gap:var(--s3)} .gap4{gap:var(--s4)}
 .grid{display:grid; gap:var(--s4)}
 /* ============ P1 LANDING ============ */
-.hero{position:relative; border-radius:var(--radius-lg); overflow:hidden; color:#fff; padding:var(--s7) var(--s6); min-height:280px; display:flex; flex-direction:column; justify-content:center; background-color:var(--green-900); background-size:cover; background-position:center}
+.hero{position:relative; overflow:hidden; color:#fff; min-height:540px; display:flex; align-items:center; background-color:var(--green-900); background-size:cover; background-position:center}
 .hero::after{content:""; position:absolute; inset:0; background:radial-gradient(circle at 88% 18%,rgba(201,162,39,.32),transparent 52%); pointer-events:none}
 .hero-motif{position:absolute; right:-40px; bottom:-60px; color:var(--gold-500); opacity:.12; z-index:0; pointer-events:none}
 .hero .hero-top{position:relative; z-index:1; max-width:600px}
@@ -230,12 +230,8 @@ footer.site .heritage{border-top:1px solid rgba(255,255,255,.15); padding-top:va
 .section-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--s4)}
 @media(max-width:1024px){ .news-grid{grid-template-columns:repeat(2,1fr)} }
 @media(max-width:600px){
-  .hero{padding:var(--s6) var(--s4); min-height:auto}
-  .hero .hero-cta{align-self:stretch}
-  .hero .hero-cta .btn{width:100%}
   .dual-grid{grid-template-columns:1fr}
   .news-grid{grid-template-columns:1fr}
-  .today-meta{gap:var(--s4)}
 }
 /* ---- quick-access shortcut grid (Selangor-inspired) ---- */
 .shortcut-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:var(--s3); margin-top:var(--s4)}
@@ -278,7 +274,75 @@ footer.site .heritage{border-top:1px solid rgba(255,255,255,.15); padding-top:va
 .news-item.feature .ni-title{font-size:1.1875rem}
 .ni-ex{font-size:.8125rem; color:var(--ink-600); line-height:1.5; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
 .ni-date{font-size:.75rem; color:var(--ink-600); display:inline-flex; align-items:center; gap:4px; margin-top:var(--s1)}
+/* hero — full-bleed banner (today card + next strip live inside) */
+.hero-wrap{position:relative; width:var(--vw,100vw); margin-left:calc(50% - var(--vw,100vw)/2); margin-right:calc(50% - var(--vw,100vw)/2); margin-top:calc(var(--s6)*-1); overflow:hidden}
+.hero-inner{position:relative; z-index:1; width:100%; max-width:var(--maxw); margin:0 auto; padding:var(--s7) var(--s5); display:grid; grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr); gap:var(--s5) var(--s7); align-items:center}
+.hero-lead{min-width:0}
+.hero-lead-vp{overflow:hidden}
+.hero-lead-slider{display:flex; transition:transform .5s cubic-bezier(.4,0,.2,1); will-change:transform}
+.hero-lead-slide{flex:0 0 100%; min-width:0}
+.hero-dots{display:flex; gap:6px; align-items:center; margin-top:var(--s5)}
+.hero-dot{width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,.35); border:1px solid rgba(255,255,255,.5); cursor:pointer; padding:0; transition:all .3s; flex-shrink:0}
+.hero-dot.on{background:#fff; width:22px; border-radius:4px}
+/* today card floating over hero */
+.hero-today{background:rgba(255,255,255,.98); border-radius:var(--radius-lg); padding:var(--s5); box-shadow:0 20px 52px -14px rgba(0,0,0,.5); color:var(--ink-900)}
+.hero-today .ht-head{display:flex; align-items:center; justify-content:space-between; gap:var(--s2); flex-wrap:wrap; margin-bottom:var(--s3)}
+.hero-today .badge-today{background:var(--gold-500); color:var(--green-900); font-weight:700; padding:3px var(--s3); border-radius:6px; font-size:.8125rem}
+.hero-today .ht-track{font-size:1.1875rem; color:var(--green-900); margin-bottom:2px}
+.hero-today .ht-sub{font-size:.8125rem; color:var(--ink-600)}
+.hero-today .ht-meta{display:grid; grid-template-columns:1fr 1fr; gap:var(--s3); padding:var(--s4) 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin:var(--s3) 0}
+.hero-today .ht-meta .mi-k{font-size:.6875rem}
+.hero-today .ht-meta .mi-v{font-size:.875rem}
+.hero-today .ht-chips-label{font-size:.75rem; color:var(--ink-600); margin-bottom:var(--s2)}
+.hero-today .today-actions{margin-top:var(--s4)}
+.hero-today .today-actions .btn{width:100%}
+/* next-days strip along the bottom of the hero */
+.hero-next{grid-column:1 / -1; margin-top:var(--s3); padding-top:var(--s5); border-top:1px solid rgba(255,255,255,.18); display:flex; align-items:center; gap:var(--s4)}
+.hn-label{color:#fff; font-weight:600; font-size:.9375rem; display:flex; align-items:center; gap:var(--s2); white-space:nowrap}
+.hn-label .ico{color:var(--gold-500)}
+.hn-pills{display:flex; gap:var(--s3); overflow-x:auto; flex:1 1 0; min-width:0; padding-bottom:2px; -webkit-overflow-scrolling:touch}
+.hn-pill{flex:0 0 auto; display:flex; align-items:center; gap:var(--s2); background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.25); border-radius:999px; padding:var(--s2) var(--s4); color:#fff; cursor:pointer; font-size:.875rem; white-space:nowrap; transition:background var(--tr)}
+.hn-pill:hover{background:rgba(255,255,255,.22)}
+.hn-pill .hp-dd{font-weight:700; color:var(--gold-500)}
+.hn-all{color:#fff; font-weight:600; white-space:nowrap; cursor:pointer; display:flex; align-items:center; gap:4px; opacity:.9}
+.hn-all:hover{opacity:1; text-decoration:none}
+/* news blog */
+.news-blog{display:grid; grid-template-columns:1fr 1fr; gap:var(--s5); align-items:start}
+.news-hl{border:1px solid var(--line); border-radius:var(--radius-lg); overflow:hidden; cursor:pointer; transition:box-shadow var(--tr); background:var(--bg)}
+.news-hl:hover{box-shadow:var(--shadow)}
+.hl-img{aspect-ratio:16/9; overflow:hidden; position:relative}
+.hl-img img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform var(--tr)}
+.news-hl:hover .hl-img img{transform:scale(1.04)}
+.hl-body{padding:var(--s4)}
+.hl-cat{font-size:.6875rem; font-weight:600; color:var(--green-900); background:var(--green-50); padding:2px var(--s2); border-radius:6px; display:inline-block; margin-bottom:var(--s2)}
+.hl-title{font-size:1.125rem; font-weight:700; color:var(--green-900); line-height:1.35; margin-bottom:var(--s2)}
+.hl-ex{font-size:.875rem; color:var(--ink-600); line-height:1.5; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden}
+.hl-date{font-size:.75rem; color:var(--ink-600); margin-top:var(--s3); display:flex; align-items:center; gap:4px}
+.news-side{display:flex; flex-direction:column; gap:var(--s3)}
+.ns-item{display:grid; grid-template-columns:80px 1fr; gap:var(--s3); padding:var(--s3); border:1px solid var(--line); border-radius:var(--radius); background:var(--bg); cursor:pointer; transition:background var(--tr),border-color var(--tr); align-items:start}
+.ns-item:hover{background:var(--bg-alt); border-color:var(--ink-600)}
+.ns-thumb{border-radius:6px; overflow:hidden; aspect-ratio:4/3; position:relative}
+.ns-thumb img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform var(--tr)}
+.ns-item:hover .ns-thumb img{transform:scale(1.05)}
+.ns-cat{font-size:.625rem; font-weight:600; color:var(--green-900); background:var(--green-50); padding:1px var(--s2); border-radius:4px; display:inline-block; margin-bottom:3px}
+.ns-title{font-size:.875rem; font-weight:600; color:var(--ink-900); line-height:1.35}
+.ns-date{font-size:.75rem; color:var(--ink-600); margin-top:4px}
 @media(max-width:860px){ .home-cols{grid-template-columns:1fr} }
+/* hero responsive — placed after base rules so these win the source-order tie */
+@media(max-width:860px){
+  .hero{min-height:auto}
+  .hero-inner{grid-template-columns:minmax(0,1fr); gap:var(--s5); padding:var(--s6) var(--s5)}
+  .hero-today{max-width:520px}
+  .hero-dots{margin-top:var(--s4)}
+}
+@media(max-width:600px){
+  .hero-inner{padding:var(--s6) var(--s4)}
+  .hero h1{font-size:1.75rem}
+  .hero-today{padding:var(--s4); max-width:none}
+  .hero-next{flex-direction:column; align-items:flex-start; gap:var(--s3)}
+  .hn-pills{width:100%}
+  .news-blog{grid-template-columns:1fr}
+}
 @media(max-width:600px){
   .shortcut-grid{grid-template-columns:repeat(2,1fr)}
   .shortcut{padding:var(--s4) var(--s2)}
@@ -301,7 +365,9 @@ footer.site .heritage{border-top:1px solid rgba(255,255,255,.15); padding-top:va
 .race-row.feat{border-color:var(--gold-500); background:#FBF6E6}
 .race-row .rr-time{font-family:var(--font-mono); font-weight:600; font-size:1.0625rem; color:var(--green-900); min-width:54px}
 .race-row .rr-name{font-weight:500}
-.race-row .rr-meta{font-size:.8125rem; color:var(--ink-600); display:flex; flex-wrap:wrap; gap:var(--s3); margin-top:2px}
+.race-row .rr-meta{font-size:.8125rem; color:var(--ink-600); display:flex; flex-wrap:wrap; gap:var(--s2) var(--s3); margin-top:2px}
+.race-row .rr-meta span{display:inline-flex; align-items:center; gap:4px}
+.race-row .rr-meta span svg{color:var(--green-700)}
 .race-row .rr-num{font-family:var(--font-mono); display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%; background:var(--green-900); color:#fff; font-size:.8125rem; font-weight:600; flex:0 0 auto}
 /* runners today */
 .runner-tags{display:flex; flex-wrap:wrap; gap:var(--s2)}
@@ -405,12 +471,31 @@ footer.site .heritage{border-top:1px solid rgba(255,255,255,.15); padding-top:va
 .race-head-meta span{position:relative}
 .race-head-meta span+span::before{content:"·"; position:absolute; left:calc(var(--s4)/-2); color:var(--line)}
 .race-head-meta .rh-prize{color:var(--green-700); font-weight:600}
+/* meta-strip — scannable icon+label+value grid (race-card header, horse hero) */
+.meta-strip{display:grid; grid-template-columns:repeat(auto-fit,minmax(168px,1fr)); gap:var(--s3) var(--s4); margin-top:var(--s3); padding:var(--s4); background:var(--green-50); border:1px solid var(--line); border-radius:var(--radius-lg)}
+.meta-strip .meta-item{align-items:center}
+.meta-strip .meta-item>div{min-width:0}
+.meta-strip .mi-k,.meta-strip .mi-v{overflow-wrap:anywhere}
+.meta-strip .mi-ico{width:38px; height:38px; border-radius:9px; background:#fff; align-items:center; justify-content:center; flex:0 0 auto; box-shadow:0 1px 2px rgba(0,0,0,.05)}
+.meta-strip .mi-v{font-size:1.0625rem; font-weight:600; color:var(--green-900)}
+.meta-strip .mi-v.accent{color:var(--gold-500)}
+.meta-strip.bare{background:none; border:none; padding:0; margin-top:0; gap:var(--s3) var(--s5)}
+.meta-strip.bare .mi-ico{box-shadow:none}
+.meta-strip.bare .mi-v{font-size:.9375rem; color:var(--ink-900)}
 .h-inline{margin:0; font-size:1.25rem}
 .rc-kv-v{margin-top:2px; font-weight:500}
 .form-tag{font-size:.875rem; font-weight:600; padding:2px var(--s2); border-radius:6px}
 .form-tag-good{background:#E6F4EA; color:#1B7A3D}
 .form-tag-warn{background:#FCF3D9; color:#7a5e0a}
 .form-tag-bad{background:#FBE9E7; color:#C62828}
+/* scratched runner — race card */
+.rc-scratch-badge{display:inline-flex; align-items:center; gap:4px; background:#FBE9E7; color:#C62828; font-size:.8125rem; font-weight:600; padding:2px var(--s2); border-radius:6px; white-space:nowrap}
+.rc-scratch-badge.sm{margin-left:var(--s2); font-size:.75rem}
+.rc-scratch-reason{display:flex; align-items:center; gap:5px; font-size:.8125rem; color:#C62828; margin:var(--s2) 0 0}
+.rc-card.is-out{opacity:.72; background:repeating-linear-gradient(135deg,transparent,transparent 9px,rgba(198,40,40,.04) 9px,rgba(198,40,40,.04) 18px)}
+.rc-card.is-out .rc-name{text-decoration:line-through; text-decoration-color:rgba(198,40,40,.6)}
+.rc-table tr.is-out{opacity:.6}
+.rc-table tr.is-out .c-horse a{text-decoration:line-through; text-decoration-color:rgba(198,40,40,.6)}
 /* ===== P4 HORSE PROFILE ===== */
 .horse-hero{display:grid; grid-template-columns:200px 1fr; gap:var(--s5); align-items:center; background:var(--green-50); border:1px solid var(--line); border-radius:var(--radius); padding:var(--s5)}
 .horse-photo{aspect-ratio:1; border-radius:var(--radius); overflow:hidden; display:flex; align-items:center; justify-content:center; font-size:3.5rem; color:#fff; box-shadow:var(--shadow)}
@@ -423,6 +508,27 @@ footer.site .heritage{border-top:1px solid rgba(255,255,255,.15); padding-top:va
 .rating-badge{display:inline-flex; align-items:baseline; gap:var(--s2); background:var(--green-900); color:#fff; border-radius:10px; padding:var(--s3) var(--s4)}
 .rating-badge .rb-num{font-family:var(--font-mono); font-size:1.75rem; font-weight:700; line-height:1}
 .rating-badge .rb-lab{font-size:.8125rem; opacity:.85}
+/* horse health & racing status */
+.horse-status-chip{display:inline-flex; align-items:center; gap:6px; padding:8px var(--s3); border-radius:999px; font-size:.9375rem; font-weight:600; border:1px solid transparent}
+.horse-status-chip .hsc-ico{display:inline-flex}
+.hs-fit{background:#E6F4EA; color:#1B7A3D; border-color:#bfe3c8}
+.hs-out{background:#FBE9E7; color:#C62828; border-color:#f3c9c4}
+.hs-spell{background:#EEEEEE; color:var(--ink-700); border-color:#dcdcdc}
+.hs-first{background:#FCF3D9; color:#7a5e0a; border-color:#ecdca6}
+.hs-watch{background:#FFF1E6; color:#b15a1a; border-color:#f3d3b5}
+.cond-card.hs-fit{background:#E6F4EA; border-color:#bfe3c8} .cond-card.hs-fit .cc-ico{color:#1B7A3D}
+.cond-card.hs-out{background:#FBE9E7; border-color:#f3c9c4} .cond-card.hs-out .cc-ico{color:#C62828}
+.cond-card.hs-first{background:#FCF3D9; border-color:#ecdca6} .cond-card.hs-first .cc-ico{color:#7a5e0a}
+.cond-card.hs-watch{background:#FFF1E6; border-color:#f3d3b5} .cond-card.hs-watch .cc-ico{color:#b15a1a}
+.cond-card .cc-val.cc-val-sm{font-size:1rem; line-height:1.4}
+.health-notes{display:flex; flex-direction:column; gap:var(--s2)}
+.hn-row{display:flex; gap:var(--s3); align-items:flex-start; padding:var(--s3) var(--s4); border:1px solid var(--line); border-left:3px solid var(--green-700); border-radius:var(--radius); background:var(--bg)}
+.hn-row.vet{border-left-color:#C0392B}
+.hn-ico{flex:0 0 auto; display:inline-flex; margin-top:2px}
+.hn-row.vet .hn-ico{color:#C0392B} .hn-row.steward .hn-ico{color:var(--green-700)}
+.hn-meta{display:flex; align-items:center; gap:var(--s2); font-size:.8125rem; color:var(--ink-600); margin-bottom:2px}
+.hn-tag{font-weight:600; color:var(--green-900)}
+.hn-text{font-size:.9375rem; line-height:1.5}
 /* career stats strip + win/place donut */
 .career-strip{display:grid; grid-template-columns:repeat(5,1fr) minmax(200px,1.3fr); gap:var(--s3); margin-top:var(--s3)}
 .stat-card{background:var(--bg); border:1px solid var(--line); border-radius:var(--radius); padding:var(--s4) var(--s2); text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center}
@@ -546,13 +652,12 @@ footer.site .heritage{border-top:1px solid rgba(255,255,255,.15); padding-top:va
 <header class="site">
   <div class="container nav-row">
     <a href="#landing" class="logo" data-go="landing">
-      <span class="mark">RBSC</span>
-      <span class="i18n" data-th="ราชกรีฑาสโมสร" data-en="Royal Bangkok Sports Club">ราชกรีฑาสโมสร</span>
+      <span class="mark">MRC</span>
+      <span class="i18n" data-th="Mockup Racing Club" data-en="Mockup Racing Club">Mockup Racing Club</span>
     </a>
     <button class="hamburger" id="hamburger" aria-label="เมนู" aria-expanded="false">☰</button>
     <nav class="main" id="mainNav">
-      <a href="#raceday" data-go="raceday" class="i18n" data-th="แข่งวันนี้" data-en="Racing Today">แข่งวันนี้</a>
-      <a href="#racecard" data-go="racecard" class="i18n" data-th="เรซการ์ด" data-en="Race Cards">เรซการ์ด</a>
+      <a href="#raceday" data-go="raceday" class="i18n" data-th="เรซการ์ด" data-en="Race Cards">เรซการ์ด</a>
       <a href="#" class="dead i18n" data-dead data-th="ม้า &amp; บุคคล" data-en="Horses &amp; People">ม้า &amp; บุคคล</a>
       <a href="#" class="dead i18n" data-dead data-th="สนาม &amp; กติกา" data-en="Track &amp; Regulations">สนาม &amp; กติกา</a>
       <a href="#" class="dead i18n" data-dead data-th="ประสบการณ์" data-en="Experience">ประสบการณ์</a>
@@ -589,13 +694,12 @@ footer.site .heritage{border-top:1px solid rgba(255,255,255,.15); padding-top:va
 <footer class="site">
   <div class="container">
     <div class="f-links">
-      <a href="#raceday" data-go="raceday" class="i18n" data-th="แข่งวันนี้" data-en="Racing Today">แข่งวันนี้</a>
-      <a href="#racecard" data-go="racecard" class="i18n" data-th="เรซการ์ด" data-en="Race Cards">เรซการ์ด</a>
+      <a href="#raceday" data-go="raceday" class="i18n" data-th="เรซการ์ด" data-en="Race Cards">เรซการ์ด</a>
       <a href="#" class="dead i18n" data-dead data-th="ผลการแข่ง" data-en="Results">ผลการแข่ง</a>
       <a href="#" class="dead i18n" data-dead data-th="ตารางคะแนน" data-en="Leaderboard">ตารางคะแนน</a>
       <a href="#" class="dead i18n" data-dead data-th="ติดต่อ" data-en="Contact">ติดต่อ</a>
     </div>
-    <div class="heritage">ราชกรีฑาสโมสร (RBSC) · ก่อตั้ง 1901 · จัดการแข่งม้าตั้งแต่ 1903</div>
+    <div class="heritage">Mockup Racing Club (MRC) · ก่อตั้ง 1901 · จัดการแข่งม้าตั้งแต่ 1903</div>
   </div>
 </footer>
 
@@ -647,7 +751,14 @@ const ICON_PATHS={
   'arrow-left':'<path d="M19 12H5M11 6l-6 6 6 6"/>',
   'chevron-down':'<path d="M6 9l6 6 6-6"/>',
   'chevron-up':'<path d="M6 15l6-6 6 6"/>',
-  'chevron-right':'<path d="M9 6l6 6-6 6"/>'
+  'chevron-right':'<path d="M9 6l6 6-6 6"/>',
+  droplet:'<path d="M12 3.5c3.5 4 5.5 6.7 5.5 9.5a5.5 5.5 0 0 1-11 0c0-2.8 2-5.5 5.5-9.5z"/>',
+  heart:'<path d="M12 20s-7-4.6-9.2-9C1.4 8.1 3 5 6 5c1.9 0 3.2 1.1 4 2.3C10.8 6.1 12.1 5 14 5c3 0 4.6 3.1 3.2 6-2.2 4.4-9.2 9-9.2 9z" fill="currentColor" stroke="none"/>',
+  shield:'<path d="M12 3l7 3v5c0 4.5-3 7.6-7 9-4-1.4-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/>',
+  alert:'<path d="M12 4l9 16H3z"/><path d="M12 10v4"/><circle cx="12" cy="17.5" r=".6" fill="currentColor" stroke="none"/>',
+  moon:'<path d="M20 14a8 8 0 0 1-10-10 8 8 0 1 0 10 10z"/>',
+  'minus-circle':'<circle cx="12" cy="12" r="9"/><path d="M8 12h8"/>',
+  stethoscope:'<path d="M6 4v5a4 4 0 0 0 8 0V4"/><path d="M6 4H4M14 4h-2M10 17v1a4 4 0 0 0 8 0v-2"/><circle cx="18" cy="14" r="2"/>'
 };
 function icon(name,size){
   const NS='http://www.w3.org/2000/svg';
@@ -667,8 +778,8 @@ const DATA={
     status:'upcoming',                 // upcoming | live | done
     dateShort:'14 มิ.ย. 2026',
     dateFull:'วันอาทิตย์ที่ 14 มิถุนายน 2026',
-    track:'สนามม้า RBSC · ปทุมวัน',
-    feature:'RBSC Gold Cup',
+    track:'สนามม้า MRC · กรุงเทพฯ',
+    feature:'MRC Gold Cup',
     weather:{icon:'sun', temp:33, desc:'แดดจัด'},
     going:'Good', goingDesc:'สนามแห้ง เหมาะแก่การวิ่ง',
     surface:'หญ้า (Turf)', trackTemp:'38°C', updated:'10:45 น.',
@@ -676,7 +787,7 @@ const DATA={
     races:[ /* 8 races — race 3 is the detailed feature race */
       {no:1, time:'12:30', name:'เรซเปิดสนาม',        cls:'Class 5', dist:'1200ม.', runnerCount:12, status:'upcoming'},
       {no:2, time:'13:05', name:'แฮนดิแคป คลาส 4',     cls:'Class 4', dist:'1400ม.', runnerCount:11, status:'upcoming'},
-      {no:3, time:'13:40', name:'RBSC Gold Cup',        cls:'Class 1', dist:'1600ม.', runnerCount:10, status:'upcoming', feature:true},
+      {no:3, time:'13:40', name:'MRC Gold Cup',        cls:'Class 1', dist:'1600ม.', runnerCount:10, status:'upcoming', feature:true},
       {no:4, time:'14:15', name:'คลาส 3 สปรินต์',       cls:'Class 3', dist:'1200ม.', runnerCount:9,  status:'upcoming'},
       {no:5, time:'14:50', name:'แฮนดิแคป คลาส 3',      cls:'Class 3', dist:'1800ม.', runnerCount:12, status:'upcoming'},
       {no:6, time:'15:25', name:'คลาส 2 ไมล์',          cls:'Class 2', dist:'1600ม.', runnerCount:8,  status:'upcoming'},
@@ -696,7 +807,7 @@ const DATA={
     ]
   },
   raceDetail:{
-    no:3, name:'RBSC Gold Cup', cls:'Class 1', dist:'1600ม.', going:'Good',
+    no:3, name:'MRC Gold Cup', cls:'Class 1', dist:'1600ม.', going:'Good',
     prize:'1,500,000 บาท', surface:'หญ้า (Turf)', post:'13:40', field:10,
     /* form: 6 รอบล่าสุด, ขวาสุด = ล่าสุด · 1-9 = อันดับ, 0 = ที่ 10+ */
     runners:[
@@ -704,7 +815,7 @@ const DATA={
       {num:2,  silksColor:'#27AE60', nameTH:'มังกรเขียว',  nameEN:'Green Dragon',   jockey:'ว. สมชาย',  trainer:'ป. วิชัย',    weight:55, gate:2,  rating:88, ratingDelta:1,  daysSince:35, gear:'TT',    form:'324512', formTag:'warn'},
       {num:3,  silksColor:'#2980B9', nameTH:'ราชาสิงห์',   nameEN:'Lion King',      jockey:'จ. อนุชา',  trainer:'ส. ประเสริฐ',  weight:56, gate:7,  rating:90, ratingDelta:-1, daysSince:14, gear:'—',     form:'211321', formTag:'good'},
       {num:4,  silksColor:'#F39C12', nameTH:'เปลวสุริยา',  nameEN:'Sun Flare',      jockey:'ก. ธนากร',  trainer:'ม. ธนพล',    weight:54, gate:1,  rating:82, ratingDelta:2,  daysSince:28, gear:'SR',    form:'456234', formTag:'warn'},
-      {num:5,  silksColor:'#2C3E50', nameTH:'นิลกาฬ',      nameEN:'Black Pearl',    jockey:'อ. ภาคิน',  trainer:'ป. วิชัย',    weight:53, gate:9,  rating:78, ratingDelta:0,  daysSince:49, gear:'B/TT',  form:'678590', formTag:'bad'},
+      {num:5,  silksColor:'#2C3E50', nameTH:'นิลกาฬ',      nameEN:'Black Pearl',    jockey:'อ. ภาคิน',  trainer:'ป. วิชัย',    weight:53, gate:9,  rating:78, ratingDelta:0,  daysSince:49, gear:'B/TT',  form:'678590', formTag:'bad', status:'scratched', scratchReason:'ถอนโดยสัตวแพทย์ — ขาหน้าซ้ายอักเสบเล็กน้อย'},
       {num:6,  silksColor:'#8E44AD', nameTH:'ลมพายุ',      nameEN:'Tempest',        jockey:'ว. สมชาย',  trainer:'ก. รุ่งโรจน์', weight:55, gate:3,  rating:85, ratingDelta:-2, daysSince:18, gear:'—',     form:'133247', formTag:'good'},
       {num:7,  silksColor:'#D4AC0D', nameTH:'ทองแท้',      nameEN:'Pure Gold',      jockey:'จ. อนุชา',  trainer:'ม. ธนพล',    weight:52, gate:10, rating:74, ratingDelta:1,  daysSince:63, gear:'TT',    form:'590678', formTag:'bad'},
       {num:8,  silksColor:'#16A085', nameTH:'เพชรดำ',      nameEN:'Dark Diamond',   jockey:'อ. ภาคิน',  trainer:'ส. ประเสริฐ',  weight:56, gate:5,  rating:87, ratingDelta:4,  daysSince:25, gear:'—',     form:'221314', formTag:'good'},
@@ -720,22 +831,34 @@ const DATA={
     stable:'คอกม้าราชพฤกษ์', trainer:'ส. ประเสริฐ', owner:'คุณวิชัย รัตนพงศ์',
     rating:96, ratingDelta:3, type:'ม้าแข่งระยะกลาง (1400–1800ม.)', record:'14 ลง · 6 ชนะ · 3 ที่สอง',
     silksColor:'#C0392B',
+    /* health & racing status — state: fit | scratched | spell | first-up | vet-watch */
+    status:{
+      state:'fit', th:'พร้อมแข่ง', en:'Fit to run',
+      since:'25 พ.ค. 2026',
+      layoffDays:21,
+      vetCheck:'12 มิ.ย. 2026 — ตรวจร่างกายก่อนลงแข่ง สมบูรณ์ดี ไม่พบความผิดปกติ',
+      nextRun:'14 มิ.ย. 2026 · เรซ 3 · MRC Gold Cup',
+      notes:[
+        {date:'12 มิ.ย. 2026', type:'vet',  text:'ตรวจร่างกายก่อนลงแข่ง — สภาพสมบูรณ์ กล้ามเนื้อและขาปกติ พร้อมแข่ง'},
+        {date:'25 พ.ค. 2026', type:'vet',  text:'ตรวจหลังแข่ง (24 พ.ค.) — ไม่พบอาการบาดเจ็บหรือขาเสียด ฟื้นตัวดี'}
+      ]
+    },
     /* past performance — latest first · ฟิลด์ครบแบบ Selangor (cwt=นน.แบก, hwt=นน.ตัว, sect=ตำแหน่งช่วง 800-400ม.) */
     form:[
-      {date:'24 พ.ค. 2026', track:'RBSC', dist:'1600ม.', going:'Good',       cls:'Class 1', pos:1, field:11, bar:5,  rtg:96, hwt:462, cwt:57, actwt:57, gears:'B',  lbw:'2',  winTime:'1:36.20', finishTime:'1:36.20', sect:'4-3-1',  prizeOwner:900000, prizeHorse:1200000, winner:'มังกรเขียว',  jockey:'ก. ธนากร', trainer:'ส. ประเสริฐ', hasVideo:true,  comment:'ออกตัวดี คุมจังหวะกลางสนาม เร่งช่วง 400 เมตรสุดท้ายแซงขึ้นนำชนะขาดลอย 2 ช่วงตัว ฟอร์มสมบูรณ์'},
-      {date:'19 เม.ย. 2026',track:'RBSC', dist:'1400ม.', going:'Good to Firm',cls:'Class 1', pos:1, field:9,  bar:2,  rtg:93, hwt:460, cwt:56, actwt:56, gears:'B',  lbw:'1¾', winTime:'1:23.10', finishTime:'1:23.10', sect:'2-1-1',  prizeOwner:700000, prizeHorse:950000,  winner:'ราชาสิงห์',  jockey:'ก. ธนากร', trainer:'ส. ประเสริฐ', hasVideo:true,  comment:'นำตั้งแต่ต้นจนจบ ทิ้งห่างคู่แข่งสบาย ๆ ควบคุมเกมได้เบ็ดเสร็จ'},
+      {date:'24 พ.ค. 2026', track:'MRC', dist:'1600ม.', going:'Good',       cls:'Class 1', pos:1, field:11, bar:5,  rtg:96, hwt:462, cwt:57, actwt:57, gears:'B',  lbw:'2',  winTime:'1:36.20', finishTime:'1:36.20', sect:'4-3-1',  prizeOwner:900000, prizeHorse:1200000, winner:'มังกรเขียว',  jockey:'ก. ธนากร', trainer:'ส. ประเสริฐ', hasVideo:true,  comment:'ออกตัวดี คุมจังหวะกลางสนาม เร่งช่วง 400 เมตรสุดท้ายแซงขึ้นนำชนะขาดลอย 2 ช่วงตัว ฟอร์มสมบูรณ์'},
+      {date:'19 เม.ย. 2026',track:'MRC', dist:'1400ม.', going:'Good to Firm',cls:'Class 1', pos:1, field:9,  bar:2,  rtg:93, hwt:460, cwt:56, actwt:56, gears:'B',  lbw:'1¾', winTime:'1:23.10', finishTime:'1:23.10', sect:'2-1-1',  prizeOwner:700000, prizeHorse:950000,  winner:'ราชาสิงห์',  jockey:'ก. ธนากร', trainer:'ส. ประเสริฐ', hasVideo:true,  comment:'นำตั้งแต่ต้นจนจบ ทิ้งห่างคู่แข่งสบาย ๆ ควบคุมเกมได้เบ็ดเสร็จ'},
       {date:'15 มี.ค. 2026',track:'นครราชสีมา', dist:'1600ม.', going:'Soft',  cls:'Class 1', pos:2, field:10, bar:7,  rtg:93, hwt:458, cwt:57, actwt:57, gears:'—',  lbw:'½',  winTime:'1:38.40', finishTime:'1:38.48', sect:'5-5-2',  prizeOwner:180000, prizeHorse:240000,  winner:'เพชรดำ',     jockey:'ว. สมชาย', trainer:'ส. ประเสริฐ', hasVideo:false, comment:'สนามนุ่มไม่เข้าทาง ตามมาเป็นที่ 2 ห่างผู้ชนะครึ่งช่วงตัว ถือว่าทำผลงานได้ดีในสภาพสนามที่ไม่เหมาะ'},
-      {date:'08 ก.พ. 2026', track:'RBSC', dist:'1800ม.', going:'Good',       cls:'Class 2', pos:1, field:12, bar:3,  rtg:90, hwt:455, cwt:55, actwt:55, gears:'B',  lbw:'2',  winTime:'1:50.30', finishTime:'1:50.30', sect:'6-4-1',  prizeOwner:300000, prizeHorse:400000,  winner:'ลมพายุ',     jockey:'ก. ธนากร', trainer:'ส. ประเสริฐ', hasVideo:true,  comment:'ระยะไกลขึ้นแต่ยังเหลือแรงดี เร่งแซงโค้งสุดท้ายชนะสวยงาม เลื่อนชั้นขึ้น Class 1'},
-      {date:'11 ม.ค. 2026', track:'RBSC', dist:'1400ม.', going:'Good',       cls:'Class 2', pos:3, field:11, bar:9,  rtg:91, hwt:457, cwt:56, actwt:56, gears:'—',  lbw:'1½', winTime:'1:23.55', finishTime:'1:23.80', sect:'7-6-3',  prizeOwner:90000,  prizeHorse:120000,  winner:'เปลวสุริยา', jockey:'จ. อนุชา', trainer:'ส. ประเสริฐ', hasVideo:false, comment:'โดนบีบช่วงออกโค้ง เสียจังหวะ ปลายสนามไล่กลับมาได้ที่ 3 ยังมีพื้นฐานดี'},
-      {date:'07 ธ.ค. 2025', track:'RBSC', dist:'1600ม.', going:'Good to Firm',cls:'Class 2', pos:1, field:10, bar:4,  rtg:88, hwt:452, cwt:54, actwt:54, gears:'B',  lbw:'1¼', winTime:'1:36.90', finishTime:'1:36.90', sect:'5-3-1',  prizeOwner:300000, prizeHorse:400000,  winner:'นิลกาฬ',     jockey:'ก. ธนากร', trainer:'ส. ประเสริฐ', hasVideo:true,  comment:'ชัยชนะนัดเปิดฤดูกาล ฟอร์มสดมาก นำเข้าเส้นชัยอย่างมั่นใจ'},
+      {date:'08 ก.พ. 2026', track:'MRC', dist:'1800ม.', going:'Good',       cls:'Class 2', pos:1, field:12, bar:3,  rtg:90, hwt:455, cwt:55, actwt:55, gears:'B',  lbw:'2',  winTime:'1:50.30', finishTime:'1:50.30', sect:'6-4-1',  prizeOwner:300000, prizeHorse:400000,  winner:'ลมพายุ',     jockey:'ก. ธนากร', trainer:'ส. ประเสริฐ', hasVideo:true,  comment:'ระยะไกลขึ้นแต่ยังเหลือแรงดี เร่งแซงโค้งสุดท้ายชนะสวยงาม เลื่อนชั้นขึ้น Class 1'},
+      {date:'11 ม.ค. 2026', track:'MRC', dist:'1400ม.', going:'Good',       cls:'Class 2', pos:3, field:11, bar:9,  rtg:91, hwt:457, cwt:56, actwt:56, gears:'—',  lbw:'1½', winTime:'1:23.55', finishTime:'1:23.80', sect:'7-6-3',  prizeOwner:90000,  prizeHorse:120000,  winner:'เปลวสุริยา', jockey:'จ. อนุชา', trainer:'ส. ประเสริฐ', hasVideo:false, comment:'โดนบีบช่วงออกโค้ง เสียจังหวะ ปลายสนามไล่กลับมาได้ที่ 3 ยังมีพื้นฐานดี'},
+      {date:'07 ธ.ค. 2025', track:'MRC', dist:'1600ม.', going:'Good to Firm',cls:'Class 2', pos:1, field:10, bar:4,  rtg:88, hwt:452, cwt:54, actwt:54, gears:'B',  lbw:'1¼', winTime:'1:36.90', finishTime:'1:36.90', sect:'5-3-1',  prizeOwner:300000, prizeHorse:400000,  winner:'นิลกาฬ',     jockey:'ก. ธนากร', trainer:'ส. ประเสริฐ', hasVideo:true,  comment:'ชัยชนะนัดเปิดฤดูกาล ฟอร์มสดมาก นำเข้าเส้นชัยอย่างมั่นใจ'},
       {date:'02 พ.ย. 2025', track:'นครราชสีมา', dist:'1400ม.', going:'Good',  cls:'Class 3', pos:2, field:9,  bar:6,  rtg:85, hwt:450, cwt:55, actwt:55, gears:'—',  lbw:'¾',  winTime:'1:24.10', finishTime:'1:24.18', sect:'4-3-2',  prizeOwner:80000,  prizeHorse:110000,  winner:'ทองแท้',     jockey:'ว. สมชาย', trainer:'ส. ประเสริฐ', hasVideo:false, comment:'ตามชนะมาติด ๆ เป็นที่ 2 พัฒนาต่อเนื่อง'},
-      {date:'28 ก.ย. 2025', track:'RBSC', dist:'1200ม.', going:'Good',       cls:'Class 3', pos:1, field:12, bar:8,  rtg:82, hwt:448, cwt:53, actwt:53, gears:'—',  lbw:'1',  winTime:'1:09.40', finishTime:'1:09.40', sect:'6-4-1',  prizeOwner:150000, prizeHorse:200000,  winner:'สายลมเหนือ', jockey:'ก. ธนากร', trainer:'ส. ประเสริฐ', hasVideo:false, comment:'ระยะสั้นแต่จี่ได้ดี ชนะครั้งแรกในระดับ Class 3'},
-      {date:'17 ส.ค. 2025', track:'RBSC', dist:'1200ม.', going:'Firm',       cls:'Class 4', pos:4, field:11, bar:10, rtg:80, hwt:446, cwt:54, actwt:54, gears:'—',  lbw:'3¼', winTime:'1:09.10', finishTime:'1:09.65', sect:'8-7-4',  prizeOwner:0,      prizeHorse:0,       winner:'อัศวินดำ',  jockey:'จ. อนุชา', trainer:'ส. ประเสริฐ', hasVideo:false, comment:'ออกประตูนอกเสียเปรียบ ตามกลุ่มหน้าไม่ทัน จบที่ 4 ยังไม่เข้าฟอร์ม'},
-      {date:'06 ก.ค. 2025', track:'RBSC', dist:'1100ม.', going:'Good',       cls:'Class 4', pos:1, field:10, bar:2,  rtg:78, hwt:444, cwt:52, actwt:52, gears:'—',  lbw:'¾',  winTime:'1:04.50', finishTime:'1:04.50', sect:'3-2-1',  prizeOwner:150000, prizeHorse:200000,  winner:'พายุทราย',   jockey:'จ. อนุชา', trainer:'ส. ประเสริฐ', hasVideo:true,  comment:'ชนะนัดแรกในระดับ Class 4 ฝีเท้าดีต่อเนื่อง'},
-      {date:'25 พ.ค. 2025', track:'RBSC', dist:'1200ม.', going:'Good to Firm',cls:'Class 4', pos:2, field:11, bar:7,  rtg:76, hwt:442, cwt:53, actwt:53, gears:'—',  lbw:'½',  winTime:'1:10.05', finishTime:'1:10.13', sect:'5-4-2',  prizeOwner:60000,  prizeHorse:80000,   winner:'เปลวเพลิง',  jockey:'จ. อนุชา', trainer:'ส. ประเสริฐ', hasVideo:false, comment:'ออกตัวช้าเล็กน้อย ไล่กลับมาเป็นที่ 2 ปลายสนามมาดี'},
+      {date:'28 ก.ย. 2025', track:'MRC', dist:'1200ม.', going:'Good',       cls:'Class 3', pos:1, field:12, bar:8,  rtg:82, hwt:448, cwt:53, actwt:53, gears:'—',  lbw:'1',  winTime:'1:09.40', finishTime:'1:09.40', sect:'6-4-1',  prizeOwner:150000, prizeHorse:200000,  winner:'สายลมเหนือ', jockey:'ก. ธนากร', trainer:'ส. ประเสริฐ', hasVideo:false, comment:'ระยะสั้นแต่จี่ได้ดี ชนะครั้งแรกในระดับ Class 3'},
+      {date:'17 ส.ค. 2025', track:'MRC', dist:'1200ม.', going:'Firm',       cls:'Class 4', pos:4, field:11, bar:10, rtg:80, hwt:446, cwt:54, actwt:54, gears:'—',  lbw:'3¼', winTime:'1:09.10', finishTime:'1:09.65', sect:'8-7-4',  prizeOwner:0,      prizeHorse:0,       winner:'อัศวินดำ',  jockey:'จ. อนุชา', trainer:'ส. ประเสริฐ', hasVideo:false, comment:'ออกประตูนอกเสียเปรียบ ตามกลุ่มหน้าไม่ทัน จบที่ 4 ยังไม่เข้าฟอร์ม'},
+      {date:'06 ก.ค. 2025', track:'MRC', dist:'1100ม.', going:'Good',       cls:'Class 4', pos:1, field:10, bar:2,  rtg:78, hwt:444, cwt:52, actwt:52, gears:'—',  lbw:'¾',  winTime:'1:04.50', finishTime:'1:04.50', sect:'3-2-1',  prizeOwner:150000, prizeHorse:200000,  winner:'พายุทราย',   jockey:'จ. อนุชา', trainer:'ส. ประเสริฐ', hasVideo:true,  comment:'ชนะนัดแรกในระดับ Class 4 ฝีเท้าดีต่อเนื่อง'},
+      {date:'25 พ.ค. 2025', track:'MRC', dist:'1200ม.', going:'Good to Firm',cls:'Class 4', pos:2, field:11, bar:7,  rtg:76, hwt:442, cwt:53, actwt:53, gears:'—',  lbw:'½',  winTime:'1:10.05', finishTime:'1:10.13', sect:'5-4-2',  prizeOwner:60000,  prizeHorse:80000,   winner:'เปลวเพลิง',  jockey:'จ. อนุชา', trainer:'ส. ประเสริฐ', hasVideo:false, comment:'ออกตัวช้าเล็กน้อย ไล่กลับมาเป็นที่ 2 ปลายสนามมาดี'},
       {date:'20 เม.ย. 2025',track:'นครราชสีมา', dist:'1100ม.', going:'Soft',  cls:'Class 5', pos:5, field:12, bar:11, rtg:74, hwt:440, cwt:54, actwt:54, gears:'—',  lbw:'4',  winTime:'1:05.80', finishTime:'1:06.42', sect:'9-8-6',  prizeOwner:0,      prizeHorse:0,       winner:'ดาวเหนือ',   jockey:'อ. ภาคิน', trainer:'ส. ประเสริฐ', hasVideo:false, comment:'สนามนุ่มและประตูนอกไม่เข้าทาง จบกลางตาราง'},
-      {date:'09 มี.ค. 2025',track:'RBSC', dist:'1000ม.', going:'Good',        cls:'Class 5', pos:3, field:10, bar:3,  rtg:73, hwt:438, cwt:52, actwt:52, gears:'—',  lbw:'1¼', winTime:'0:58.90', finishTime:'0:59.10', sect:'4-3-3',  prizeOwner:40000,  prizeHorse:55000,   winner:'ลมกรด',      jockey:'จ. อนุชา', trainer:'ส. ประเสริฐ', hasVideo:false, comment:'พัฒนาขึ้นจากนัดแรก เก็บอันดับ 3 ได้'},
-      {date:'15 ก.พ. 2025',track:'RBSC', dist:'1000ม.', going:'Good',        cls:'Maiden',  pos:7, field:12, bar:9,  rtg:72, hwt:436, cwt:54, actwt:54, gears:'—',  lbw:'5½', winTime:'0:59.40', finishTime:'1:00.30', sect:'10-9-8', prizeOwner:0,      prizeHorse:0,       winner:'มังกรเขียว',  jockey:'ก. ธนากร', trainer:'ส. ประเสริฐ', hasVideo:false, comment:'นัดเปิดตัว (debut) ยังไม่เข้าที่เข้าทาง เก็บประสบการณ์'}
+      {date:'09 มี.ค. 2025',track:'MRC', dist:'1000ม.', going:'Good',        cls:'Class 5', pos:3, field:10, bar:3,  rtg:73, hwt:438, cwt:52, actwt:52, gears:'—',  lbw:'1¼', winTime:'0:58.90', finishTime:'0:59.10', sect:'4-3-3',  prizeOwner:40000,  prizeHorse:55000,   winner:'ลมกรด',      jockey:'จ. อนุชา', trainer:'ส. ประเสริฐ', hasVideo:false, comment:'พัฒนาขึ้นจากนัดแรก เก็บอันดับ 3 ได้'},
+      {date:'15 ก.พ. 2025',track:'MRC', dist:'1000ม.', going:'Good',        cls:'Maiden',  pos:7, field:12, bar:9,  rtg:72, hwt:436, cwt:54, actwt:54, gears:'—',  lbw:'5½', winTime:'0:59.40', finishTime:'1:00.30', sect:'10-9-8', prizeOwner:0,      prizeHorse:0,       winner:'มังกรเขียว',  jockey:'ก. ธนากร', trainer:'ส. ประเสริฐ', hasVideo:false, comment:'นัดเปิดตัว (debut) ยังไม่เข้าที่เข้าทาง เก็บประสบการณ์'}
     ],
     ratingHistory:[72,73,74,76,78,80,82,85,88,91,90,93,93,96],
     stewards:[
@@ -750,23 +873,23 @@ const DATA={
     ]
   },
   news:[
-    {cat:'พรีวิวเรซ',    title:'พรีวิว RBSC Gold Cup: ม้าเต็ง 3 ตัวที่ต้องจับตา', excerpt:'วิเคราะห์ตัวเต็งและม้าน่าสนใจก่อนเกมใหญ่บ่ายวันอาทิตย์นี้ พร้อมจุดชี้ขาดของแต่ละตัว', date:'13 มิ.ย. 2026', img:'images/news-preview.jpg', feature:true},
+    {cat:'พรีวิวเรซ',    title:'พรีวิว MRC Gold Cup: ม้าเต็ง 3 ตัวที่ต้องจับตา', excerpt:'วิเคราะห์ตัวเต็งและม้าน่าสนใจก่อนเกมใหญ่บ่ายวันอาทิตย์นี้ พร้อมจุดชี้ขาดของแต่ละตัว', date:'13 มิ.ย. 2026', img:'images/news-preview.jpg', feature:true},
     {cat:'เซียนแนะ',     title:'เซียนแนะ — 5 ม้าน่าจับตาประจำสัปดาห์นี้',        excerpt:'ทีมงานคัดม้าฟอร์มดีจากทุกเรซมาให้มือใหม่ตามได้ง่าย', date:'12 มิ.ย. 2026', img:'images/news-tips.jpg'},
     {cat:'ประกาศถอนม้า', title:'ประกาศถอนม้า เรซ 5 และ เรซ 7 ก่อนวันแข่ง',       excerpt:'อัปเดตรายชื่อม้าถอนล่าสุด พร้อมเหตุผลจากสัตวแพทย์สนาม', date:'14 มิ.ย. 2026', img:'images/news-scratch.jpg'},
     {cat:'สภาพสนาม',     title:'รายงานสภาพสนามวันแข่ง: Good ตลอดทั้งวัน',        excerpt:'สนามแห้งเหมาะแก่การวิ่ง อุณหภูมิสนาม 38°C อัปเดตล่าสุด 10:45 น.', date:'14 มิ.ย. 2026', img:'images/racecourse.jpg'},
     {cat:'ข่าวจ็อกกี้',   title:'ก. ธนากร คว้าแชมป์จ็อกกี้ประจำเดือน',           excerpt:'ผลงาน 6 ชนะจาก 18 การลง พาเจ้าตัวขึ้นนำตารางคะแนนจ็อกกี้', date:'11 มิ.ย. 2026', img:'images/news-tips.jpg'},
-    {cat:'ข่าวสโมสร',    title:'RBSC เปิดโซนครอบครัวใหม่ริมทางตรงสุดท้าย',       excerpt:'พื้นที่ชมการแข่งสำหรับครอบครัว พร้อมกิจกรรมเด็กทุกวันแข่ง', date:'10 มิ.ย. 2026', img:'images/news-preview.jpg'}
+    {cat:'ข่าวสโมสร',    title:'MRC เปิดโซนครอบครัวใหม่ริมทางตรงสุดท้าย',       excerpt:'พื้นที่ชมการแข่งสำหรับครอบครัว พร้อมกิจกรรมเด็กทุกวันแข่ง', date:'10 มิ.ย. 2026', img:'images/news-preview.jpg'}
   ],
-  /* upcoming RBSC meetings (adapted from Selangor "Race Day Fixtures") */
+  /* upcoming MRC meetings (adapted from Selangor "Race Day Fixtures") */
   fixtures:[
-    {dd:'14', mon:'มิ.ย.', dow:'อาทิตย์', name:'RBSC Gold Cup Day', feature:'RBSC Gold Cup', races:8, post:'12:30', status:'upcoming', today:true},
-    {dd:'21', mon:'มิ.ย.', dow:'อาทิตย์', name:'ปทุมวัน สปรินต์ ซีรีส์', feature:'Patumwan Sprint', races:7, post:'12:45', status:'scheduled'},
+    {dd:'14', mon:'มิ.ย.', dow:'อาทิตย์', name:'MRC Gold Cup Day', feature:'MRC Gold Cup', races:8, post:'12:30', status:'upcoming', today:true},
+    {dd:'21', mon:'มิ.ย.', dow:'อาทิตย์', name:'กรุงเทพฯ สปรินต์ ซีรีส์', feature:'Bangkok Sprint', races:7, post:'12:45', status:'scheduled'},
     {dd:'28', mon:'มิ.ย.', dow:'อาทิตย์', name:'ควีนส์คัพ พรีลูด', feature:'Class 1 Mile', races:8, post:'12:30', status:'scheduled'},
-    {dd:'05', mon:'ก.ค.', dow:'อาทิตย์', name:'RBSC ซัมเมอร์ เฟสติวัล', feature:'Festival Handicap', races:9, post:'12:15', status:'scheduled'}
+    {dd:'05', mon:'ก.ค.', dow:'อาทิตย์', name:'MRC ซัมเมอร์ เฟสติวัล', feature:'Festival Handicap', races:9, post:'12:15', status:'scheduled'}
   ],
   /* quick-access tiles (adapted from Selangor shortcut grid) */
   shortcuts:[
-    {icon:'list',     th:'เรซการ์ด',       en:'Race Cards',      color:'#264068', go:'racecard', opts:{no:3}},
+    {icon:'list',     th:'เรซการ์ด',       en:'Race Cards',      color:'#264068', go:'raceday'},
     {icon:'horse',    th:'ฟอร์มม้า',       en:'Horse Form',      color:'#C9A227', go:'horse'},
     {icon:'calendar', th:'โปรแกรมวันแข่ง', en:'Race Day',        color:'#16A085', go:'raceday'},
     {icon:'trophy',   th:'ผลการแข่ง',      en:'Results',         color:'#9E2B25', soon:true},
@@ -821,7 +944,7 @@ function showPage(id,opts){
   setLang(document.documentElement.getAttribute('data-lang')||'th'); // re-localize freshly rendered nodes
   sec.classList.add('active');
   // nav active state
-  $$('nav.main a[data-go]').forEach(a=>a.classList.toggle('active',a.dataset.go===id));
+  $$('nav.main a[data-go]').forEach(a=>a.classList.toggle('active', a.dataset.go===id || (id==='racecard' && a.dataset.go==='raceday')));
   $('#mainNav').classList.remove('open'); $('#hamburger').setAttribute('aria-expanded','false');
   window.scrollTo(0,0);
 }
@@ -891,11 +1014,11 @@ function statusChip(status){
   const [cls,txt]=map[status]||map.upcoming;
   return el('span',{class:'chip-status '+cls}, txt);
 }
-function metaItem(ico,k,v,tip){
+function metaItem(ico,k,v,tip,accent){
   const kEl=el('span',{class:'mi-k'},k); if(tip)kEl.append(tooltip(tip));
   return el('div',{class:'meta-item'},
     el('span',{class:'mi-ico','aria-hidden':'true'}, icon(ico,22)),
-    el('div',{}, kEl, el('span',{class:'mi-v'},v)));
+    el('div',{}, kEl, el('span',{class:'mi-v'+(accent?' accent':'')},v)));
 }
 /* breadcrumb — items:[{t,go?,opts?,dead?}|{t,current:true}] */
 function breadcrumb(items){
@@ -913,41 +1036,90 @@ function breadcrumb(items){
 /* ============ P1 — LANDING (§4.1) ============ */
 RENDERERS.landing=function(sec){
   const m=DATA.meeting; sec.innerHTML='';
+  if(window._heroTimer){clearInterval(window._heroTimer); window._heroTimer=null;}
+  if(!window._vwBound){
+    window._setVW=()=>document.documentElement.style.setProperty('--vw', document.documentElement.clientWidth+'px');
+    window.addEventListener('resize', window._setVW);
+    window.addEventListener('load', window._setVW);
+    window._vwBound=true;
+  }
+  /* re-measure once the vertical scrollbar settles (clientWidth excludes it, vw doesn't) */
+  window._setVW(); requestAnimationFrame(window._setVW); setTimeout(window._setVW,120);
 
-  /* 1. HERO — photo bg + dark overlay + confident left stack */
-  sec.append(el('div',{class:'hero',style:"background-image:linear-gradient(110deg,rgba(20,32,56,.94) 0%,rgba(38,64,104,.86) 42%,rgba(38,64,104,.42) 100%),url('images/hero.jpg')"},
-    el('div',{class:'hero-motif','aria-hidden':'true'}, icon('horseshoe',260)),
-    el('div',{class:'hero-top'},
-      el('span',{class:'eyebrow i18n','data-th':'สนามม้า RBSC · ตั้งแต่ 1903','data-en':'RBSC Racecourse · Since 1903'},'สนามม้า RBSC · ตั้งแต่ 1903'),
-      el('h1',{class:'i18n','data-th':'แข่งม้าราชกรีฑาสโมสร','data-en':'Royal Bangkok Sports Club Racing'},'แข่งม้าราชกรีฑาสโมสร'),
-      el('p',{},'ตารางแข่ง ฟอร์มม้า และสภาพสนามแบบครบ — อ่านง่ายทั้งมือใหม่และเซียน อัปเดตทุกวันแข่ง'))
-  ));
+  /* 1. HERO BANNER — full-bleed; rotating lead text + today card + next-days strip */
+  const SLIDES=[
+    {eyebrow:'สนามม้า Mockup · ตั้งแต่ 1903', h1:'แข่งม้า Mockup Racing Club', p:'ตารางแข่ง ฟอร์มม้า และสภาพสนามแบบครบ — อ่านง่ายทั้งมือใหม่และเซียน อัปเดตทุกวันแข่ง'},
+    {eyebrow:'พรีวิวเรซ · 14 มิ.ย. 2026', h1:'MRC Gold Cup — วันอาทิตย์นี้', p:'เรซเด่นของฤดูกาล · Class 1 · ระยะ 1,600ม. · เงินรางวัลรวม 1,500,000 บาท · 10 ม้าลงสนาม'},
+    {eyebrow:'วางแผนมาชม', h1:'ประสบการณ์สนามแข่งระดับพรีเมียม', p:'เปิดสนาม 11:00 น. · บัตรเข้าชม 100 บาท · เด็กต่ำกว่า 12 ปี เข้าฟรี · โซน Member พร้อมบริการพิเศษ'}
+  ];
+  let slideIdx=0;
+  const wrap=el('div',{class:'hero-wrap'});
+  const hero=el('div',{class:'hero',style:"background-image:linear-gradient(110deg,rgba(20,32,56,.95) 0%,rgba(38,64,104,.88) 46%,rgba(38,64,104,.55) 100%),url('images/hero.jpg')"},
+    el('div',{class:'hero-motif','aria-hidden':'true'}, icon('horseshoe',300)));
+  const inner=el('div',{class:'hero-inner'});
 
-  /* 2. ⭐ TODAY / NEXT MEETING MODULE */
-  const today=el('div',{class:'card today section-gap'});
-  today.append(
-    el('div',{class:'today-head'},
-      el('div',{class:'today-title'},
-        el('span',{class:'badge-today i18n','data-th':m.isToday?'แข่งวันนี้':'วันแข่งถัดไป','data-en':m.isToday?'Racing Today':'Next Meeting'}, m.isToday?'แข่งวันนี้':'วันแข่งถัดไป'),
-        el('h2',{}, m.track)),
+  /* 1a. LEFT — rotating lead text */
+  const lead=el('div',{class:'hero-lead'});
+  const vp=el('div',{class:'hero-lead-vp'});
+  const leadSlider=el('div',{class:'hero-lead-slider'});
+  SLIDES.forEach(s=> leadSlider.append(el('div',{class:'hero-lead-slide'},
+    el('span',{class:'eyebrow'},s.eyebrow), el('h1',{},s.h1), el('p',{},s.p))));
+  vp.append(leadSlider);
+  const dotsWrap=el('div',{class:'hero-dots'}); const dots=[];
+  SLIDES.forEach((_,i)=>{
+    const d=el('button',{class:'hero-dot'+(i===0?' on':''),'aria-label':'สไลด์ '+(i+1)});
+    d.addEventListener('click',()=>{goTo(i); resetT();});
+    dotsWrap.append(d); dots.push(d);
+  });
+  lead.append(vp, dotsWrap);
+  function goTo(i){
+    slideIdx=((i%SLIDES.length)+SLIDES.length)%SLIDES.length;
+    leadSlider.style.transform=`translateX(-${slideIdx*100}%)`;
+    dots.forEach((d,j)=>d.classList.toggle('on',j===slideIdx));
+  }
+  function resetT(){if(window._heroTimer)clearInterval(window._heroTimer); window._heroTimer=setInterval(()=>goTo(slideIdx+1),5500);}
+  resetT();
+
+  /* 1b. RIGHT — today's racing card */
+  const todayCard=el('div',{class:'hero-today'},
+    el('div',{class:'ht-head'},
+      el('span',{class:'badge-today i18n','data-th':m.isToday?'แข่งวันนี้':'วันแข่งถัดไป','data-en':m.isToday?'Racing Today':'Next Meeting'}, m.isToday?'แข่งวันนี้':'วันแข่งถัดไป'),
       statusChip(m.status)),
-    el('div',{class:'muted',style:'margin-bottom:var(--s2)'}, m.dateFull+' · เรซเด่น: '+m.feature),
-    el('div',{class:'today-meta'},
-      metaItem(m.weather.icon,'สภาพอากาศ', m.weather.desc+' '+m.weather.temp+'°C'),
-      metaItem('horseshoe','สภาพสนาม (going)', m.going+' · '+m.goingDesc,'Going = สภาพความนุ่ม/แข็งของสนาม มีผลต่อฟอร์มม้า เช่น Good = สนามดีมาตรฐาน'),
+    el('div',{class:'ht-track'}, m.track),
+    el('div',{class:'ht-sub'}, m.dateFull+' · เรซเด่น '+m.feature),
+    el('div',{class:'ht-meta'},
+      metaItem(m.weather.icon,'อากาศ', m.weather.temp+'°C'),
+      metaItem('horseshoe','สภาพสนาม', m.going,'Going = สภาพความนุ่ม/แข็งของสนาม มีผลต่อฟอร์มม้า'),
       metaItem('list','จำนวนเรซ', m.races.length+' เรซ'),
-      metaItem('stopwatch','เรซแรกออกตัว', m.firstPost+' น.')),
-    el('div',{class:'chips-label'},'กดเลขเรซเพื่อดู Race Card'),
-    (()=>{ const row=el('div',{class:'chips-row'});
-      m.races.forEach(r=>row.append(el('button',{class:'chip'+(r.feature?' feat':''),title:r.time+' · '+r.name,onclick:()=>go('racecard',{no:r.no})}, String(r.no))));
-      return row; })(),
+      metaItem('stopwatch','เรซแรก', m.firstPost+' น.')),
+    el('div',{class:'ht-chips-label'},'กดเลขเรซเพื่อดู Race Card'),
+    (()=>{ const r=el('div',{class:'chips-row'});
+      m.races.forEach(rc=>r.append(el('button',{class:'chip'+(rc.feature?' feat':''),title:rc.time+' · '+rc.name,onclick:()=>go('racecard',{no:rc.no})}, String(rc.no))));
+      return r; })(),
     el('div',{class:'today-actions'},
-      el('button',{class:'btn btn-primary',onclick:()=>go('raceday')},'ดู Race Day แบบเต็ม'),
-      el('button',{class:'btn btn-ghost',onclick:()=>placeholder('ในเวอร์ชันจริง ปุ่มนี้จะดาวน์โหลด Race Day เป็น PDF — prototype นี้เป็นตัวอย่าง')},icon('download'),' ดาวน์โหลด PDF'))
-  );
-  sec.append(today);
+      el('button',{class:'btn btn-primary',onclick:()=>go('raceday')}, icon('calendar',16),' ดู Race Day แบบเต็ม')));
 
-  /* 3. ⭐ QUICK-ACCESS SHORTCUTS (adapted from Selangor grid) */
+  /* 1c. BOTTOM — next race days strip */
+  const upcoming=DATA.fixtures.filter(f=>!f.today);
+  const pills=el('div',{class:'hn-pills'});
+  upcoming.forEach(f=>{
+    const pill=el('button',{class:'hn-pill',title:f.name+' · '+f.feature},
+      el('span',{class:'hp-dd'}, f.dd+' '+f.mon), el('span',{}, f.name));
+    pill.addEventListener('click',()=>go('raceday'));
+    pills.append(pill);
+  });
+  const allLink=el('a',{href:'#',class:'hn-all'},'ดูทั้งหมด',icon('arrow-right',15));
+  allLink.addEventListener('click',e=>{e.preventDefault(); go('raceday');});
+  const nextStrip=el('div',{class:'hero-next'},
+    el('span',{class:'hn-label'}, icon('calendar',16),' วันแข่งถัดไป'),
+    pills, allLink);
+
+  inner.append(lead, todayCard, nextStrip);
+  hero.append(inner);
+  wrap.append(hero);
+  sec.append(wrap);
+
+  /* 3. QUICK-ACCESS SHORTCUTS */
   const scSec=el('div',{class:'section-gap'});
   scSec.append(el('div',{class:'section-head'},
     el('h2',{class:'i18n h-inline','data-th':'เมนูด่วน','data-en':'Quick Access'},'เมนูด่วน'),
@@ -960,69 +1132,48 @@ RENDERERS.landing=function(sec){
       el('span',{class:'sc-en'}, s.en),
       s.soon?el('span',{class:'sc-soon'},'เร็ว ๆ นี้'):null);
     tile.addEventListener('click',e=>{e.preventDefault();
-      s.soon ? placeholder('เมนู "'+s.th+'" จะเปิดใช้งานในเวอร์ชันจริง — prototype นี้ทำ 4 หน้าหลัก (หน้าแรก · Race Day · Race Card · โปรไฟล์ม้า)')
+      s.soon ? placeholder('เมนู "'+s.th+'" จะเปิดใช้งานในเวอร์ชันจริง')
              : go(s.go,s.opts);});
     scGrid.append(tile);
   });
   scSec.append(scGrid); sec.append(scSec);
 
-  /* 4. ⭐ FIXTURES + NEWS (two-column, Selangor-style) */
-  const cols=el('div',{class:'home-cols section-gap'});
-
-  /* 4a. upcoming RBSC fixtures */
-  const fxCol=el('div',{});
-  const upcoming=DATA.fixtures.filter(f=>!f.today);   // today is covered by the Today card above
-  fxCol.append(el('div',{class:'section-head'},
-    el('h2',{class:'i18n h-inline','data-th':'วันแข่งถัดไป','data-en':'Next Race Days'},'วันแข่งถัดไป'),
-    el('span',{class:'muted small'}, upcoming.length+' วันแข่ง')));
-  const fxList=el('div',{class:'fixtures'});
-  upcoming.forEach(f=>{
-    const action = f.today
-      ? el('button',{class:'btn btn-primary btn-sm',onclick:()=>go('raceday')},'ดูวันนี้')
-      : el('button',{class:'btn btn-ghost btn-sm',onclick:()=>placeholder('โปรแกรมวันแข่ง '+f.dd+' '+f.mon+' จะประกาศเร็ว ๆ นี้')},'รายละเอียด');
-    fxList.append(el('div',{class:'fixture'+(f.today?' today':'')},
-      el('div',{class:'fx-date'}, el('span',{class:'fx-dd'},f.dd), el('span',{class:'fx-mon'},f.mon)),
-      el('div',{},
-        el('div',{class:'fx-name'}, f.name, f.today?el('span',{class:'badge-feat'}, icon('star',13),' วันนี้'):null),
-        el('div',{class:'fx-meta'},
-          el('span',{}, icon('flag',13), f.feature),
-          el('span',{}, icon('list',13), f.races+' เรซ'),
-          el('span',{}, icon('stopwatch',13), 'เริ่ม '+f.post+' น.'))),
-      el('div',{class:'fx-action'}, action)));
+  /* 4. NEWS BLOG — big highlight left + 3 compact items right */
+  const newsSec=el('div',{class:'section-gap'});
+  const seeAllNews=el('a',{href:'#',class:'inline-link'},'ดูทั้งหมด',icon('arrow-right',16));
+  seeAllNews.addEventListener('click',e=>{e.preventDefault(); placeholder('หน้ารวมข่าวอยู่นอกขอบเขต prototype');});
+  newsSec.append(el('div',{class:'section-head'},
+    el('h2',{class:'i18n h-inline','data-th':'ข่าวสนามแข่ง','data-en':'Race News'},'ข่าวสนามแข่ง'), seeAllNews));
+  const feat=DATA.news.find(n=>n.feature)||DATA.news[0];
+  const sideNews=DATA.news.filter(n=>n!==feat).slice(0,3);
+  const hlCard=el('div',{class:'news-hl'});
+  hlCard.addEventListener('click',()=>placeholder('บทความข่าวฉบับเต็มจะแสดงในเวอร์ชันจริง'));
+  hlCard.append(
+    el('div',{class:'hl-img'}, el('img',{src:feat.img,alt:feat.cat,loading:'eager'})),
+    el('div',{class:'hl-body'},
+      el('span',{class:'hl-cat'},feat.cat),
+      el('div',{class:'hl-title'},feat.title),
+      el('div',{class:'hl-ex'},feat.excerpt),
+      el('div',{class:'hl-date'},icon('calendar',13),feat.date)));
+  const sideList=el('div',{class:'news-side'});
+  sideNews.forEach(n=>{
+    const item=el('div',{class:'ns-item'});
+    item.addEventListener('click',()=>placeholder('บทความข่าวฉบับเต็มจะแสดงในเวอร์ชันจริง'));
+    item.append(
+      el('div',{class:'ns-thumb'},el('img',{src:n.img,alt:n.cat,loading:'lazy'})),
+      el('div',{},el('span',{class:'ns-cat'},n.cat),el('div',{class:'ns-title'},n.title),el('div',{class:'ns-date'},n.date)));
+    sideList.append(item);
   });
-  fxCol.append(fxList);
-  fxCol.append(el('button',{class:'btn btn-ghost',style:'margin-top:var(--s3); width:100%',
-    onclick:()=>placeholder('ปฏิทินแข่งทั้งฤดูกาลอยู่นอกขอบเขต prototype')}, icon('calendar',16),' ดูปฏิทินทั้งหมด'));
+  newsSec.append(el('div',{class:'news-blog'}, hlCard, sideList));
+  sec.append(newsSec);
 
-  /* 4b. race news list */
-  const newsCol=el('div',{});
-  const seeAll=el('a',{href:'#',class:'inline-link'},'ดูทั้งหมด',icon('arrow-right',16));
-  seeAll.addEventListener('click',e=>{e.preventDefault(); placeholder('หน้ารวมข่าวอยู่นอกขอบเขต prototype');});
-  newsCol.append(el('div',{class:'section-head'},
-    el('h2',{class:'i18n h-inline','data-th':'ข่าวสนามแข่ง','data-en':'Race News'},'ข่าวสนามแข่ง'), seeAll));
-  const newsList=el('div',{class:'news-list'});
-  DATA.news.forEach(n=>{
-    const item=el('a',{href:'#',class:'news-item'+(n.feature?' feature':'')},
-      el('div',{class:'ni-thumb'}, el('img',{src:n.img, alt:n.cat, loading:'lazy'}), n.feature?el('span',{class:'ni-cat'},n.cat):null),
-      el('div',{class:'ni-body'},
-        n.feature?null:el('span',{class:'ni-cat'},n.cat),
-        el('div',{class:'ni-title'}, n.title),
-        el('div',{class:'ni-ex'}, n.excerpt),
-        el('div',{class:'ni-date'}, icon('calendar',13), n.date)));
-    item.addEventListener('click',e=>{e.preventDefault(); placeholder('บทความข่าวฉบับเต็มจะแสดงในเวอร์ชันจริง');});
-    newsList.append(item);
-  });
-  newsCol.append(newsList);
-
-  cols.append(fxCol, newsCol); sec.append(cols);
-
-  /* 5. DUAL-AUDIENCE CARDS */
+  /* 5. AUDIENCE CARDS */
   const audienceCard=(ico,title,variant,links)=>{
     const ul=el('ul');
     links.forEach(l=>{
       const a=el('a',{href:'#'}, l.t);
       if(l.dead){a.append(el('span',{class:'badge-demo'},'demo'));
-        a.addEventListener('click',e=>{e.preventDefault(); placeholder('ส่วน "'+l.t+'" อยู่นอกขอบเขต prototype (ทำเฉพาะ 4 หน้าหลัก)');});}
+        a.addEventListener('click',e=>{e.preventDefault(); placeholder('ส่วน "'+l.t+'" อยู่นอกขอบเขต prototype');});}
       else a.addEventListener('click',e=>{e.preventDefault(); go(l.go,l.opts);});
       ul.append(el('li',{},a));
     });
@@ -1035,7 +1186,7 @@ RENDERERS.landing=function(sec){
       {t:'อภิธานศัพท์แข่งม้า', dead:true},
       {t:'ข้อมูลบัตร & เวลาเปิดสนาม', dead:true}]),
     audienceCard('list',{th:'ฟอร์ม & ข้อมูล',en:'Form & Data'},'blue',[
-      {t:'Race Cards ทุกเรซ', go:'racecard', opts:{no:3}},
+      {t:'Race Cards ทุกเรซ', go:'raceday'},
       {t:'ผลการแข่งย้อนหลัง', dead:true},
       {t:'เรตติ้ง & แฮนดิแคป', dead:true},
       {t:'ตารางคะแนน (Leaderboard)', dead:true}])
@@ -1045,18 +1196,43 @@ RENDERERS.landing=function(sec){
 /* ============ P2 — RACE DAY DETAIL (§4.4) ============ */
 RENDERERS.raceday=function(sec){
   const m=DATA.meeting; sec.innerHTML='';
+  const rerender=()=>{ RENDERERS.raceday(sec); setLang(document.documentElement.getAttribute('data-lang')||'th'); };
+  const selFx=DATA.fixtures[rdState.idx]||DATA.fixtures[0];
+  const isToday=!!selFx.today;
 
   /* 1. breadcrumb */
-  sec.append(breadcrumb([{t:'ปฏิทินแข่ง',dead:true},{t:'วันแข่ง '+m.dateShort,current:true}]));
+  sec.append(breadcrumb([{t:'ปฏิทินแข่ง',dead:true},{t:'วันแข่ง '+selFx.dd+' '+selFx.mon,current:true}]));
 
-  /* 2. meeting header + status */
+  /* 2. DATE PICKER TABS */
+  const dateTabs=el('div',{class:'race-tabs','aria-label':'เลือกวันแข่ง'});
+  DATA.fixtures.forEach((f,i)=>{
+    const isOn=i===rdState.idx;
+    const b=el('button',{class:(f.today?'feat ':'')+(isOn?'on':''),'aria-pressed':isOn,title:f.name+' · '+f.dow+' '+f.dd+' '+f.mon},
+      f.dd+' '+f.mon);
+    b.addEventListener('click',()=>{ rdState.idx=i; rerender(); });
+    dateTabs.append(b);
+  });
+  sec.append(dateTabs);
+
+  /* 3. MEETING HEADER */
   sec.append(el('div',{class:'page-head'},
     el('div',{},
-      el('h1',{class:'i18n','data-th':'วันแข่ง '+m.dateShort,'data-en':'Race Day · '+m.dateShort}, 'วันแข่ง '+m.dateShort),
-      el('div',{class:'muted'}, m.track+' · เรซเด่น: '+m.feature)),
-    statusChip(m.status)));
+      el('h1',{}, (isToday?'เรซการ์ด — ':'')+selFx.name),
+      el('div',{class:'muted'}, (isToday?m.track+' · ':'วันแข่ง '+selFx.dow+' '+selFx.dd+' '+selFx.mon+' · ')+'เรซเด่น: '+selFx.feature)),
+    statusChip(isToday?m.status:selFx.status)));
 
-  /* 3. ⭐ CONDITIONS PANEL */
+  if(!isToday){
+    sec.append(el('div',{class:'note-banner'}, icon('info',18),' เรซการ์ดสำหรับวันแข่งนี้จะเผยแพร่ก่อนวันแข่ง 48 ชั่วโมง'));
+    sec.append(el('div',{class:'section-gap'},
+      el('div',{class:'meta-strip'},
+        metaItem('calendar','วันที่', selFx.dd+' '+selFx.mon+' 2026'),
+        metaItem('clock','เริ่มแข่ง', selFx.post+' น.'),
+        metaItem('list','จำนวนเรซ', selFx.races+' เรซ'),
+        metaItem('trophy','เรซเด่น', selFx.feature))));
+    return;
+  }
+
+  /* 4. CONDITIONS PANEL */
   const condCard=(ico,label,val,sub,tip)=>{
     const lab=el('div',{class:'cc-label'}, el('span',{},label)); if(tip)lab.append(tooltip(tip));
     return el('div',{class:'cond-card'},
@@ -1077,8 +1253,9 @@ RENDERERS.raceday=function(sec){
   /* 4. DAY-AT-A-GLANCE RACE LIST */
   const prog=el('div',{class:'section-gap'});
   prog.append(el('div',{class:'section-head'},
-    el('h2',{class:'i18n','data-th':'โปรแกรมการแข่งทั้งวัน','data-en':'Full Race Programme'},'โปรแกรมการแข่งทั้งวัน'),
+    el('h2',{class:'i18n','data-th':'โปรแกรมการแข่งวันนี้','data-en':'Today’s Race Programme'},'โปรแกรมการแข่งวันนี้'),
     el('span',{class:'muted small'}, m.races.length+' เรซ · '+m.firstPost+'–'+m.lastPost+' น.')));
+  prog.append(el('div',{class:'muted small',style:'margin-bottom:var(--s3)'}, 'กดปุ่ม “ดู Race Card” ในแต่ละเรซเพื่อดูรายชื่อม้าและฟอร์ม'));
   const list=el('div',{class:'race-list'});
   m.races.forEach(r=>{
     const action = r.status==='done'
@@ -1088,7 +1265,10 @@ RENDERERS.raceday=function(sec){
       el('div',{class:'rr-time'}, r.time),
       el('div',{},
         el('div',{class:'rr-name'}, el('span',{class:'rr-num'},String(r.no)),' ',r.name, r.feature?el('span',{class:'badge-feat'}, icon('star',13),' Feature'):null),
-        el('div',{class:'rr-meta'}, el('span',{},r.cls), el('span',{},r.dist), el('span',{},r.runnerCount+' ม้า'))),
+        el('div',{class:'rr-meta'},
+          el('span',{}, icon('star',13), r.cls),
+          el('span',{}, icon('flag',13), r.dist),
+          el('span',{}, icon('horse',13), r.runnerCount+' ม้า'))),
       el('div',{class:'rr-action'}, action)));
   });
   prog.append(list); sec.append(prog);
@@ -1117,8 +1297,8 @@ RENDERERS.raceday=function(sec){
         el('button',{class:'btn btn-gold',onclick:()=>placeholder('ระบบซื้อบัตรออนไลน์จะเชื่อมต่อในเวอร์ชันจริง')},icon('ticket'),' ซื้อบัตร'),
         el('button',{class:'btn btn-ghost',onclick:()=>placeholder('Live stream จะถ่ายทอดสดในเวอร์ชันจริง')},icon('play'),' ดู Live Stream'))),
     el('div',{class:'card photo-card'},
-      el('img',{src:'images/racecourse.jpg', alt:'บรรยากาศการแข่งที่สนามม้า RBSC', loading:'lazy'}),
-      el('span',{class:'photo-caption'}, icon('pin',15),' สนามม้า RBSC · ปทุมวัน'))));
+      el('img',{src:'images/racecourse.jpg', alt:'บรรยากาศการแข่งที่สนามม้า MRC', loading:'lazy'}),
+      el('span',{class:'photo-caption'}, icon('pin',15),' สนามม้า MRC · กรุงเทพฯ'))));
   sec.append(exp);
 };
 
@@ -1135,6 +1315,7 @@ function formScore(form){const ds=String(form).split('').map(c=>c==='0'?10:+c); 
 function formTagLabel(tag){return {good:'ฟอร์มดี',warn:'กำลังพัฒนา',bad:'ห่างหาย'}[tag]||'—';}
 function deltaSpan(d){const cls=d>0?'delta-up':(d<0?'delta-dn':'delta-0'); const txt=d>0?'+'+d:(d<0?String(d):'0'); return el('span',{class:cls},txt);}
 
+const rdState={idx: (()=>{ const i=DATA.fixtures.findIndex(f=>f.today); return i>=0?i:0; })()};
 const rcState={no:3, view:'simple', sortKey:null, sortDir:1};
 
 RENDERERS.racecard=function(sec,opts){
@@ -1153,22 +1334,7 @@ RENDERERS.racecard=function(sec,opts){
     {t:'วันแข่ง '+m.dateShort,go:'raceday'},
     {t:'เรซ '+reqNo,current:true}]));
 
-  /* 2. RACE HEADER — fixed order: no+name → date/track/post → surface/dist/going → prize/class/field */
-  const title = isDetailed ? rd.name : headRace.name;
-  const head=el('div',{class:'page-head'},
-    el('div',{},
-      el('h1',{class:'i18n','data-th':'เรซ '+reqNo+' · '+title,'data-en':'Race '+reqNo+' · '+title},'เรซ '+reqNo+' · '+title),
-      el('div',{class:'race-head-meta'},
-        el('span',{}, m.dateShort), el('span',{}, m.track), el('span',{}, 'Post '+ (isDetailed?rd.post:headRace.time) +' น.'),
-        el('span',{}, isDetailed?rd.surface:m.surface), el('span',{}, isDetailed?rd.dist:headRace.dist), el('span',{}, 'Going '+(isDetailed?rd.going:m.going)),
-        el('span',{class:'rh-prize'}, isDetailed?('เงินรางวัล '+rd.prize):'เงินรางวัล —'),
-        el('span',{}, isDetailed?rd.cls:headRace.cls), el('span',{}, (isDetailed?rd.field:headRace.runnerCount)+' ม้า'))),
-    el('div',{class:'flex gap2 wrap'},
-      statusChip(headRace.status),
-      el('button',{class:'btn btn-ghost btn-sm',onclick:()=>placeholder('ไฟล์ Race Card PDF จะดาวน์โหลดได้ในเวอร์ชันจริง')},icon('download',18),' PDF')));
-  sec.append(head);
-
-  /* 3. RACE-NUMBER TABS (1-8) */
+  /* 2. RACE-NUMBER TABS (1-8) — above the title */
   const tabs=el('div',{class:'race-tabs','aria-label':'เลือกเรซ'});
   m.races.forEach(r=>{
     const b=el('button',{class:(r.feature?'feat ':'')+(r.no===reqNo?'on':''),'aria-pressed':r.no===reqNo}, String(r.no));
@@ -1177,9 +1343,29 @@ RENDERERS.racecard=function(sec,opts){
   });
   sec.append(tabs);
 
+  /* 3. RACE HEADER — title + actions, then full-width meta strip */
+  const title = isDetailed ? rd.name : headRace.name;
+  const head=el('div',{class:'page-head'},
+    el('h1',{class:'i18n','data-th':'เรซ '+reqNo+' · '+title,'data-en':'Race '+reqNo+' · '+title},'เรซ '+reqNo+' · '+title),
+    el('div',{class:'flex gap2 wrap'},
+      statusChip(headRace.status),
+      el('button',{class:'btn btn-ghost btn-sm',onclick:()=>placeholder('ไฟล์ Race Card PDF จะดาวน์โหลดได้ในเวอร์ชันจริง')},icon('download',18),' PDF')));
+  sec.append(head);
+
+  sec.append(el('div',{class:'meta-strip'},
+    metaItem('calendar','วันที่', m.dateShort),
+    metaItem('pin','สนาม', m.track),
+    metaItem('clock','เวลาออกตัว (Post)', (isDetailed?rd.post:headRace.time)+' น.'),
+    metaItem('leaf','พื้นผิว', isDetailed?rd.surface:m.surface),
+    metaItem('flag','ระยะทาง', isDetailed?rd.dist:headRace.dist),
+    metaItem('horseshoe','สภาพสนาม (Going)', isDetailed?rd.going:m.going,'Going = ระดับความนุ่ม/แข็งของสนาม มีผลต่อฟอร์มม้าโดยตรง'),
+    metaItem('trophy','เงินรางวัล', isDetailed?rd.prize:'—', null, true),
+    metaItem('star','คลาส', isDetailed?rd.cls:headRace.cls),
+    metaItem('horse','จำนวนม้า', (isDetailed?rd.field:headRace.runnerCount)+' ม้า')));
+
   /* note banner for non-detailed races */
   if(!isDetailed){
-    sec.append(el('div',{class:'note-banner'}, icon('info',18),' ข้อมูลม้าแบบละเอียดมีเฉพาะเรซ 3 (RBSC Gold Cup) ในตัวอย่างนี้ — รายชื่อด้านล่างเป็นข้อมูลสาธิต'));
+    sec.append(el('div',{class:'note-banner'}, icon('info',18),' ข้อมูลม้าแบบละเอียดมีเฉพาะเรซ 3 (MRC Gold Cup) ในตัวอย่างนี้ — รายชื่อด้านล่างเป็นข้อมูลสาธิต'));
   }
 
   /* 4. ⭐ VIEW TOGGLE ง่าย/เต็ม (default Simple) */
@@ -1249,15 +1435,18 @@ function entityLink(label,kind){
 function renderSimple(runners){
   const wrap=el('div',{class:'rc-cards'});
   runners.forEach(r=>{
+    const isOut=r.status==='scratched';
     const nameLink=el('a',{href:'#',class:'rc-name'}, r.nameTH, el('span',{class:'en'},r.nameEN));
     nameLink.addEventListener('click',e=>{e.preventDefault(); go('horse');});
     const kv=(k,v,tip)=>{const kEl=el('span',{class:'muted small'},k); if(tip)kEl.append(tooltip(tip));
       return el('div',{}, kEl, el('div',{class:'rc-kv-v'},v));};
-    wrap.append(el('div',{class:'rc-card'+(r.feature?' feat':'')},
+    wrap.append(el('div',{class:'rc-card'+(r.feature?' feat':'')+(isOut?' is-out':'')},
       el('div',{class:'rc-card-top'},
         el('span',{class:'rc-num-badge'}, String(r.num)),
         el('span',{class:'silks silks-lg',style:'--sc:'+r.silksColor}),
-        el('div',{style:'flex:1'}, nameLink)),
+        el('div',{style:'flex:1'}, nameLink),
+        isOut?el('span',{class:'rc-scratch-badge'}, icon('minus-circle',14),' ถอนตัว'):null),
+      isOut?el('div',{class:'rc-scratch-reason'}, icon('info',14),' ', r.scratchReason||'ถอนจากการแข่ง'):null,
       el('div',{class:'rc-card-grid'},
         kv('จ็อกกี้', entityLink(r.jockey,'person')),
         kv('เทรนเนอร์', entityLink(r.trainer,'person')),
@@ -1309,13 +1498,14 @@ function renderFull(runners,topRating,bestForm,rerender){
   /* body */
   const tb=el('tbody');
   rows.forEach(r=>{
+    const isOut=r.status==='scratched';
     const isTopR=r.rating===topRating, isBestF=formScore(r.form)===bestForm;
     const horseA=el('a',{href:'#'}, r.nameTH);
     horseA.addEventListener('click',e=>{e.preventDefault(); go('horse');});
-    tb.append(el('tr',{},
+    tb.append(el('tr',{class:isOut?'is-out':''},
       el('td',{class:'c-num'}, String(r.num)),
       el('td',{class:'c-silks'}, el('span',{class:'silks',style:'--sc:'+r.silksColor})),
-      el('td',{class:'c-horse'+(r.feature?' feat':'')}, horseA),
+      el('td',{class:'c-horse'+(r.feature?' feat':'')}, horseA, isOut?el('span',{class:'rc-scratch-badge sm',title:r.scratchReason||''}, ' ถอนตัว'):null),
       el('td',{class:'form-cell'+(isBestF?' hi':'')}, r.form),
       el('td',{}, entityLink(r.trainer,'person')),
       el('td',{}, entityLink(r.jockey,'person')),
@@ -1418,6 +1608,65 @@ function careerStrip(h){
     card('list', s.winPct+'%', 'อัตราชนะ'),
     wr);
 }
+/* ===== horse health & racing status ===== */
+const HORSE_STATUS={
+  fit:        {cls:'hs-fit',   ico:'shield',       th:'พร้อมแข่ง',          en:'Fit to run'},
+  scratched:  {cls:'hs-out',   ico:'minus-circle', th:'ถอนตัว',             en:'Scratched'},
+  spell:      {cls:'hs-spell', ico:'moon',         th:'พักม้า',             en:'Spelling'},
+  'first-up': {cls:'hs-first', ico:'alert',        th:'กลับมาแข่งหลังพัก',  en:'First-up'},
+  'vet-watch':{cls:'hs-watch', ico:'stethoscope',  th:'เฝ้าดูอาการ',        en:'Vet watch'}
+};
+function horseStatusChip(st){
+  const cfg=HORSE_STATUS[st.state]||HORSE_STATUS.fit;
+  return el('span',{class:'horse-status-chip '+cfg.cls},
+    el('span',{class:'hsc-ico','aria-hidden':'true'}, icon(cfg.ico,16)),
+    el('span',{class:'i18n','data-th':st.th||cfg.th,'data-en':st.en||cfg.en}, st.th||cfg.th));
+}
+function healthPanel(h){
+  const st=h.status; if(!st)return null;
+  const cfg=HORSE_STATUS[st.state]||HORSE_STATUS.fit;
+  const wrap=el('div',{class:'section-gap'});
+  wrap.append(el('div',{class:'flex gap2 center',style:'margin-bottom:var(--s3)'},
+    el('h2',{class:'i18n h-inline','data-th':'สุขภาพ & สถานะการแข่ง','data-en':'Health & Racing Status'},'สุขภาพ & สถานะการแข่ง'),
+    tooltip('สถานะความพร้อมของม้า รวมผลตรวจสัตวแพทย์ ระยะห่างจากการลงแข่งครั้งก่อน และบันทึกสุขภาพ/กรรมการ')));
+  const layoffLong=st.layoffDays>=84;   // ~12 สัปดาห์ขึ้นไปถือว่าพักนาน (first-up)
+  const grid=el('div',{class:'conditions-grid health-grid'});
+  grid.append(el('div',{class:'cond-card hs-card '+cfg.cls},
+    el('div',{class:'cc-ico','aria-hidden':'true'}, icon(cfg.ico,28)),
+    el('div',{class:'cc-label'}, el('span',{},'สถานะปัจจุบัน')),
+    el('div',{class:'cc-val'}, el('span',{class:'i18n','data-th':st.th||cfg.th,'data-en':st.en||cfg.en}, st.th||cfg.th)),
+    st.since?el('div',{class:'cc-sub'},'ตั้งแต่ '+st.since):null));
+  grid.append(el('div',{class:'cond-card'},
+    el('div',{class:'cc-ico','aria-hidden':'true'}, icon('calendar',28)),
+    el('div',{class:'cc-label'}, el('span',{},'ระยะห่างจากลงล่าสุด'), tooltip('จำนวนวันนับจากการลงแข่งครั้งก่อน — ห่างนานอาจสะท้อนการพักฟื้นหรือฟอร์มที่ยังไม่เข้าที่')),
+    el('div',{class:'cc-val'}, st.layoffDays+' วัน'),
+    el('div',{class:'cc-sub'}, layoffLong?'ห่างนาน — ลงครั้งแรกหลังพัก':'ลงแข่งสม่ำเสมอ')));
+  grid.append(el('div',{class:'cond-card'},
+    el('div',{class:'cc-ico','aria-hidden':'true'}, icon('stethoscope',28)),
+    el('div',{class:'cc-label'}, el('span',{},'ตรวจสัตวแพทย์ล่าสุด')),
+    el('div',{class:'cc-val cc-val-sm'}, st.vetCheck||'—')));
+  grid.append(el('div',{class:'cond-card'},
+    el('div',{class:'cc-ico','aria-hidden':'true'}, icon('flag',28)),
+    el('div',{class:'cc-label'}, el('span',{},'โปรแกรมลงครั้งถัดไป')),
+    el('div',{class:'cc-val cc-val-sm'}, st.nextRun||'—')));
+  wrap.append(grid);
+  /* notes timeline = vet/health notes + existing stewards records */
+  const notes=[...(st.notes||[]), ...((h.stewards||[]).map(s=>({date:s.date,type:'steward',text:s.note})))];
+  if(notes.length){
+    wrap.append(el('h3',{class:'h-inline',style:'margin-top:var(--s5); margin-bottom:var(--s3); display:block'},'บันทึกสุขภาพ & กรรมการ'));
+    const tl=el('div',{class:'health-notes'});
+    notes.forEach(n=>{
+      const isVet=n.type==='vet';
+      tl.append(el('div',{class:'hn-row '+(isVet?'vet':'steward')},
+        el('span',{class:'hn-ico','aria-hidden':'true'}, icon(isVet?'heart':'info',16)),
+        el('div',{},
+          el('div',{class:'hn-meta'}, el('span',{class:'hn-tag'}, isVet?'สัตวแพทย์':'กรรมการ'), el('span',{class:'hn-date'}, n.date)),
+          el('div',{class:'hn-text'}, n.text))));
+    });
+    wrap.append(tl);
+  }
+  return wrap;
+}
 /* recent finishing figures (oldest→newest) */
 function formFigures(h){
   const recent=h.form.slice(0,8).reverse();
@@ -1447,19 +1696,25 @@ RENDERERS.horse=function(sec){
     el('div',{class:'horse-id'},
       el('h1',{class:'i18n','data-th':h.nameTH,'data-en':h.nameEN}, h.nameTH),
       el('div',{class:'en-name'}, h.nameEN),
-      el('div',{class:'horse-facts'},
-        el('span',{}, 'อายุ '+h.age+' ปี'), el('span',{}, h.sex),
-        el('span',{}, h.color), el('span',{}, h.type)),
+      el('div',{class:'meta-strip bare',style:'margin:var(--s3) 0'},
+        metaItem('calendar','อายุ', h.age+' ปี'),
+        metaItem('horse','เพศ', h.sex),
+        metaItem('droplet','สี', h.color),
+        metaItem('flag','ประเภท', h.type)),
       el('div',{class:'flex gap3 wrap center'},
         el('div',{class:'rating-badge'},
           el('span',{class:'rb-num'}, String(h.rating)), deltaSpan(h.ratingDelta),
           el('span',{class:'rb-lab'},'เรตติ้งอย่างเป็นทางการ'),
           tooltip('คะแนนฝีเท้าอย่างเป็นทางการ — ยิ่งสูงยิ่งเก่ง ใช้คำนวณน้ำหนักแฮนดิแคป')),
+        h.status?horseStatusChip(h.status):null,
         (()=>{const s=horseCareer(h); return el('div',{class:'muted'}, 'สถิติ: '+s.starts+' ลง · '+s.wins+' ชนะ · '+s.sec+' ที่สอง · '+s.third+' ที่สาม');})()),
       formFigures(h))));
 
   /* 2b. CAREER STATS STRIP (derived from form) */
   sec.append(careerStrip(h));
+
+  /* 2c. HEALTH & RACING STATUS */
+  const hp=healthPanel(h); if(hp)sec.append(hp);
 
   /* 3. BASIC INFO PANEL (key-value) */
   const info=el('div',{class:'section-gap'});
