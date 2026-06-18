@@ -134,6 +134,13 @@ nav.main a.dead{color:#9DB8AD}
 @keyframes livePulse{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 6px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
 .nav-live{display:none; align-items:center; gap:8px; color:var(--gold-500) !important; font-weight:600}
 .nav-live .live-dot{box-shadow:none; animation:none}
+/* nav dropdown (Horses & People) */
+.nav-dropdown{position:relative; display:inline-flex}
+.nav-dd-toggle{display:inline-flex; align-items:center; gap:4px}
+.dropdown-menu{position:absolute; top:100%; left:0; min-width:200px; background:#fff; border:1px solid var(--line); border-radius:10px; box-shadow:var(--shadow-lg); padding:var(--s2); display:none; z-index:80}
+.nav-dropdown:hover .dropdown-menu,.nav-dropdown:focus-within .dropdown-menu{display:block}
+.dropdown-menu a{display:block; padding:var(--s3); border-radius:8px; color:var(--ink-900) !important; font-size:.9375rem; white-space:nowrap}
+.dropdown-menu a:hover{background:var(--green-50); text-decoration:none}
 /* lang toggle */
 .lang{display:flex; border:1px solid rgba(255,255,255,.3); border-radius:6px; overflow:hidden}
 .lang button{background:transparent; color:#E8F2ED; border:none; padding:6px 10px; font-size:.8125rem; font-weight:500; min-height:36px}
@@ -168,6 +175,11 @@ footer.site .heritage{border-top:1px solid rgba(255,255,255,.15); padding-top:va
   .nav-row{gap:var(--s2)}
   .btn-live{display:none}                 /* collapses into the hamburger menu */
   .nav-live{display:flex}
+  .nav-dropdown{display:block}
+  .nav-dd-toggle{display:none}            /* parent label redundant in the sheet */
+  .dropdown-menu{position:static; display:block; box-shadow:none; border:none; padding:0; min-width:0; background:transparent}
+  .dropdown-menu a{color:#E8F2ED !important; padding:var(--s3) var(--s3) var(--s3) var(--s5)}
+  .dropdown-menu a:hover{background:rgba(255,255,255,.12)}
 }
 @media(max-width:600px){
   .container{padding:0 var(--s4)}
@@ -813,12 +825,27 @@ button.cal-cell{cursor:pointer}
     </a>
     <button class="hamburger" id="hamburger" aria-label="เมนู" aria-expanded="false">☰</button>
     <nav class="main" id="mainNav">
-      <a href="#raceday" data-go="raceday" class="i18n" data-th="เรซการ์ด" data-en="Race Cards">เรซการ์ด</a>
-      <a href="#horses" data-go="horses" class="i18n" data-th="ม้า &amp; บุคคล" data-en="Horses &amp; People">ม้า &amp; บุคคล</a>
-      <a href="#" class="dead i18n" data-dead data-th="สนาม &amp; กติกา" data-en="Track &amp; Regulations">สนาม &amp; กติกา</a>
-      <a href="#" class="dead i18n" data-dead data-th="ประสบการณ์" data-en="Experience">ประสบการณ์</a>
-      <a href="#" class="dead i18n" data-dead data-th="ข่าว" data-en="News">ข่าว</a>
-      <a href="#" class="dead i18n" data-dead data-th="เกี่ยวกับ" data-en="About">เกี่ยวกับ</a>
+      <span class="nav-dropdown">
+        <a href="#raceday" data-go="raceday" class="nav-dd-toggle"><span class="i18n" data-th="เรซการ์ด" data-en="Race Cards">เรซการ์ด</span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></a>
+        <span class="dropdown-menu">
+          <a href="#raceday"     data-go="raceday"     class="i18n" data-th="วันแข่ง & ปฏิทิน" data-en="Race Day &amp; Calendar">วันแข่ง &amp; ปฏิทิน</a>
+          <a href="#leaderboard" data-go="leaderboard" class="i18n" data-th="ลีดเดอร์บอร์ด"     data-en="Leaderboard">ลีดเดอร์บอร์ด</a>
+          <a href="#results"     data-go="results"     class="i18n" data-th="ผลการแข่ง"        data-en="Results">ผลการแข่ง</a>
+        </span>
+      </span>
+      <span class="nav-dropdown">
+        <a href="#horses" data-go="horses" class="nav-dd-toggle"><span class="i18n" data-th="ม้า &amp; บุคคล" data-en="Horses &amp; People">ม้า &amp; บุคคล</span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></a>
+        <span class="dropdown-menu">
+          <a href="#horses"  data-go="horses"   class="i18n" data-th="ม้า"      data-en="Horses">ม้า</a>
+          <a href="#jockeys" data-go="jockeys"  class="i18n" data-th="จ็อกกี้"   data-en="Jockeys">จ็อกกี้</a>
+          <a href="#trainers" data-go="trainers" class="i18n" data-th="เทรนเนอร์" data-en="Trainers">เทรนเนอร์</a>
+          <a href="#owners"  data-go="owners"   class="i18n" data-th="เจ้าของคอก" data-en="Owners">เจ้าของคอก</a>
+        </span>
+      </span>
+      <a href="#venue" data-go="venue" class="i18n" data-th="สนาม &amp; กติกา" data-en="Track &amp; Regulations">สนาม &amp; กติกา</a>
+      <a href="#experience" data-go="experience" class="i18n" data-th="ประสบการณ์" data-en="Experience">ประสบการณ์</a>
+      <a href="#news" data-go="news" class="i18n" data-th="ข่าว" data-en="News">ข่าว</a>
+      <a href="#about" data-go="about" class="i18n" data-th="เกี่ยวกับ" data-en="About">เกี่ยวกับ</a>
       <a href="#" class="nav-live" id="liveNav"><span class="live-dot" aria-hidden="true"></span><span class="i18n" data-th="ดูถ่ายทอดสด" data-en="Live Stream">ดูถ่ายทอดสด</span></a>
     </nav>
     <div class="nav-tools">
@@ -852,6 +879,16 @@ button.cal-cell{cursor:pointer}
   <section id="jockey" class="page container"></section>
   <section id="trainer" class="page container"></section>
   <section id="horses" class="page container"></section>
+  <section id="jockeys" class="page container"></section>
+  <section id="trainers" class="page container"></section>
+  <section id="owners" class="page container"></section>
+  <section id="owner" class="page container"></section>
+  <section id="leaderboard" class="page container"></section>
+  <section id="results" class="page container"></section>
+  <section id="news" class="page container"></section>
+  <section id="about" class="page container"></section>
+  <section id="venue" class="page container"></section>
+  <section id="experience" class="page container"></section>
 </main>
 
 <!-- ============ FOOTER ============ -->
@@ -1139,17 +1176,47 @@ const DATA={
   },
   /* horse directory (Bahrain Ref 5 — browse, not only arrive via race card) */
   horses:[
-    {no:1,  nameTH:'สายฟ้าทอง',  nameEN:'Golden Thunder', age:5, color:'น้ำตาลไหม้', sex:'ผู้',  rating:96, trainer:'ส. ประเสริฐ',  owner:'คอกม้าราชพฤกษ์'},
-    {no:2,  nameTH:'มังกรเขียว',  nameEN:'Green Dragon',   age:6, color:'เทา',        sex:'ผู้',  rating:88, trainer:'ป. วิชัย',     owner:'คอกม้ามังกร'},
-    {no:3,  nameTH:'ราชาสิงห์',   nameEN:'Lion King',      age:5, color:'น้ำตาล',      sex:'ผู้',  rating:90, trainer:'ส. ประเสริฐ',  owner:'คอกม้าสิงห์ทอง'},
-    {no:4,  nameTH:'เปลวสุริยา',  nameEN:'Sun Flare',      age:4, color:'น้ำตาลแดง',   sex:'เมีย', rating:82, trainer:'ม. ธนพล',     owner:'คอกม้าสุริยา'},
-    {no:5,  nameTH:'นิลกาฬ',      nameEN:'Black Pearl',    age:7, color:'ดำ',          sex:'ตอน', rating:78, trainer:'ป. วิชัย',     owner:'คอกม้านิล'},
-    {no:6,  nameTH:'ลมพายุ',      nameEN:'Tempest',        age:5, color:'น้ำตาลไหม้',   sex:'ผู้',  rating:85, trainer:'ก. รุ่งโรจน์', owner:'คอกม้าพายุ'},
-    {no:7,  nameTH:'ทองแท้',      nameEN:'Pure Gold',      age:4, color:'เทา',         sex:'ผู้',  rating:74, trainer:'ม. ธนพล',     owner:'คอกม้าทองแท้'},
-    {no:8,  nameTH:'เพชรดำ',      nameEN:'Dark Diamond',   age:5, color:'ดำ',          sex:'ผู้',  rating:87, trainer:'ส. ประเสริฐ',  owner:'คอกม้าเพชร'},
-    {no:9,  nameTH:'สายลมเหนือ', nameEN:'North Wind',     age:6, color:'น้ำตาล',      sex:'ตอน', rating:80, trainer:'ก. รุ่งโรจน์', owner:'คอกม้าเหนือ'},
-    {no:10, nameTH:'อัศวินดำ',   nameEN:'Black Knight',   age:5, color:'ดำ',          sex:'ผู้',  rating:76, trainer:'ป. วิชัย',     owner:'คอกม้าอัศวิน'}
+    {no:1,  nameTH:'สายฟ้าทอง',  nameEN:'Golden Thunder', age:5, color:'น้ำตาลไหม้', sex:'ผู้',  rating:96, type:'tb',  trainer:'ส. ประเสริฐ',  owner:'คอกม้าราชพฤกษ์'},
+    {no:2,  nameTH:'มังกรเขียว',  nameEN:'Green Dragon',   age:6, color:'เทา',        sex:'ผู้',  rating:88, type:'tb',  trainer:'ป. วิชัย',     owner:'คอกม้ามังกร'},
+    {no:3,  nameTH:'ราชาสิงห์',   nameEN:'Lion King',      age:5, color:'น้ำตาล',      sex:'ผู้',  rating:90, type:'tb',  trainer:'ส. ประเสริฐ',  owner:'คอกม้าสิงห์ทอง'},
+    {no:4,  nameTH:'เปลวสุริยา',  nameEN:'Sun Flare',      age:4, color:'น้ำตาลแดง',   sex:'เมีย', rating:82, type:'ntb', trainer:'ม. ธนพล',     owner:'คอกม้าสุริยา'},
+    {no:5,  nameTH:'นิลกาฬ',      nameEN:'Black Pearl',    age:7, color:'ดำ',          sex:'ตอน', rating:78, type:'cb',  trainer:'ป. วิชัย',     owner:'คอกม้านิล'},
+    {no:6,  nameTH:'ลมพายุ',      nameEN:'Tempest',        age:5, color:'น้ำตาลไหม้',   sex:'ผู้',  rating:85, type:'tb',  trainer:'ก. รุ่งโรจน์', owner:'คอกม้าพายุ'},
+    {no:7,  nameTH:'ทองแท้',      nameEN:'Pure Gold',      age:4, color:'เทา',         sex:'ผู้',  rating:74, type:'ntb', trainer:'ม. ธนพล',     owner:'คอกม้าทองแท้'},
+    {no:8,  nameTH:'เพชรดำ',      nameEN:'Dark Diamond',   age:5, color:'ดำ',          sex:'ผู้',  rating:87, type:'tb',  trainer:'ส. ประเสริฐ',  owner:'คอกม้าเพชร'},
+    {no:9,  nameTH:'สายลมเหนือ', nameEN:'North Wind',     age:6, color:'น้ำตาล',      sex:'ตอน', rating:80, type:'cb',  trainer:'ก. รุ่งโรจน์', owner:'คอกม้าเหนือ'},
+    {no:10, nameTH:'อัศวินดำ',   nameEN:'Black Knight',   age:5, color:'ดำ',          sex:'ผู้',  rating:76, type:'cb',  trainer:'ป. วิชัย',     owner:'คอกม้าอัศวิน'}
   ],
+  horseTypes:[['all','ทั้งหมด'],['tb','Thoroughbred'],['ntb','New Thoroughbred'],['cb','Country-Bred']],
+  /* owner directory (SOW §3.3 — เจ้าของคอกม้า) */
+  owners:[
+    {rank:1, nameTH:'คอกม้าราชพฤกษ์', silksColor:'#C0392B', horses:14, wins:38, winPct:19},
+    {rank:2, nameTH:'คอกม้ามังกร',    silksColor:'#27AE60', horses:11, wins:29, winPct:17},
+    {rank:3, nameTH:'คอกม้าสิงห์ทอง',  silksColor:'#D4AC0D', horses:9,  wins:24, winPct:16},
+    {rank:4, nameTH:'คอกม้าเพชร',     silksColor:'#16A085', horses:8,  wins:19, winPct:14},
+    {rank:5, nameTH:'คอกม้าพายุ',     silksColor:'#8E44AD', horses:7,  wins:15, winPct:12}
+  ],
+  /* basic owner profile (the leading stable) */
+  owner:{
+    nameTH:'คอกม้าราชพฤกษ์', nameEN:'Rajaphruek Stable', silksColor:'#C0392B', since:'ก่อตั้งคอก 2010',
+    stat:{ wins:38, runners:201, winPct:19, sec:32, third:28 },
+    horses:['สายฟ้าทอง','ราชสีห์ทอง','เปลวเพลิง','ลมกรด','ทองคำเปลว','มังกรไฟ']
+  },
+  /* race results (SOW §3.2 — ผลการแข่งขัน) — most recent meeting */
+  results:{
+    dateShort:'7 มิ.ย. 2026', track:'สนามม้า MRC · กรุงเทพฯ',
+    races:[
+      {no:1, name:'เรซเปิดสนาม', cls:'Class 5', dist:'1200ม.', going:'Good', winTime:'1:11.40', hasVideo:true,
+        steward:'ไม่มีการประท้วง ผลเป็นทางการ',
+        placings:[{pos:1,horse:'พายุทราย',jockey:'จ. อนุชา',sp:'3.2'},{pos:2,horse:'ลมกรด',jockey:'ว. สมชาย',sp:'4.5'},{pos:3,horse:'เงารัตติกาล',jockey:'อ. ภาคิน',sp:'7.0'}]},
+      {no:2, name:'แฮนดิแคป คลาส 4', cls:'Class 4', dist:'1400ม.', going:'Good', winTime:'1:23.85', hasVideo:true,
+        steward:'สอบสวนการบีบช่วงโค้งสุดท้าย — ผลคงเดิม',
+        placings:[{pos:1,horse:'ราชาสิงห์',jockey:'จ. อนุชา',sp:'2.8'},{pos:2,horse:'เพชรดำ',jockey:'อ. ภาคิน',sp:'3.5'},{pos:3,horse:'ทองแท้',jockey:'ก. ธนากร',sp:'9.0'}]},
+      {no:3, name:'MRC Spring Mile', cls:'Class 1', dist:'1600ม.', going:'Good to Firm', winTime:'1:35.90', hasVideo:true,
+        steward:'ผลเป็นทางการ ไม่มีข้อพิจารณาเพิ่มเติม',
+        placings:[{pos:1,horse:'สายฟ้าทอง',jockey:'ก. ธนากร',sp:'1.9'},{pos:2,horse:'มังกรเขียว',jockey:'ว. สมชาย',sp:'5.5'},{pos:3,horse:'ลมพายุ',jockey:'อ. ภาคิน',sp:'6.5'}]}
+    ]
+  },
   searchMock:[
     {type:'horse',   name:'สายฟ้าทอง (Golden Thunder)', label:'ม้า · เรตติ้ง 96', go:'horse'},
     {type:'horse',   name:'มังกรเขียว (Green Dragon)',   label:'ม้า · เรตติ้ง 88', go:'horses'},
@@ -1183,7 +1250,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 function placeholder(msg){openModal('ตัวอย่าง (Prototype)',el('p',{class:'muted'},msg));}
 
 /* ============ ROUTER ============ */
-const PAGES=['landing','raceday','racecard','horse','jockey','trainer','horses'];
+const PAGES=['landing','raceday','racecard','horse','jockey','trainer','horses','jockeys','trainers','owners','owner','leaderboard','results','news','about','venue','experience'];
 const RENDERERS={}; // each page registers RENDERERS[id]=fn
 const RENDERED={};
 function showPage(id,opts){
@@ -1196,10 +1263,12 @@ function showPage(id,opts){
   setLang(document.documentElement.getAttribute('data-lang')||'th'); // re-localize freshly rendered nodes
   sec.classList.add('active');
   // nav active state
+  const PEOPLE=['horses','jockeys','trainers','owners','horse','jockey','trainer','owner'];
+  const RACING=['raceday','racecard','leaderboard','results'];
   $$('nav.main a[data-go]').forEach(a=>a.classList.toggle('active',
     a.dataset.go===id
-    || (id==='racecard' && a.dataset.go==='raceday')
-    || (['horse','jockey','trainer'].includes(id) && a.dataset.go==='horses')));
+    || (RACING.includes(id) && a.dataset.go==='raceday' && a.classList.contains('nav-dd-toggle'))
+    || (PEOPLE.includes(id) && a.dataset.go==='horses' && a.classList.contains('nav-dd-toggle'))));
   $('#mainNav').classList.remove('open'); $('#hamburger').setAttribute('aria-expanded','false');
   window.scrollTo(0,0);
 }
@@ -1504,6 +1573,31 @@ RENDERERS.landing=function(sec){
   });
   newsSec.append(el('div',{class:'news-blog'}, hlCard, sideList));
   sec.append(newsSec);
+
+  /* 9. AUDIENCE CARDS — newbie tutorial + form/data (restored) */
+  const audienceCard=(ico,title,variant,links)=>{
+    const ul=el('ul');
+    links.forEach(l=>{
+      const a=el('a',{href:'#'}, l.t);
+      if(l.dead){a.append(el('span',{class:'badge-demo'},'demo'));
+        a.addEventListener('click',e=>{e.preventDefault(); placeholder('ส่วน "'+l.t+'" อยู่นอกขอบเขต prototype');});}
+      else a.addEventListener('click',e=>{e.preventDefault(); go(l.go,l.opts);});
+      ul.append(el('li',{},a));
+    });
+    return el('div',{class:'card audience-card'+(variant==='blue'?' blue':'')},
+      el('h3',{}, el('span',{'aria-hidden':'true'}, icon(ico,20)), el('span',{class:'i18n','data-th':title.th,'data-en':title.en}, title.th)), ul);
+  };
+  sec.append(el('div',{class:'dual-grid section-gap'},
+    audienceCard('info',{th:'มือใหม่หัดดู?',en:'New to racing?'},'green',[
+      {t:'วิธีอ่าน Race Card', go:'racecard', opts:{no:3}},
+      {t:'อภิธานศัพท์แข่งม้า', dead:true},
+      {t:'ข้อมูลบัตร & เวลาเปิดสนาม', dead:true}]),
+    audienceCard('list',{th:'ฟอร์ม & ข้อมูล',en:'Form & Data'},'blue',[
+      {t:'Race Cards ทุกเรซ', go:'raceday'},
+      {t:'ผลการแข่งย้อนหลัง', dead:true},
+      {t:'เรตติ้ง & แฮนดิแคป', dead:true},
+      {t:'ตารางคะแนน (Leaderboard)', dead:true}])
+  ));
 };
 
 /* ============ P2 — RACE DAY DETAIL (§4.4) ============ */
@@ -2472,72 +2566,241 @@ function renderPerson(sec,key){
 RENDERERS.jockey=function(sec){ renderPerson(sec,'jockey'); };
 RENDERERS.trainer=function(sec){ renderPerson(sec,'trainer'); };
 
-/* ============ P6 — HORSE DIRECTORY (Bahrain Ref 5) ============ */
-const horsesState={q:''};
-RENDERERS.horses=function(sec){
+/* ============ P6 — HORSES & PEOPLE DIRECTORIES (SOW §3.3, Bahrain Ref 5) ============ */
+const DIR_KINDS=[['horses','ม้า','Horses'],['jockeys','จ็อกกี้','Jockeys'],['trainers','เทรนเนอร์','Trainers'],['owners','เจ้าของคอก','Owners']];
+const dirState={q:{}, sort:{}};   // per-kind search + sort ('rank'|'name')
+function renderDirectory(sec, kind){
+  const cfg=DIR_CONFIG[kind];
   sec.innerHTML='';
-  sec.append(breadcrumb([{t:'หน้าแรก',go:'landing'},{t:'ม้า & บุคคล',current:true}]));
+  if(dirState.q[kind]==null)dirState.q[kind]='';
+  if(dirState.sort[kind]==null)dirState.sort[kind]=cfg.defaultSort;
+  /* breadcrumb + header */
+  sec.append(breadcrumb([{t:'หน้าแรก',go:'landing'},{t:'ม้า & บุคคล',go:'horses'},{t:cfg.th,current:true}]));
   sec.append(el('div',{class:'page-head'},
     el('div',{},
       el('div',{class:'eyebrow-line'},'ไดเรกทอรี'),
-      el('h1',{class:'i18n','data-th':'ม้า & บุคคล','data-en':'Horses & People'},'ม้า & บุคคล'),
-      el('div',{class:'muted'},'ค้นหาและเรียกดูม้าทั้งหมด พร้อมทางลัดสู่โปรไฟล์จ็อกกี้และเทรนเนอร์'))));
-  /* people quick-access (Journey: profiles reachable without a race) */
-  const peopleCard=(ico,role,name,dest)=>{
-    const c=el('button',{class:'people-card'},
-      el('span',{class:'pa-ico'},icon(ico,22)),
-      el('span',{class:'pa-text'}, el('span',{class:'pa-role'},role), el('span',{class:'pa-name'},name)),
-      icon('chevron-right',18));
-    c.addEventListener('click',()=>go(dest)); return c;
-  };
-  sec.append(el('div',{class:'people-access'},
-    peopleCard('horse','จ็อกกี้นำตาราง', DATA.jockey.nameTH, 'jockey'),
-    peopleCard('shield','เทรนเนอร์นำตาราง', DATA.trainer.nameTH, 'trainer')));
-  /* quick finder */
+      el('h1',{class:'i18n','data-th':cfg.th,'data-en':cfg.en}, cfg.th),
+      el('div',{class:'muted'}, cfg.sub))));
+  /* category tab strip (on-page switching) */
+  const tabs=el('div',{class:'race-tabs','aria-label':'หมวดหมู่'});
+  DIR_KINDS.forEach(([k,th,en])=>{
+    const b=el('button',{class:'wide '+(k===kind?'on':''),'aria-pressed':k===kind},
+      el('span',{class:'i18n','data-th':th,'data-en':en},th));
+    b.addEventListener('click',()=>{ if(k!==kind)go(k); });
+    tabs.append(b);
+  });
+  sec.append(tabs);
+  /* finder + sort */
   const finder=el('div',{class:'finder'});
   finder.append(el('span',{class:'finder-ico','aria-hidden':'true'}, icon('search',18)));
-  const input=el('input',{type:'search',placeholder:'พิมพ์ชื่อม้า (ไทย/อังกฤษ)…','aria-label':'ค้นหาม้า'});
-  input.value=horsesState.q;
-  finder.append(input);
+  const input=el('input',{type:'search',placeholder:cfg.placeholder,'aria-label':'ค้นหา'});
+  input.value=dirState.q[kind]; finder.append(input);
+  const sortBtn=el('button',{class:'ff-chip'}, icon('list',15),' เรียง: '+(dirState.sort[kind]==='name'?'ชื่อ':'อันดับ'));
+  sortBtn.addEventListener('click',()=>{ dirState.sort[kind]=dirState.sort[kind]==='name'?cfg.defaultSort:'name'; renderDirectory(sec,kind); setLang(document.documentElement.getAttribute('data-lang')||'th'); });
   sec.append(el('div',{class:'section-gap'},
-    el('div',{class:'flex gap2 center',style:'margin-bottom:var(--s3)'},
-      el('h2',{class:'i18n h-inline','data-th':'รายชื่อม้าทั้งหมด','data-en':'All Horses'},'รายชื่อม้าทั้งหมด'),
-      el('span',{class:'muted small'}, DATA.horses.length+' ตัว')),
+    el('div',{class:'flex between center wrap',style:'gap:var(--s3); margin-bottom:var(--s3)'},
+      el('div',{class:'flex gap2 center'},
+        el('h2',{class:'h-inline'}, cfg.listTitle),
+        el('span',{class:'muted small'}, cfg.rows().length+' '+cfg.unit)),
+      sortBtn),
     finder));
+  /* table */
   const wrap=el('div',{class:'simple-table-wrap'});
   const tbl=el('table',{class:'simple-table'});
-  tbl.append(el('thead',{}, el('tr',{},
-    el('th',{},'#'), el('th',{},'ชื่อม้า'), el('th',{class:'num'},'อายุ'), el('th',{},'สี'),
-    el('th',{},'เพศ'), el('th',{class:'num'},'เรตติ้ง'), el('th',{},'เทรนเนอร์'), el('th',{},'เจ้าของ'))));
+  const trh=el('tr'); cfg.cols.forEach(c=>trh.append(el('th',{class:c.num?'num':''}, c.label))); tbl.append(el('thead',{},trh));
   const tb=el('tbody'); tbl.append(tb); wrap.append(tbl);
   const empty=el('div',{class:'empty-state',style:'display:none'},
     el('span',{class:'es-ico'},icon('search-off',40)),
-    el('div',{class:'es-title'},'ไม่พบม้าที่ตรงกับคำค้น'),
+    el('div',{class:'es-title'},'ไม่พบรายการที่ตรงกับคำค้น'),
     el('div',{class:'muted small'},'ลองพิมพ์ชื่ออื่น หรือล้างช่องค้นหา'));
-  function renderRows(){
-    const q=horsesState.q.trim().toLowerCase();
-    const rows=DATA.horses.filter(h=>!q||h.nameTH.toLowerCase().includes(q)||h.nameEN.toLowerCase().includes(q));
+  function draw(){
+    const q=dirState.q[kind].trim().toLowerCase();
+    let rows=cfg.rows().filter(r=>!q||cfg.match(r,q));
+    if(dirState.sort[kind]==='name')rows=rows.slice().sort((a,b)=>cfg.nameOf(a).localeCompare(cfg.nameOf(b),'th'));
+    else rows=rows.slice().sort((a,b)=>cfg.rankOf(a)-cfg.rankOf(b));
     tb.innerHTML='';
-    rows.forEach(h=>{
-      const nameLink=el('a',{href:'#',class:'ent-link strong'}, h.nameTH+' ', el('span',{class:'muted small'},'('+h.nameEN+')'));
-      nameLink.addEventListener('click',e=>{e.preventDefault(); go('horse');});
-      const trLink=el('a',{href:'#',class:'ent-link'}, h.trainer);
-      trLink.addEventListener('click',e=>{e.preventDefault(); go('trainer');});
-      tb.append(el('tr',{},
-        el('td',{class:'mono'}, String(h.no)),
-        el('td',{}, nameLink),
-        el('td',{class:'num mono'}, h.age),
-        el('td',{}, h.color),
-        el('td',{}, h.sex),
-        el('td',{class:'num mono'}, String(h.rating)),
-        el('td',{}, trLink),
-        el('td',{}, h.owner)));
-    });
-    wrap.style.display=rows.length?'':'none';
-    empty.style.display=rows.length?'none':'';
+    rows.forEach(r=>tb.append(cfg.row(r)));
+    wrap.style.display=rows.length?'':'none'; empty.style.display=rows.length?'none':'';
   }
-  input.addEventListener('input',()=>{ horsesState.q=input.value; renderRows(); });
-  sec.append(wrap, empty); renderRows();
+  input.addEventListener('input',()=>{ dirState.q[kind]=input.value; draw(); });
+  sec.append(wrap, empty); draw();
+}
+/* per-kind directory config */
+const DIR_CONFIG={
+  horses:{
+    th:'ม้า', en:'Horses', sub:'ทำเนียบม้าแข่งทั้งหมด — ค้นหาด้วยชื่อ (ไทย/อังกฤษ)',
+    listTitle:'รายชื่อม้าทั้งหมด', unit:'ตัว', placeholder:'พิมพ์ชื่อม้า…', defaultSort:'rank',
+    cols:[{label:'#',num:true},{label:'ชื่อม้า'},{label:'อายุ',num:true},{label:'สี'},{label:'เพศ'},{label:'เรตติ้ง',num:true},{label:'เทรนเนอร์'},{label:'เจ้าของ'}],
+    rows:()=>DATA.horses, unit2:'ตัว',
+    match:(h,q)=>h.nameTH.toLowerCase().includes(q)||h.nameEN.toLowerCase().includes(q),
+    nameOf:h=>h.nameTH, rankOf:h=>h.no,
+    row:h=>{
+      const name=el('a',{href:'#',class:'ent-link strong'}, h.nameTH+' ', el('span',{class:'muted small'},'('+h.nameEN+')'));
+      name.addEventListener('click',e=>{e.preventDefault(); go('horse');});
+      const tr=el('a',{href:'#',class:'ent-link'}, h.trainer); tr.addEventListener('click',e=>{e.preventDefault(); go('trainer');});
+      const ow=el('a',{href:'#',class:'ent-link'}, h.owner); ow.addEventListener('click',e=>{e.preventDefault(); go('owners');});
+      return el('tr',{}, el('td',{class:'mono'},String(h.no)), el('td',{},name), el('td',{class:'num mono'},h.age),
+        el('td',{},h.color), el('td',{},h.sex), el('td',{class:'num mono'},String(h.rating)), el('td',{},tr), el('td',{},ow));
+    }
+  },
+  jockeys:{
+    th:'จ็อกกี้', en:'Jockeys', sub:'ผู้ขี่ม้าแข่งทั้งหมด — อันดับและสถิติผลงานฤดูกาลนี้',
+    listTitle:'อันดับจ็อกกี้', unit:'คน', placeholder:'พิมพ์ชื่อจ็อกกี้…', defaultSort:'rank',
+    cols:[{label:'อันดับ',num:true},{label:'ชื่อ'},{label:'ชนะ',num:true},{label:'การลง',num:true},{label:'%ชนะ',num:true}],
+    rows:()=>DATA.standings.jockeys,
+    match:(r,q)=>r.name.toLowerCase().includes(q), nameOf:r=>r.name, rankOf:r=>r.rank,
+    row:r=>{
+      const name=el('a',{href:'#',class:'ent-link strong'}, r.name); name.addEventListener('click',e=>{e.preventDefault(); go('jockey');});
+      return el('tr',{}, el('td',{class:'num mono'},String(r.rank)), el('td',{},name),
+        el('td',{class:'num mono'},String(r.wins)), el('td',{class:'num mono'},String(r.rides)), el('td',{class:'num mono'},r.winPct+'%'));
+    }
+  },
+  trainers:{
+    th:'เทรนเนอร์', en:'Trainers', sub:'ผู้ฝึกซ้อมม้าแข่งทั้งหมด — อันดับและสถิติผลงานฤดูกาลนี้',
+    listTitle:'อันดับเทรนเนอร์', unit:'คน', placeholder:'พิมพ์ชื่อเทรนเนอร์…', defaultSort:'rank',
+    cols:[{label:'อันดับ',num:true},{label:'ชื่อ'},{label:'ชนะ',num:true},{label:'ส่งลง',num:true},{label:'%ชนะ',num:true}],
+    rows:()=>DATA.standings.trainers,
+    match:(r,q)=>r.name.toLowerCase().includes(q), nameOf:r=>r.name, rankOf:r=>r.rank,
+    row:r=>{
+      const name=el('a',{href:'#',class:'ent-link strong'}, r.name); name.addEventListener('click',e=>{e.preventDefault(); go('trainer');});
+      return el('tr',{}, el('td',{class:'num mono'},String(r.rank)), el('td',{},name),
+        el('td',{class:'num mono'},String(r.wins)), el('td',{class:'num mono'},String(r.runners)), el('td',{class:'num mono'},r.winPct+'%'));
+    }
+  },
+  owners:{
+    th:'เจ้าของคอก', en:'Owners', sub:'เจ้าของคอกม้าแข่งทั้งหมด — สีเสื้อประจำคอกและสถิติผลงาน',
+    listTitle:'อันดับเจ้าของคอก', unit:'คอก', placeholder:'พิมพ์ชื่อคอก…', defaultSort:'rank',
+    cols:[{label:'อันดับ',num:true},{label:'คอกม้า'},{label:'จำนวนม้า',num:true},{label:'ชนะ',num:true},{label:'%ชนะ',num:true}],
+    rows:()=>DATA.owners,
+    match:(r,q)=>r.nameTH.toLowerCase().includes(q), nameOf:r=>r.nameTH, rankOf:r=>r.rank,
+    row:r=>{
+      const name=el('a',{href:'#',class:'ent-link strong'},
+        el('span',{class:'silks',style:'--sc:'+r.silksColor}), ' '+r.nameTH);
+      name.addEventListener('click',e=>{e.preventDefault(); go('owner');});
+      return el('tr',{}, el('td',{class:'num mono'},String(r.rank)), el('td',{},name),
+        el('td',{class:'num mono'},String(r.horses)), el('td',{class:'num mono'},String(r.wins)), el('td',{class:'num mono'},r.winPct+'%'));
+    }
+  }
+};
+RENDERERS.horses=function(sec){ renderDirectory(sec,'horses'); };
+RENDERERS.jockeys=function(sec){ renderDirectory(sec,'jockeys'); };
+RENDERERS.trainers=function(sec){ renderDirectory(sec,'trainers'); };
+RENDERERS.owners=function(sec){ renderDirectory(sec,'owners'); };
+
+/* ============ P7 — OWNER PROFILE (basic; SOW §3.3) ============ */
+RENDERERS.owner=function(sec){
+  const o=DATA.owner; sec.innerHTML='';
+  sec.append(breadcrumb([{t:'ม้า & บุคคล',go:'horses'},{t:'เจ้าของคอก',go:'owners'},{t:o.nameTH,current:true}]));
+  sec.append(el('div',{class:'page-head'},
+    el('div',{class:'flex gap3 center'},
+      el('span',{class:'silks silks-lg',style:'--sc:'+o.silksColor}),
+      el('div',{},
+        el('div',{class:'eyebrow-line'},'เจ้าของคอก · MRC'),
+        el('h1',{}, o.nameTH),
+        el('div',{class:'muted'}, o.nameEN+' · '+o.since))),
+    el('span',{class:'person-role-chip'}, icon('shield',16),' เจ้าของคอก')));
+  /* verdict stat-strip */
+  const s=o.stat;
+  sec.append(el('div',{class:'person-stats'},
+    personStatCard('trophy', s.wins, 'ชนะ', true),
+    personStatCard('horse', o.horses.length, 'ม้าในคอก'),
+    personStatCard('list', s.runners, 'ส่งลงแข่ง'),
+    personStatCard('star', s.sec, 'ที่ 2'),
+    personStatCard('star', s.third, 'ที่ 3'),
+    personStatCard('flag', s.winPct+'%', 'อัตราชนะ')));
+  /* horses owned */
+  const wrap=el('div',{class:'section-gap'});
+  wrap.append(el('h2',{class:'i18n h-inline','data-th':'ม้าในคอก','data-en':'Horses in Stable',style:'margin-bottom:var(--s3); display:block'},'ม้าในคอก'));
+  const tbl=el('table',{class:'simple-table'});
+  tbl.append(el('thead',{}, el('tr',{}, el('th',{},'#'), el('th',{},'ชื่อม้า'))));
+  const tb=el('tbody');
+  o.horses.forEach((nm,i)=>{
+    const a=el('a',{href:'#',class:'ent-link strong'}, nm); a.addEventListener('click',e=>{e.preventDefault(); go('horse');});
+    tb.append(el('tr',{}, el('td',{class:'mono'},String(i+1)), el('td',{},a)));
+  });
+  tbl.append(tb); wrap.append(el('div',{class:'simple-table-wrap'},tbl)); sec.append(wrap);
+  sec.append(el('button',{class:'btn btn-ghost',style:'margin-top:var(--s4)',onclick:()=>go('owners')}, icon('arrow-left',16),' กลับไปหน้าเจ้าของคอก'));
+};
+
+/* ============ P8 — LEADERBOARD (SOW §3.1, under Race Cards menu) ============ */
+const lbState={tab:'jockeys'};
+RENDERERS.leaderboard=function(sec){
+  sec.innerHTML='';
+  const rerender=()=>{ RENDERERS.leaderboard(sec); setLang(document.documentElement.getAttribute('data-lang')||'th'); };
+  sec.append(breadcrumb([{t:'เรซการ์ด',go:'raceday'},{t:'ลีดเดอร์บอร์ด',current:true}]));
+  sec.append(el('div',{class:'page-head'},
+    el('div',{},
+      el('div',{class:'eyebrow-line'},'ฤดูกาล 2025/26'),
+      el('h1',{class:'i18n','data-th':'ลีดเดอร์บอร์ด','data-en':'Leaderboard'},'ลีดเดอร์บอร์ด'),
+      el('div',{class:'muted'},'อันดับและสถิติผลงานตลอดทั้งฤดูกาล — กดชื่อเพื่อดูโปรไฟล์'))));
+  /* tabs */
+  const TABS=[['jockeys','จ็อกกี้','Jockeys'],['trainers','เทรนเนอร์','Trainers'],['owners','เจ้าของคอก','Owners']];
+  const tabs=el('div',{class:'race-tabs','aria-label':'ประเภท'});
+  TABS.forEach(([k,th,en])=>{
+    const b=el('button',{class:'wide '+(lbState.tab===k?'on':''),'aria-pressed':lbState.tab===k},
+      el('span',{class:'i18n','data-th':th,'data-en':en},th));
+    b.addEventListener('click',()=>{ if(lbState.tab!==k){lbState.tab=k; rerender();} });
+    tabs.append(b);
+  });
+  sec.append(tabs);
+  /* table per tab */
+  const tab=lbState.tab;
+  const rows = tab==='jockeys'?DATA.standings.jockeys : tab==='trainers'?DATA.standings.trainers : DATA.owners;
+  const wrap=el('div',{class:'simple-table-wrap section-gap'});
+  const tbl=el('table',{class:'simple-table'});
+  const head = tab==='owners'
+    ? ['อันดับ','คอกม้า','จำนวนม้า','ชนะ','%ชนะ']
+    : ['อันดับ','ชื่อ','ชนะ', tab==='jockeys'?'การลง':'ส่งลง','%ชนะ'];
+  tbl.append(el('thead',{}, el('tr',{}, ...head.map((h,i)=>el('th',{class:i===0||i>1?'num':''},h)))));
+  const tb=el('tbody');
+  rows.forEach(r=>{
+    const dest = tab==='jockeys'?'jockey' : tab==='trainers'?'trainer' : 'owner';
+    const nameCell = tab==='owners'
+      ? el('a',{href:'#',class:'ent-link strong'}, el('span',{class:'silks',style:'--sc:'+r.silksColor}), ' '+r.nameTH)
+      : el('a',{href:'#',class:'ent-link strong'}, r.name);
+    nameCell.addEventListener('click',e=>{e.preventDefault(); go(dest);});
+    const mid = tab==='owners'?String(r.horses) : String(tab==='jockeys'?r.rides:r.runners);
+    tb.append(el('tr',{},
+      el('td',{class:'num mono'}, el('span',{class:'st-rank'+(r.rank===1?' lead':'')}, String(r.rank))),
+      el('td',{}, nameCell),
+      el('td',{class:'num mono'}, String(r.wins)),
+      el('td',{class:'num mono'}, mid),
+      el('td',{class:'num mono'}, r.winPct+'%')));
+  });
+  /* reorder owners columns: rank, name, horses, wins, pct -> our head matches that order */
+  tbl.append(tb); wrap.append(tbl); sec.append(wrap);
+};
+
+/* ============ P9 — RESULTS (SOW §3.2 — ผลการแข่งขัน) ============ */
+RENDERERS.results=function(sec){
+  const R=DATA.results; sec.innerHTML='';
+  sec.append(breadcrumb([{t:'เรซการ์ด',go:'raceday'},{t:'ผลการแข่ง',current:true}]));
+  sec.append(el('div',{class:'page-head'},
+    el('div',{},
+      el('div',{class:'eyebrow-line'},'ผลการแข่งขัน'),
+      el('h1',{class:'i18n','data-th':'ผลการแข่ง — '+R.dateShort,'data-en':'Results · '+R.dateShort},'ผลการแข่ง — '+R.dateShort),
+      el('div',{class:'muted'}, R.track))));
+  R.races.forEach(rc=>{
+    const card=el('div',{class:'result-card section-gap'});
+    card.append(el('div',{class:'result-head'},
+      el('div',{}, el('span',{class:'res-rno'},'เรซ '+rc.no), ' ', el('strong',{},rc.name)),
+      el('div',{class:'muted small'}, rc.cls+' · '+rc.dist+' · '+rc.going+' · เวลา '+rc.winTime)));
+    /* placings */
+    rc.placings.forEach(p=>{
+      const hl=el('a',{href:'#',class:'ent-link strong'}, p.horse); hl.addEventListener('click',e=>{e.preventDefault(); go('horse');});
+      const jl=el('a',{href:'#',class:'ent-link'}, p.jockey); jl.addEventListener('click',e=>{e.preventDefault(); go('jockey');});
+      card.append(el('div',{class:'result-row'},
+        el('span',{class:'res-pos pos-'+p.pos}, String(p.pos)),
+        el('div',{class:'res-horse'}, hl),
+        el('span',{class:'res-jk'}, jl),
+        el('span',{class:'res-sp mono'}, 'SP '+p.sp)));
+    });
+    card.append(el('div',{class:'result-foot'},
+      el('span',{class:'muted small'}, icon('shield',14),' ผลพิจารณา: '+rc.steward),
+      rc.hasVideo?(()=>{const b=el('button',{class:'btn btn-ghost btn-sm',onclick:()=>placeholder('วิดีโอรีเพลย์เรซ '+rc.no+' จะเล่นได้ในเวอร์ชันจริง')},icon('play',14),' ดูรีเพลย์'); return b;})():null));
+    sec.append(card);
+  });
+  sec.append(el('button',{class:'btn btn-ghost',style:'margin-top:var(--s5)',onclick:()=>go('raceday')}, icon('calendar',16),' ไปหน้าเรซการ์ด'));
 };
 
 /* ============ BOOT ============ */

@@ -131,3 +131,47 @@
 
 Each item must still pass the §14 Per-Page Consistency Checklist and the §12 a11y checklist in
 `DESIGN_BIBLE.md`, and keep the MRC anonymization intact.
+
+---
+
+# SOW Roadmap (gap analysis vs Brief - SOW.pdf §3.2/§3.3)
+
+> Status of the SOW's "Racing data + Horses & People" scope after this round. **Shipped:** Race
+> calendar (home + race-day hub), race card/programme with sub-tabs + handicap box, Horses/Jockeys/
+> Trainers/Owners **directories** (search + sort) + Horse/Jockey/Trainer profiles + a **basic Owner
+> profile**, dropdown nav. **Not yet built** (this is the prioritized backlog):
+
+### S1 — **Leaderboard**  · effort M · *placement: under the Race Cards (เรซการ์ด) menu*
+- **SOW:** "ลีดเดอร์บอร์ด (Leaderboard) — แสดงภาพรวมของทั้งฤดูกาล". Per user decision it lives under the
+  **Race Cards** menu (not Horses & People, not the homepage).
+- **Target:** new `RENDERERS.leaderboard` + `#leaderboard` route; a Race-Cards-menu entry. Reuse the
+  removed standings — season rankings for **jockeys + trainers + owners** (tabs), rows → profiles.
+  Data already exists (`DATA.standings.jockeys/trainers`, `DATA.owners`).
+
+### S2 — **Results** page  · effort L · *placement: under the Race Cards menu*
+- **SOW §3.2:** "ผลการแข่งขัน — ผลทั้งหมด, สรุปผลพิจารณาอย่างเป็นทางการ, ลิงก์วิดีโอย้อนหลัง".
+- **Target:** new `RENDERERS.results` + `#results`; per-meeting → per-race finishing order + official
+  stewards summary + video `placeholder()`. The race card's "ผล" buttons deep-link here.
+
+### S3 — **Horse-type grouping**  · effort S · *placement: Horses directory*
+- **SOW §3.3:** "แบ่งตามประเภท: Thoroughbreds, New Thoroughbreds, Country-Breds".
+- **Target:** add `type` to `DATA.horses`; add a type filter-chip row to the Horses directory
+  (reuse the `.ff-chip` pattern already in the directory).
+
+### S4 — **Directory sort/filter depth**  · effort S · *placement: each directory*
+- **SOW §3.2/3.3:** "ตัวกรองให้เรียงตามชื่อ หรืออันดับและสถิติผลงาน" (+ rating/age/stable).
+- **Target:** extend the directory `sort` toggle (currently ชื่อ/อันดับ) to column-aware sorting
+  (rating, age, wins, %win) — `dirState.sort` already scaffolds this.
+
+### S5 — **Handicap rating table + PDF export**  · effort M · *placement: race card*
+- **SOW §3.2:** "แฮนดิแคป — น้ำหนัก…เรตติ้งและตารางน้ำหนักแต่ละรายการ"; race card "ดาวน์โหลด PDF".
+- **Target:** expand the race-card handicap box into a rating↔weight table; PDF stays `placeholder()`.
+
+### S6 — **Richer profile data**  · effort M · *placement: profiles*
+- **SOW §3.3:** owner silks per stable + full horses-owned, jockey **current weight**, trainer
+  horses-in-care list, ranking deltas.
+- **Target:** extend `DATA.jockey/trainer/owner` + their renderers; add a rating/strike-rate trend
+  chart to person profiles (reuse `ratingChart`).
+
+**Suggested order:** S1 (Leaderboard) → S3 (horse types, cheap) → S4 (sort depth) → S2 (Results,
+biggest) → S5 → S6.
