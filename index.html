@@ -18,6 +18,8 @@
   --ink-900:#1A1A1A; --ink-600:#5C5C5C; --line:#D9D5CF;
   --bg:#FFFFFF; --bg-alt:#F6F5F3;
   --good:#2E7D32; --warn:#ED6C02; --bad:#9E9E9E;
+  /* tint fills (replace ad-hoc pastels — chips, status, selected rows) */
+  --tint-gold:#FBF1D6; --tint-green:#E6F4EA; --tint-warn:#FDF0E3; --tint-sel:#FBF6E6;
   /* type */
   --font-ui:"Noto Serif Thai",Georgia,"Times New Roman",serif;
   --font-mono:"IBM Plex Mono","SF Mono",ui-monospace,monospace;
@@ -112,7 +114,7 @@ tbody tr:nth-child(even){background:var(--bg-alt)}
 .form-bar span{width:10px; height:18px; border-radius:2px; background:var(--bad)}
 .form-bar span.g{background:var(--good)} .form-bar span.w{background:var(--warn)} .form-bar span.b{background:var(--bad)}
 .tag{display:inline-block; padding:2px var(--s2); border-radius:6px; font-size:.8125rem; font-weight:500}
-.tag-good{background:#E6F4EA; color:var(--good)} .tag-warn{background:#FDF0E3; color:var(--warn)} .tag-bad{background:#EEE; color:var(--ink-600)}
+.tag-good{background:var(--tint-green); color:var(--good)} .tag-warn{background:var(--tint-warn); color:var(--warn)} .tag-bad{background:#EEE; color:var(--ink-600)}
 /* ============ HEADER / NAV ============ */
 header.site{position:sticky; top:0; z-index:50; background:var(--green-900); color:#fff; box-shadow:0 2px 8px rgba(0,0,0,.15)}
 .nav-row{display:flex; align-items:center; gap:var(--s3); min-height:60px}
@@ -125,6 +127,13 @@ nav.main a:hover{background:rgba(255,255,255,.12); text-decoration:none}
 nav.main a.active{background:var(--green-700); color:#fff}
 nav.main a.dead{color:#9DB8AD}
 .nav-tools{display:flex; align-items:center; gap:var(--s2)}
+/* live stream button (desktop) + menu link (mobile) */
+.btn-live{display:inline-flex; align-items:center; gap:6px; background:var(--gold-500); color:var(--green-900); border:none; border-radius:8px; padding:var(--s2) var(--s3); min-height:40px; font-family:inherit; font-size:.8125rem; font-weight:700; cursor:pointer; transition:filter var(--tr)}
+.btn-live:hover{filter:brightness(1.06)}
+.live-dot{width:8px; height:8px; border-radius:50%; background:#C0392B; flex:0 0 auto; box-shadow:0 0 0 0 rgba(192,57,43,.6); animation:livePulse 1.8s ease-out infinite}
+@keyframes livePulse{0%{box-shadow:0 0 0 0 rgba(192,57,43,.5)}70%{box-shadow:0 0 0 6px rgba(192,57,43,0)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}
+.nav-live{display:none; align-items:center; gap:8px; color:var(--gold-500) !important; font-weight:600}
+.nav-live .live-dot{box-shadow:none; animation:none}
 /* lang toggle */
 .lang{display:flex; border:1px solid rgba(255,255,255,.3); border-radius:6px; overflow:hidden}
 .lang button{background:transparent; color:#E8F2ED; border:none; padding:6px 10px; font-size:.8125rem; font-weight:500; min-height:36px}
@@ -152,11 +161,13 @@ footer.site a{color:#E8F2ED}
 footer.site .heritage{border-top:1px solid rgba(255,255,255,.15); padding-top:var(--s4); font-size:.875rem; color:#9DB8AD}
 /* ============ RESPONSIVE §6 ============ */
 @media(max-width:1024px){
-  .hamburger{display:flex; align-items:center; justify-content:center}
-  nav.main{position:absolute; top:60px; left:0; right:0; flex-direction:column; align-items:stretch; gap:0; background:var(--green-900); padding:var(--s2); border-top:1px solid rgba(255,255,255,.15); display:none}
+  .hamburger{display:flex; align-items:center; justify-content:center; margin-left:auto}
+  nav.main{position:absolute; top:60px; left:0; right:0; flex-direction:column; align-items:stretch; gap:0; background:var(--green-900); padding:var(--s2); border-top:1px solid rgba(255,255,255,.15); display:none; z-index:60}
   nav.main.open{display:flex}
   nav.main a{padding:var(--s3); font-size:1rem}
   .nav-row{gap:var(--s2)}
+  .btn-live{display:none}                 /* collapses into the hamburger menu */
+  .nav-live{display:flex}
 }
 @media(max-width:600px){
   .container{padding:0 var(--s4)}
@@ -207,7 +218,7 @@ footer.site .heritage{border-top:1px solid rgba(255,255,255,.15); padding-top:va
 .chips-label{font-size:.875rem; color:var(--ink-600); margin-bottom:var(--s2)}
 .chips-row{display:flex; gap:var(--s2); overflow-x:auto; padding-bottom:var(--s2); -webkit-overflow-scrolling:touch}
 .chips-row .chip{flex:0 0 auto; font-family:var(--font-mono)}
-.chips-row .chip.feat{border-color:var(--gold-500); background:#FBF6E6}
+.chips-row .chip.feat{border-color:var(--gold-500); background:var(--tint-sel)}
 .today-actions{display:flex; flex-wrap:wrap; gap:var(--s3); margin-top:var(--s4)}
 /* dual-audience cards */
 .dual-grid{display:grid; grid-template-columns:1fr 1fr; gap:var(--s4)}
@@ -249,7 +260,7 @@ footer.site .heritage{border-top:1px solid rgba(255,255,255,.15); padding-top:va
 .fixtures{display:flex; flex-direction:column; gap:var(--s2)}
 .fixture{display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:var(--s3); padding:var(--s3); border:1px solid var(--line); border-radius:var(--radius); background:var(--bg); transition:background var(--tr),border-color var(--tr)}
 .fixture:hover{background:var(--bg-alt)}
-.fixture.today{border-color:var(--gold-500); background:#FBF6E6}
+.fixture.today{border-color:var(--gold-500); background:var(--tint-sel)}
 .fx-date{display:flex; flex-direction:column; align-items:center; justify-content:center; width:54px; height:54px; border-radius:var(--radius); background:var(--green-900); color:#fff; line-height:1; flex:0 0 auto}
 .fixture.today .fx-date{background:var(--gold-500); color:var(--green-900)}
 .fx-date .fx-dd{font-family:var(--font-mono); font-size:1.375rem; font-weight:700}
@@ -336,7 +347,10 @@ footer.site .heritage{border-top:1px solid rgba(255,255,255,.15); padding-top:va
   .hero-dots{margin-top:var(--s4)}
 }
 @media(max-width:600px){
-  .hero-inner{padding:var(--s6) var(--s4)}
+  .logo span:not(.mark){display:none}          /* phone: keep MRC mark, drop long name so tools fit right */
+  .page{padding-top:var(--s7)}                 /* more breathing room under the nav */
+  .hero-wrap{margin-top:calc(var(--s7)*-1)}    /* keep the full-bleed hero flush to nav */
+  .hero-inner{padding:var(--s7) var(--s4) var(--s6)}
   .hero h1{font-size:1.75rem}
   .hero-today{padding:var(--s4); max-width:none}
   .hero-next{flex-direction:column; align-items:flex-start; gap:var(--s3)}
@@ -362,7 +376,7 @@ footer.site .heritage{border-top:1px solid rgba(255,255,255,.15); padding-top:va
 .race-list{display:flex; flex-direction:column; gap:var(--s2)}
 .race-row{display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:var(--s4); padding:var(--s3) var(--s4); border:1px solid var(--line); border-radius:var(--radius); background:var(--bg); transition:background var(--tr)}
 .race-row:hover{background:var(--bg-alt)}
-.race-row.feat{border-color:var(--gold-500); background:#FBF6E6}
+.race-row.feat{border-color:var(--gold-500); background:var(--tint-sel)}
 .race-row .rr-time{font-family:var(--font-mono); font-weight:600; font-size:1.0625rem; color:var(--green-900); min-width:54px}
 .race-row .rr-name{font-weight:500}
 .race-row .rr-meta{font-size:.8125rem; color:var(--ink-600); display:flex; flex-wrap:wrap; gap:var(--s2) var(--s3); margin-top:2px}
@@ -398,7 +412,7 @@ footer.site .heritage{border-top:1px solid rgba(255,255,255,.15); padding-top:va
 .rc-head-actions{display:flex; flex-wrap:wrap; gap:var(--s2); margin-top:var(--s3)}
 /* race tabs */
 .race-tabs{display:flex; gap:var(--s2); overflow-x:auto; padding:var(--s2) 0; -webkit-overflow-scrolling:touch}
-.race-tabs button{flex:0 0 auto; min-width:46px; min-height:44px; border:1px solid var(--line); border-radius:8px; background:#fff; font-family:var(--font-mono); font-weight:600; color:var(--ink-900); transition:all var(--tr)}
+.race-tabs button{flex:0 0 auto; min-width:46px; min-height:44px; padding:0 var(--s4); border:1px solid var(--line); border-radius:8px; background:#fff; font-family:var(--font-mono); font-weight:600; color:var(--ink-900); transition:all var(--tr)}
 .race-tabs button:hover{background:var(--green-50)}
 .race-tabs button.on{background:var(--green-900); color:#fff; border-color:var(--green-900)}
 .race-tabs button.feat{border-color:var(--gold-500)}
@@ -408,7 +422,7 @@ footer.site .heritage{border-top:1px solid rgba(255,255,255,.15); padding-top:va
 .view-toggle{display:inline-flex; border:1.5px solid var(--green-700); border-radius:9px; overflow:hidden}
 .view-toggle button{padding:var(--s2) var(--s5); background:#fff; color:var(--green-700); border:none; min-height:44px; font-weight:600; font-size:.9375rem; transition:all var(--tr)}
 .view-toggle button.on{background:var(--green-700); color:#fff}
-.note-banner{background:#FBF6E6; border:1px solid var(--gold-500); border-radius:8px; padding:var(--s2) var(--s3); font-size:.875rem; color:#7a5e0a; margin-bottom:var(--s3)}
+.note-banner{background:var(--tint-sel); border:1px solid var(--gold-500); border-radius:8px; padding:var(--s2) var(--s3); font-size:.875rem; color:#7a5e0a; margin-bottom:var(--s3)}
 /* SIMPLE view cards */
 .rc-cards{display:grid; grid-template-columns:1fr 1fr; gap:var(--s3)}
 .rc-card{border:1px solid var(--line); border-radius:var(--radius); padding:var(--s4); background:var(--bg)}
@@ -450,7 +464,7 @@ footer.site .heritage{border-top:1px solid rgba(255,255,255,.15); padding-top:va
 .rc-table .c-horse a{color:var(--green-700); font-weight:600}
 .rc-table .silks{margin:0 auto}
 /* conditional highlight */
-.rc-table td.hi{background:#FBF6E6 !important; color:#7a5e0a; font-weight:700}
+.rc-table td.hi{background:var(--tint-sel) !important; color:#7a5e0a; font-weight:700}
 .delta-up{color:var(--good)} .delta-dn{color:#C62828} .delta-0{color:var(--ink-600)}
 /* handicap box */
 .handicap-box{background:var(--green-50); border:1px solid var(--line); border-radius:var(--radius); padding:var(--s4)}
@@ -485,7 +499,7 @@ footer.site .heritage{border-top:1px solid rgba(255,255,255,.15); padding-top:va
 .h-inline{margin:0; font-size:1.25rem}
 .rc-kv-v{margin-top:2px; font-weight:500}
 .form-tag{font-size:.875rem; font-weight:600; padding:2px var(--s2); border-radius:6px}
-.form-tag-good{background:#E6F4EA; color:#1B7A3D}
+.form-tag-good{background:var(--tint-green); color:#1B7A3D}
 .form-tag-warn{background:#FCF3D9; color:#7a5e0a}
 .form-tag-bad{background:#FBE9E7; color:#C62828}
 /* scratched runner — race card */
@@ -511,12 +525,12 @@ footer.site .heritage{border-top:1px solid rgba(255,255,255,.15); padding-top:va
 /* horse health & racing status */
 .horse-status-chip{display:inline-flex; align-items:center; gap:6px; padding:8px var(--s3); border-radius:999px; font-size:.9375rem; font-weight:600; border:1px solid transparent}
 .horse-status-chip .hsc-ico{display:inline-flex}
-.hs-fit{background:#E6F4EA; color:#1B7A3D; border-color:#bfe3c8}
+.hs-fit{background:var(--tint-green); color:#1B7A3D; border-color:#bfe3c8}
 .hs-out{background:#FBE9E7; color:#C62828; border-color:#f3c9c4}
 .hs-spell{background:#EEEEEE; color:var(--ink-700); border-color:#dcdcdc}
 .hs-first{background:#FCF3D9; color:#7a5e0a; border-color:#ecdca6}
 .hs-watch{background:#FFF1E6; color:#b15a1a; border-color:#f3d3b5}
-.cond-card.hs-fit{background:#E6F4EA; border-color:#bfe3c8} .cond-card.hs-fit .cc-ico{color:#1B7A3D}
+.cond-card.hs-fit{background:var(--tint-green); border-color:#bfe3c8} .cond-card.hs-fit .cc-ico{color:#1B7A3D}
 .cond-card.hs-out{background:#FBE9E7; border-color:#f3c9c4} .cond-card.hs-out .cc-ico{color:#C62828}
 .cond-card.hs-first{background:#FCF3D9; border-color:#ecdca6} .cond-card.hs-first .cc-ico{color:#7a5e0a}
 .cond-card.hs-watch{background:#FFF1E6; border-color:#f3d3b5} .cond-card.hs-watch .cc-ico{color:#b15a1a}
@@ -535,7 +549,7 @@ footer.site .heritage{border-top:1px solid rgba(255,255,255,.15); padding-top:va
 .stat-card .sc-ico{display:inline-flex; color:var(--green-700); margin-bottom:var(--s1)}
 .stat-card .sc-num{font-family:var(--font-mono); font-size:1.6rem; font-weight:700; color:var(--green-900); line-height:1}
 .stat-card .sc-lab{font-size:.8125rem; color:var(--ink-600); margin-top:2px}
-.stat-card.gold{border-color:var(--gold-500); background:#FBF6E6}
+.stat-card.gold{border-color:var(--gold-500); background:var(--tint-sel)}
 .stat-card.gold .sc-ico{color:#a9851c}
 .winrate-card{display:flex; align-items:center; gap:var(--s4); background:var(--green-900); color:#fff; border-radius:var(--radius); padding:var(--s4)}
 .winrate-card .wr-ring{position:relative; flex:0 0 auto}
@@ -552,6 +566,154 @@ footer.site .heritage{border-top:1px solid rgba(255,255,255,.15); padding-top:va
 .pp-meta .ico{color:var(--green-700)}
 @media(max-width:1024px){ .career-strip{grid-template-columns:repeat(3,1fr)} .winrate-card{grid-column:1/-1} }
 @media(max-width:600px){ .career-strip{grid-template-columns:repeat(2,1fr)} }
+/* rating-trend line-chart (narrative) */
+.rating-chart{margin-top:var(--s3); background:var(--bg); border:1px solid var(--line); border-radius:var(--radius-lg); padding:var(--s5); box-shadow:var(--shadow)}
+.rating-chart>svg{width:100%; height:auto; display:block}
+.rc-grid{stroke:var(--line); stroke-width:1; stroke-dasharray:3 3}
+.rc-area{stroke:none}
+.rc-line{fill:none; stroke:var(--gold-500); stroke-width:2.5; stroke-linejoin:round; stroke-linecap:round}
+.rc-dot{stroke:#fff; stroke-width:2}
+.rc-axislab{fill:var(--ink-600); font-family:var(--font-mono); font-size:11px}
+.rc-caption{display:flex; align-items:center; gap:var(--s2); margin-top:var(--s4); padding-top:var(--s3); border-top:1px solid var(--line); font-size:.9375rem; color:var(--ink-900)}
+.rc-caption .ico{color:var(--ink-600); flex:0 0 auto}
+.rc-caption.up .ico{color:var(--good)} .rc-caption.down .ico{color:var(--warn)}
+.rc-legend{display:flex; flex-wrap:wrap; gap:var(--s2) var(--s4); margin-top:var(--s3); font-size:.8125rem; color:var(--ink-600)}
+.rc-legend span{display:inline-flex; align-items:center; gap:6px}
+.rc-legend i{width:11px; height:11px; border-radius:50%; display:inline-block}
+/* ===== jockey/trainer profile + horse directory (P2) ===== */
+.eyebrow-line{display:inline-block; font-size:.75rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--gold-500); margin-bottom:var(--s1)}
+.person-role-chip{display:inline-flex; align-items:center; gap:6px; background:var(--green-50); color:var(--green-900); border:1px solid var(--line); border-radius:999px; padding:6px var(--s3); font-size:.875rem; font-weight:600; white-space:nowrap}
+.person-role-chip .ico{color:var(--green-700)}
+.race-tabs button.wide{padding:var(--s2) var(--s5); min-width:auto}
+.person-stats{display:grid; grid-template-columns:repeat(6,1fr); gap:var(--s3)}
+.res-chip{display:inline-block; font-family:var(--font-mono); font-size:.8125rem; font-weight:600; padding:2px var(--s2); border-radius:6px; white-space:nowrap}
+.res-win{background:var(--tint-gold); color:#8a6d12; border:1px solid #e9d79b}
+.res-place{background:var(--tint-green); color:#1B7A3D; border:1px solid #bfe3c8}
+.res-back{background:var(--bg-alt); color:var(--ink-600); border:1px solid var(--line)}
+.ent-link{color:var(--green-700); cursor:pointer; border-bottom:1px dotted transparent; transition:border-color var(--tr)}
+.ent-link:hover{border-bottom-color:var(--green-700); text-decoration:none}
+.ent-link.strong{font-weight:600}
+/* generic scannable table (BHA/Bahrain list style) */
+.simple-table-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:var(--radius-lg); box-shadow:var(--shadow)}
+.simple-table{width:100%; border-collapse:collapse; font-size:.9375rem; background:var(--bg)}
+.simple-table thead th{background:var(--green-900); color:#fff; font-weight:500; text-align:left; padding:var(--s3) var(--s4); white-space:nowrap}
+.simple-table th.num,.simple-table td.num{text-align:right}
+.simple-table tbody td{padding:var(--s3) var(--s4); border-top:1px solid var(--line); vertical-align:middle}
+.simple-table tbody tr:nth-child(even){background:var(--bg-alt)}
+.simple-table tbody tr:hover{background:var(--green-50)}
+.simple-table .mono{font-family:var(--font-mono)}
+/* people quick-access cards */
+.people-access{display:grid; grid-template-columns:repeat(2,1fr); gap:var(--s3); margin-top:var(--s4)}
+.people-card{display:flex; align-items:center; gap:var(--s3); text-align:left; background:var(--bg); border:1px solid var(--line); border-radius:var(--radius-lg); padding:var(--s4); cursor:pointer; transition:transform var(--tr),box-shadow var(--tr),border-color var(--tr)}
+.people-card:hover{transform:translateY(-2px); box-shadow:var(--shadow-lg); border-color:var(--green-700)}
+.people-card .pa-ico{display:inline-flex; align-items:center; justify-content:center; width:42px; height:42px; border-radius:50%; background:var(--green-900); color:#fff; flex:0 0 auto}
+.people-card .pa-text{display:flex; flex-direction:column; flex:1; min-width:0}
+.people-card .pa-role{font-size:.75rem; color:var(--ink-600)}
+.people-card .pa-name{font-weight:600; color:var(--green-900)}
+.people-card>.ico{color:var(--ink-600); flex:0 0 auto}
+/* quick finder search */
+.finder{display:flex; align-items:center; gap:var(--s2); background:var(--bg); border:1px solid var(--line); border-radius:999px; padding:var(--s2) var(--s4); max-width:480px; transition:border-color var(--tr),box-shadow var(--tr)}
+.finder:focus-within{border-color:var(--green-700); box-shadow:0 0 0 3px rgba(48,82,138,.12)}
+.finder-ico{display:inline-flex; color:var(--ink-600); flex:0 0 auto}
+.finder input{flex:1; border:none; outline:none; background:transparent; font-family:inherit; font-size:.9375rem; color:var(--ink-900); min-width:0}
+@media(max-width:1024px){ .person-stats{grid-template-columns:repeat(3,1fr)} }
+@media(max-width:600px){ .person-stats{grid-template-columns:repeat(2,1fr)} .people-access{grid-template-columns:1fr} }
+/* ===== race-card sub-tabs + analysis (P3.3/P3.4) ===== */
+.sub-tabs{display:flex; gap:var(--s2); border-bottom:2px solid var(--line); margin:var(--s4) 0 0; overflow-x:auto}
+.sub-tab{flex:0 0 auto; background:none; border:none; border-bottom:3px solid transparent; margin-bottom:-2px; padding:var(--s3) var(--s4); font-family:inherit; font-size:.9375rem; font-weight:600; color:var(--ink-600); cursor:pointer; transition:color var(--tr),border-color var(--tr); min-height:44px}
+.sub-tab:hover{color:var(--green-900)}
+.sub-tab.on{color:var(--green-900); border-bottom-color:var(--gold-500)}
+.eval-pick{display:flex; flex-direction:column; gap:var(--s3); background:var(--green-50); border:1px solid var(--line); border-left:4px solid var(--gold-500); border-radius:var(--radius); padding:var(--s4); margin-bottom:var(--s4)}
+.eval-pick .ep-label{display:flex; align-items:center; gap:4px; font-size:.8125rem; font-weight:600; color:var(--gold-500); text-transform:uppercase; letter-spacing:.04em}
+.eval-pick .ep-label .ico{color:var(--gold-500)}
+.eval-pick .ep-main{display:flex; align-items:center; gap:var(--s3)}
+.eval-pick .ep-name{font-size:1.25rem; font-weight:600; color:var(--green-900)}
+.eval-text{font-size:1rem; line-height:1.7; color:var(--ink-900); margin-bottom:var(--s3)}
+.eval-pace{background:var(--bg-alt); border-radius:var(--radius); padding:var(--s3) var(--s4); font-size:.9375rem; color:var(--ink-900)}
+/* ===== home: season stat-band + standings + feature story (P1.2/P1.3/P2.5) ===== */
+.stat-band{display:grid; grid-template-columns:repeat(4,1fr); gap:var(--s3)}
+.sb-item{display:flex; flex-direction:column; align-items:center; text-align:center; gap:2px; background:var(--green-900); color:#fff; border-radius:var(--radius-lg); padding:var(--s5) var(--s3)}
+.sb-item.gold{background:linear-gradient(135deg,#2c4a78,#264068); border:1px solid var(--gold-500)}
+.sb-ico{display:inline-flex; color:var(--gold-500); margin-bottom:var(--s1)}
+.sb-num{font-family:var(--font-mono); font-weight:700; font-size:1.75rem; line-height:1.1}
+.sb-item.gold .sb-num{color:var(--gold-500)}
+.sb-lab{font-size:.8125rem; opacity:.85}
+.standings-grid{display:grid; grid-template-columns:1fr 1fr; gap:var(--s4)}
+.standings-card{background:var(--bg); border:1px solid var(--line); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow)}
+.standings-card .st-head{background:var(--green-50); color:var(--green-900); font-weight:600; padding:var(--s3) var(--s4); border-bottom:1px solid var(--line)}
+.st-row{display:grid; grid-template-columns:auto 1fr auto auto; align-items:center; gap:var(--s3); padding:var(--s3) var(--s4); border-top:1px solid var(--line); cursor:pointer; transition:background var(--tr)}
+.st-row:hover{background:var(--green-50)}
+.st-row:focus-visible{outline:2px solid var(--gold-500); outline-offset:-2px}
+.st-row:first-of-type{border-top:none}
+.st-rank{font-family:var(--font-mono); font-weight:700; width:24px; height:24px; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:var(--bg-alt); color:var(--ink-600); font-size:.8125rem}
+.st-rank.lead{background:var(--gold-500); color:var(--green-900)}
+.st-name{min-width:0}
+.st-wins{font-size:.875rem; color:var(--ink-600); white-space:nowrap}
+.st-pct{font-size:.875rem; color:var(--green-700); font-weight:600}
+.hl-eyebrow{position:absolute; top:var(--s3); left:var(--s3); display:inline-flex; align-items:center; gap:4px; background:var(--gold-500); color:var(--green-900); font-size:.6875rem; font-weight:700; padding:3px var(--s2); border-radius:6px; box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.feature-story .hl-img{position:relative}
+/* home calendar + programme (Bahrain "Season Calendar + Racecards & Results") */
+.home-cal-grid{display:grid; grid-template-columns:auto 1fr; gap:var(--s5); align-items:start}
+.home-cal-left{background:var(--bg); border:1px solid var(--line); border-radius:var(--radius-lg); padding:var(--s4); box-shadow:var(--shadow)}
+.home-prog{background:var(--bg); border:1px solid var(--line); border-radius:var(--radius-lg); padding:var(--s4); box-shadow:var(--shadow)}
+.home-prog-head{display:flex; align-items:center; justify-content:space-between; gap:var(--s3); padding-bottom:var(--s3); border-bottom:1px solid var(--line); margin-bottom:var(--s2)}
+.hp-day{font-size:.8125rem; color:var(--ink-600)}
+.hp-name{font-weight:600; color:var(--green-900); font-size:1.0625rem}
+.home-prog-list{display:flex; flex-direction:column}
+.hp-race{display:flex; align-items:center; gap:var(--s3); padding:var(--s3) 0; border-bottom:1px solid var(--line)}
+.hp-race:last-child{border-bottom:none}
+.hp-race.feat{background:var(--tint-sel); margin:0 calc(var(--s3)*-1); padding-left:var(--s3); padding-right:var(--s3); border-radius:8px; border-bottom:none}
+.hp-time{font-weight:600; color:var(--green-900); min-width:48px}
+.hp-rnum{font-family:var(--font-mono); display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; border-radius:50%; background:var(--green-900); color:#fff; font-size:.8125rem; font-weight:600; flex:0 0 auto}
+.hp-rname{flex:1; min-width:0; font-size:.9375rem; color:var(--ink-900)}
+/* race-day updates feed */
+.updates-feed{display:flex; flex-direction:column; gap:var(--s2); margin-top:var(--s3)}
+.upd-row{display:flex; gap:var(--s3); align-items:flex-start; background:var(--bg); border:1px solid var(--line); border-left:3px solid var(--green-700); border-radius:var(--radius); padding:var(--s3) var(--s4)}
+.upd-ico{display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:8px; background:var(--green-50); color:var(--green-700); flex:0 0 auto}
+.upd-row.scratch-row{} .upd-ico.upd-scratch{background:var(--tint-warn); color:#C62828}
+.upd-ico.upd-handicap{background:var(--tint-gold); color:#8a6d12}
+.upd-body{flex:1; min-width:0}
+.upd-text{font-size:.9375rem; color:var(--ink-900); line-height:1.5}
+.upd-time{font-size:.75rem; color:var(--ink-600); margin-top:2px}
+/* two big CTA cards */
+.big-cards{display:grid; grid-template-columns:1fr 1fr; gap:var(--s4)}
+.big-card{position:relative; display:flex; flex-direction:column; align-items:flex-start; text-align:left; min-height:200px; padding:var(--s5); border:none; border-radius:var(--radius-lg); color:#fff; background-size:cover; background-position:center; cursor:pointer; overflow:hidden; box-shadow:var(--shadow); transition:transform var(--tr),box-shadow var(--tr)}
+.big-card:hover{transform:translateY(-3px); box-shadow:var(--shadow-lg)}
+.big-card .bc-eyebrow{font-size:.75rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--gold-500); margin-bottom:var(--s2)}
+.big-card .bc-title{font-size:1.5rem; font-weight:700; line-height:1.2; margin-bottom:var(--s2)}
+.big-card .bc-sub{font-size:.9375rem; color:#E8F2ED; max-width:34ch; margin-bottom:auto}
+.big-card .bc-go{display:inline-flex; align-items:center; gap:6px; margin-top:var(--s4); font-weight:600; color:#fff; background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.3); border-radius:999px; padding:8px var(--s4)}
+.big-card:hover .bc-go{background:var(--gold-500); color:var(--green-900); border-color:var(--gold-500)}
+@media(max-width:860px){ .stat-band{grid-template-columns:repeat(2,1fr)} .standings-grid{grid-template-columns:1fr} .home-cal-grid{grid-template-columns:1fr} .big-cards{grid-template-columns:1fr} .home-cal-left{display:flex; flex-wrap:wrap; gap:var(--s5)} }
+/* horse form filter chips (P3.5) */
+.form-filter{display:flex; flex-wrap:wrap; gap:var(--s2); margin:var(--s3) 0}
+.ff-chip{display:inline-flex; align-items:center; background:var(--bg); border:1px solid var(--line); border-radius:999px; padding:6px var(--s4); font-family:inherit; font-size:.875rem; color:var(--ink-900); cursor:pointer; min-height:44px; transition:all var(--tr)}
+.ff-chip:hover{background:var(--green-50); border-color:var(--green-700)}
+.ff-chip.on{background:var(--green-900); color:#fff; border-color:var(--green-900)}
+/* ===== race-day calendar + month accordion (P3.1/P3.2) ===== */
+.cal-toggle{display:inline-flex; align-items:center; gap:6px; margin-top:var(--s3); background:var(--bg); border:1px solid var(--line); border-radius:999px; padding:var(--s2) var(--s4); font-family:inherit; font-size:.9375rem; font-weight:600; color:var(--green-900); cursor:pointer; min-height:44px; transition:all var(--tr)}
+.cal-toggle:hover{background:var(--green-50); border-color:var(--green-700)}
+.cal-toggle.on{background:var(--green-50)}
+.cal-toggle .ico{color:var(--green-700)}
+.cal-panel{margin-top:var(--s3); background:var(--bg); border:1px solid var(--line); border-radius:var(--radius-lg); padding:var(--s5); box-shadow:var(--shadow)}
+.cal-filter{display:flex; flex-wrap:wrap; gap:var(--s2); margin-bottom:var(--s4)}
+.cal-months{display:flex; flex-wrap:wrap; gap:var(--s5)}
+.cal-month{flex:0 0 auto}
+.cal-title{font-weight:600; color:var(--green-900); margin-bottom:var(--s2)}
+.cal-grid{display:grid; grid-template-columns:repeat(7,40px); gap:3px}
+.cal-dow{display:flex; align-items:center; justify-content:center; height:24px; font-size:.6875rem; color:var(--ink-600)}
+.cal-cell{display:flex; align-items:center; justify-content:center; height:40px; border-radius:8px; font-family:var(--font-mono); font-size:.8125rem; color:var(--ink-900); background:transparent; border:none}
+.cal-cell.empty{visibility:hidden}
+button.cal-cell{cursor:pointer}
+.cal-cell.cal-race{background:var(--gold-500); color:var(--green-900); font-weight:700; box-shadow:0 1px 3px rgba(191,148,45,.4); transition:transform var(--tr)}
+.cal-cell.cal-race:hover{transform:scale(1.08)}
+.cal-cell.cal-sel{outline:2px solid var(--green-900); outline-offset:1px}
+.cal-legend-dot{display:inline-block; width:12px; height:12px; border-radius:4px; background:var(--gold-500); vertical-align:middle}
+.fx-accordion details{border:1px solid var(--line); border-radius:var(--radius); margin-top:var(--s3); overflow:hidden}
+.fx-accordion summary{cursor:pointer; padding:var(--s3) var(--s4); font-weight:600; color:var(--green-900); background:var(--green-50); list-style:none}
+.fx-accordion summary::-webkit-details-marker{display:none}
+.fx-acc-row{display:flex; align-items:center; gap:var(--s3); padding:var(--s3) var(--s4); border-top:1px solid var(--line)}
+.fx-acc-row.sel{background:var(--tint-sel)}
 /* basic info key-value panel */
 .info-grid{display:grid; grid-template-columns:1fr 1fr; gap:0; border:1px solid var(--line); border-radius:var(--radius); overflow:hidden}
 .info-grid .kv{display:flex; justify-content:space-between; gap:var(--s3); padding:var(--s3) var(--s4); border-bottom:1px solid var(--line)}
@@ -561,7 +723,7 @@ footer.site .heritage{border-top:1px solid rgba(255,255,255,.15); padding-top:va
 /* ===== past performance — dual mode (cards / dense table) ===== */
 /* finish badge — color-coded result */
 .pp-badge{font-family:var(--font-mono); font-weight:700; display:inline-flex; align-items:center; justify-content:center; min-width:26px; height:24px; padding:0 7px; border-radius:6px}
-.pp-badge.b-win{background:#FCF3D9; color:#7a5e0a} .pp-badge.b-place{background:#E6F4EA; color:#1B7A3D}
+.pp-badge.b-win{background:#FCF3D9; color:#7a5e0a} .pp-badge.b-place{background:var(--tint-green); color:#1B7A3D}
 .pp-badge.b-back{background:var(--bg-alt); color:var(--ink-700)} .pp-badge.b-dnf{background:#FBE9E7; color:#C62828}
 /* group filter chips */
 .pp-chips{display:flex; flex-wrap:wrap; gap:var(--s2); margin:var(--s3) 0}
@@ -594,12 +756,6 @@ footer.site .heritage{border-top:1px solid rgba(255,255,255,.15); padding-top:va
 .pp-kv{display:grid; grid-template-columns:1fr 1fr; gap:var(--s2) var(--s4); font-size:.9375rem}
 .pp-kv .k{color:var(--ink-600); font-size:.8125rem; display:block}
 .pp-comment{line-height:1.6}
-/* rating chart */
-.rating-chart{border:1px solid var(--line); border-radius:var(--radius); padding:var(--s4); background:var(--bg)}
-.rating-chart svg{display:block; width:100%; height:auto; overflow:visible}
-.rating-chart .rc-dot{fill:var(--green-700); cursor:pointer; transition:r var(--tr)}
-.rating-chart .rc-dot:hover{r:7}
-.rc-tip-label{font-family:var(--font-mono); font-size:11px; fill:var(--ink-700)}
 /* stewards / related */
 .stewards details, .related-box{border:1px solid var(--line); border-radius:var(--radius); padding:var(--s3) var(--s4)}
 .stewards summary{cursor:pointer; font-weight:500; color:var(--green-700)}
@@ -658,13 +814,18 @@ footer.site .heritage{border-top:1px solid rgba(255,255,255,.15); padding-top:va
     <button class="hamburger" id="hamburger" aria-label="เมนู" aria-expanded="false">☰</button>
     <nav class="main" id="mainNav">
       <a href="#raceday" data-go="raceday" class="i18n" data-th="เรซการ์ด" data-en="Race Cards">เรซการ์ด</a>
-      <a href="#" class="dead i18n" data-dead data-th="ม้า &amp; บุคคล" data-en="Horses &amp; People">ม้า &amp; บุคคล</a>
+      <a href="#horses" data-go="horses" class="i18n" data-th="ม้า &amp; บุคคล" data-en="Horses &amp; People">ม้า &amp; บุคคล</a>
       <a href="#" class="dead i18n" data-dead data-th="สนาม &amp; กติกา" data-en="Track &amp; Regulations">สนาม &amp; กติกา</a>
       <a href="#" class="dead i18n" data-dead data-th="ประสบการณ์" data-en="Experience">ประสบการณ์</a>
       <a href="#" class="dead i18n" data-dead data-th="ข่าว" data-en="News">ข่าว</a>
       <a href="#" class="dead i18n" data-dead data-th="เกี่ยวกับ" data-en="About">เกี่ยวกับ</a>
+      <a href="#" class="nav-live" id="liveNav"><span class="live-dot" aria-hidden="true"></span><span class="i18n" data-th="ดูถ่ายทอดสด" data-en="Live Stream">ดูถ่ายทอดสด</span></a>
     </nav>
     <div class="nav-tools">
+      <button class="btn-live" id="liveBtn" type="button" aria-label="ดูถ่ายทอดสด">
+        <span class="live-dot" aria-hidden="true"></span>
+        <span class="i18n" data-th="ถ่ายทอดสด" data-en="Live">ถ่ายทอดสด</span>
+      </button>
       <div class="search" id="search">
         <button class="search-toggle" id="searchToggle" aria-label="ค้นหา" aria-expanded="false">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
@@ -688,6 +849,9 @@ footer.site .heritage{border-top:1px solid rgba(255,255,255,.15); padding-top:va
   <section id="raceday" class="page container"></section>
   <section id="racecard" class="page container"></section>
   <section id="horse" class="page container"></section>
+  <section id="jockey" class="page container"></section>
+  <section id="trainer" class="page container"></section>
+  <section id="horses" class="page container"></section>
 </main>
 
 <!-- ============ FOOTER ============ -->
@@ -758,7 +922,11 @@ const ICON_PATHS={
   alert:'<path d="M12 4l9 16H3z"/><path d="M12 10v4"/><circle cx="12" cy="17.5" r=".6" fill="currentColor" stroke="none"/>',
   moon:'<path d="M20 14a8 8 0 0 1-10-10 8 8 0 1 0 10 10z"/>',
   'minus-circle':'<circle cx="12" cy="12" r="9"/><path d="M8 12h8"/>',
-  stethoscope:'<path d="M6 4v5a4 4 0 0 0 8 0V4"/><path d="M6 4H4M14 4h-2M10 17v1a4 4 0 0 0 8 0v-2"/><circle cx="18" cy="14" r="2"/>'
+  stethoscope:'<path d="M6 4v5a4 4 0 0 0 8 0V4"/><path d="M6 4H4M14 4h-2M10 17v1a4 4 0 0 0 8 0v-2"/><circle cx="18" cy="14" r="2"/>',
+  'trend-up':'<path d="M4 16l5-5 3 3 7-7"/><path d="M16 7h4v4"/>',
+  'trend-down':'<path d="M4 8l5 5 3-3 7 7"/><path d="M16 17h4v-4"/>',
+  search:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/>',
+  user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/>'
 };
 function icon(name,size){
   const NS='http://www.w3.org/2000/svg';
@@ -821,7 +989,21 @@ const DATA={
       {num:8,  silksColor:'#16A085', nameTH:'เพชรดำ',      nameEN:'Dark Diamond',   jockey:'อ. ภาคิน',  trainer:'ส. ประเสริฐ',  weight:56, gate:5,  rating:87, ratingDelta:4,  daysSince:25, gear:'—',     form:'221314', formTag:'good'},
       {num:9,  silksColor:'#E67E22', nameTH:'สายลมเหนือ', nameEN:'North Wind',     jockey:'ก. ธนากร',  trainer:'ก. รุ่งโรจน์', weight:54, gate:8,  rating:80, ratingDelta:-1, daysSince:40, gear:'SR',    form:'445362', formTag:'warn'},
       {num:10, silksColor:'#34495E', nameTH:'อัศวินดำ',   nameEN:'Black Knight',   jockey:'ว. สมชาย',  trainer:'ป. วิชัย',    weight:53, gate:6,  rating:76, ratingDelta:0,  daysSince:55, gear:'B',     form:'667489', formTag:'bad'}
-    ]
+    ],
+    /* race history — what kind of horse wins this race (BHA Ref 3) */
+    pastWinners:[
+      {year:'2025', horse:'มังกรเขียว (Green Dragon)', jockey:'ก. ธนากร', weight:57, going:'Good',         time:'1:36.40'},
+      {year:'2024', horse:'ราชาเหนือ (Northern King)', jockey:'ว. สมชาย', weight:56, going:'Good to Firm', time:'1:35.90'},
+      {year:'2023', horse:'เพชรสยาม (Siam Diamond)',  jockey:'จ. อนุชา', weight:55, going:'Soft',         time:'1:38.10'},
+      {year:'2022', horse:'ลมกรด (Whirlwind)',        jockey:'ก. ธนากร', weight:57, going:'Good',         time:'1:36.75'},
+      {year:'2021', horse:'ทองคำเปลว (Gold Leaf)',    jockey:'อ. ภาคิน', weight:54, going:'Good',         time:'1:37.20'}
+    ],
+    /* expert evaluation / editorial (Bahrain Ref 5 EVALUATION tab) */
+    evaluation:{
+      pickNum:1, pickName:'สายฟ้าทอง',
+      text:'สายฟ้าทอง (เบอร์ 1) มาในฟอร์มร้อนแรง ชนะ 2 จาก 3 นัดหลังสุดและเรตติ้งไต่ขึ้นต่อเนื่อง บวกกับจ็อกกี้คู่ใจ ก. ธนากร น่าจะคุมเกมกลางสนามได้ดี — ตัวรองที่ต้องระวังคือ เพชรดำ (เบอร์ 8) ที่เรตติ้งพุ่ง +4 และ ราชาสิงห์ (เบอร์ 3) ที่ออกสตาร์ทไวจากประตูใน',
+      pace:'จังหวะเกมน่าจะปานกลาง มีตัวนำธรรมชาติ 2–3 ตัว เหมาะกับม้าที่รอจังหวะปลายสนาม'
+    }
   },
   horse:{
     nameTH:'สายฟ้าทอง', nameEN:'Golden Thunder',
@@ -873,7 +1055,7 @@ const DATA={
     ]
   },
   news:[
-    {cat:'พรีวิวเรซ',    title:'พรีวิว MRC Gold Cup: ม้าเต็ง 3 ตัวที่ต้องจับตา', excerpt:'วิเคราะห์ตัวเต็งและม้าน่าสนใจก่อนเกมใหญ่บ่ายวันอาทิตย์นี้ พร้อมจุดชี้ขาดของแต่ละตัว', date:'13 มิ.ย. 2026', img:'images/news-preview.jpg', feature:true},
+    {cat:'พรีวิวเรซ',    title:'พรีวิว MRC Gold Cup: ม้าเต็ง 3 ตัวที่ต้องจับตา', excerpt:'วิเคราะห์ตัวเต็งและม้าน่าสนใจก่อนเกมใหญ่บ่ายวันอาทิตย์นี้ พร้อมจุดชี้ขาดของแต่ละตัว', date:'13 มิ.ย. 2026', img:'images/news-preview.jpg', feature:true, raceNo:3, cta:'อ่านพรีวิว & ดูเรซ'},
     {cat:'เซียนแนะ',     title:'เซียนแนะ — 5 ม้าน่าจับตาประจำสัปดาห์นี้',        excerpt:'ทีมงานคัดม้าฟอร์มดีจากทุกเรซมาให้มือใหม่ตามได้ง่าย', date:'12 มิ.ย. 2026', img:'images/news-tips.jpg'},
     {cat:'ประกาศถอนม้า', title:'ประกาศถอนม้า เรซ 5 และ เรซ 7 ก่อนวันแข่ง',       excerpt:'อัปเดตรายชื่อม้าถอนล่าสุด พร้อมเหตุผลจากสัตวแพทย์สนาม', date:'14 มิ.ย. 2026', img:'images/news-scratch.jpg'},
     {cat:'สภาพสนาม',     title:'รายงานสภาพสนามวันแข่ง: Good ตลอดทั้งวัน',        excerpt:'สนามแห้งเหมาะแก่การวิ่ง อุณหภูมิสนาม 38°C อัปเดตล่าสุด 10:45 น.', date:'14 มิ.ย. 2026', img:'images/racecourse.jpg'},
@@ -887,6 +1069,13 @@ const DATA={
     {dd:'28', mon:'มิ.ย.', dow:'อาทิตย์', name:'ควีนส์คัพ พรีลูด', feature:'Class 1 Mile', races:8, post:'12:30', status:'scheduled'},
     {dd:'05', mon:'ก.ค.', dow:'อาทิตย์', name:'MRC ซัมเมอร์ เฟสติวัล', feature:'Festival Handicap', races:9, post:'12:15', status:'scheduled'}
   ],
+  /* race-day updates feed (handicap/scratch/going/draw — Bahrain "Latest News" rail) */
+  updates:[
+    {time:'10:45 น.', type:'going',     text:'อัปเดตสภาพสนาม: Good ตลอดทั้งวัน — สนามแห้ง เหมาะแก่การวิ่ง'},
+    {time:'10:20 น.', type:'scratch',   text:'ประกาศถอนม้า: เบอร์ 5 นิลกาฬ (เรซ 3) ถอนโดยสัตวแพทย์ — ขาหน้าซ้ายอักเสบ'},
+    {time:'09:30 น.', type:'draw',      text:'จับประตูออกตัวเรซ 3 MRC Gold Cup เรียบร้อย — สายฟ้าทองได้ประตู 4'},
+    {time:'08:00 น.', type:'handicap',  text:'ประกาศน้ำหนักแฮนดิแคปอย่างเป็นทางการสำหรับทุกเรซวันนี้'}
+  ],
   /* quick-access tiles (adapted from Selangor shortcut grid) */
   shortcuts:[
     {icon:'list',     th:'เรซการ์ด',       en:'Race Cards',      color:'#264068', go:'raceday'},
@@ -898,11 +1087,74 @@ const DATA={
     {icon:'flag',     th:'ประกาศลงแข่ง',   en:'Declarations',    color:'#8a5a2b', soon:true},
     {icon:'play',     th:'วิดีโอรีเพลย์',   en:'Replays',         color:'#34495E', soon:true}
   ],
+  /* season-at-a-glance stat band (Bahrain "13" pattern) */
+  season:{ year:'ฤดูกาล 2025/26', meetings:24, races:198, horses:286, prize:'฿128 ล้าน' },
+  /* jockey & trainer standings (Bahrain Ref 2) */
+  standings:{
+    jockeys:[
+      {rank:1, name:'ก. ธนากร',  wins:42, rides:198, winPct:21, go:'jockey'},
+      {rank:2, name:'ว. สมชาย',  wins:35, rides:211, winPct:17, go:'jockey'},
+      {rank:3, name:'จ. อนุชา',  wins:28, rides:176, winPct:16, go:'jockey'},
+      {rank:4, name:'อ. ภาคิน',  wins:24, rides:189, winPct:13, go:'jockey'},
+      {rank:5, name:'ส. ชัยวัฒน์', wins:19, rides:163, winPct:12, go:'jockey'}
+    ],
+    trainers:[
+      {rank:1, name:'ส. ประเสริฐ',  wins:51, runners:243, winPct:21, go:'trainer'},
+      {rank:2, name:'ป. วิชัย',     wins:38, runners:221, winPct:17, go:'trainer'},
+      {rank:3, name:'ม. ธนพล',      wins:33, runners:205, winPct:16, go:'trainer'},
+      {rank:4, name:'ก. รุ่งโรจน์',  wins:27, runners:198, winPct:14, go:'trainer'},
+      {rank:5, name:'ธ. สุริยา',     wins:22, runners:181, winPct:12, go:'trainer'}
+    ]
+  },
+  /* jockey profile (Bahrain Ref 7) */
+  jockey:{
+    nameTH:'ก. ธนากร', nameEN:'K. Thanakorn', since:'เริ่มอาชีพ 2014',
+    career:{ wins:312, rides:1840, sec:268, third:241, fourth:198, winPct:17, placePct:45 },
+    seasonStat:{ wins:42, rides:198, sec:31, third:26, fourth:22, winPct:21, placePct:50 },
+    rides:[
+      {date:'24 พ.ค. 2026', result:1,  field:11, horse:'สายฟ้าทอง',  trainer:'ส. ประเสริฐ', cls:'Class 1'},
+      {date:'19 เม.ย. 2026',result:1,  field:9,  horse:'สายฟ้าทอง',  trainer:'ส. ประเสริฐ', cls:'Class 1'},
+      {date:'12 เม.ย. 2026',result:3,  field:12, horse:'เพชรดำ',     trainer:'ส. ประเสริฐ', cls:'Class 2'},
+      {date:'28 มี.ค. 2026',result:2,  field:10, horse:'สายลมเหนือ', trainer:'ก. รุ่งโรจน์', cls:'Class 3'},
+      {date:'15 มี.ค. 2026',result:1,  field:11, horse:'เปลวสุริยา', trainer:'ม. ธนพล',    cls:'Class 3'},
+      {date:'08 ก.พ. 2026', result:4,  field:13, horse:'ทองแท้',     trainer:'ม. ธนพล',    cls:'Maiden'},
+      {date:'24 ม.ค. 2026', result:1,  field:8,  horse:'ลมพายุ',     trainer:'ก. รุ่งโรจน์', cls:'Class 2'},
+      {date:'11 ม.ค. 2026', result:2,  field:10, horse:'มังกรเขียว', trainer:'ป. วิชัย',    cls:'Class 1'}
+    ]
+  },
+  /* trainer profile */
+  trainer:{
+    nameTH:'ส. ประเสริฐ', nameEN:'S. Prasert', since:'เปิดคอก 2008',
+    career:{ wins:486, runners:2630, sec:402, third:388, fourth:301, winPct:18, placePct:48 },
+    seasonStat:{ wins:51, runners:243, sec:41, third:35, fourth:28, winPct:21, placePct:52 },
+    runners:[
+      {date:'24 พ.ค. 2026', result:1,  field:11, horse:'สายฟ้าทอง',  jockey:'ก. ธนากร', cls:'Class 1'},
+      {date:'24 พ.ค. 2026', result:3,  field:12, horse:'เพชรดำ',     jockey:'อ. ภาคิน', cls:'Class 2'},
+      {date:'19 เม.ย. 2026',result:1,  field:9,  horse:'สายฟ้าทอง',  jockey:'ก. ธนากร', cls:'Class 1'},
+      {date:'28 มี.ค. 2026',result:2,  field:10, horse:'ราชาสิงห์',  jockey:'จ. อนุชา', cls:'Class 2'},
+      {date:'15 มี.ค. 2026',result:1,  field:11, horse:'เพชรดำ',     jockey:'อ. ภาคิน', cls:'Class 2'},
+      {date:'08 ก.พ. 2026', result:5,  field:13, horse:'ทองแท้',     jockey:'จ. อนุชา', cls:'Maiden'},
+      {date:'24 ม.ค. 2026', result:1,  field:8,  horse:'สายฟ้าทอง',  jockey:'ก. ธนากร', cls:'Class 2'}
+    ]
+  },
+  /* horse directory (Bahrain Ref 5 — browse, not only arrive via race card) */
+  horses:[
+    {no:1,  nameTH:'สายฟ้าทอง',  nameEN:'Golden Thunder', age:5, color:'น้ำตาลไหม้', sex:'ผู้',  rating:96, trainer:'ส. ประเสริฐ',  owner:'คอกม้าราชพฤกษ์'},
+    {no:2,  nameTH:'มังกรเขียว',  nameEN:'Green Dragon',   age:6, color:'เทา',        sex:'ผู้',  rating:88, trainer:'ป. วิชัย',     owner:'คอกม้ามังกร'},
+    {no:3,  nameTH:'ราชาสิงห์',   nameEN:'Lion King',      age:5, color:'น้ำตาล',      sex:'ผู้',  rating:90, trainer:'ส. ประเสริฐ',  owner:'คอกม้าสิงห์ทอง'},
+    {no:4,  nameTH:'เปลวสุริยา',  nameEN:'Sun Flare',      age:4, color:'น้ำตาลแดง',   sex:'เมีย', rating:82, trainer:'ม. ธนพล',     owner:'คอกม้าสุริยา'},
+    {no:5,  nameTH:'นิลกาฬ',      nameEN:'Black Pearl',    age:7, color:'ดำ',          sex:'ตอน', rating:78, trainer:'ป. วิชัย',     owner:'คอกม้านิล'},
+    {no:6,  nameTH:'ลมพายุ',      nameEN:'Tempest',        age:5, color:'น้ำตาลไหม้',   sex:'ผู้',  rating:85, trainer:'ก. รุ่งโรจน์', owner:'คอกม้าพายุ'},
+    {no:7,  nameTH:'ทองแท้',      nameEN:'Pure Gold',      age:4, color:'เทา',         sex:'ผู้',  rating:74, trainer:'ม. ธนพล',     owner:'คอกม้าทองแท้'},
+    {no:8,  nameTH:'เพชรดำ',      nameEN:'Dark Diamond',   age:5, color:'ดำ',          sex:'ผู้',  rating:87, trainer:'ส. ประเสริฐ',  owner:'คอกม้าเพชร'},
+    {no:9,  nameTH:'สายลมเหนือ', nameEN:'North Wind',     age:6, color:'น้ำตาล',      sex:'ตอน', rating:80, trainer:'ก. รุ่งโรจน์', owner:'คอกม้าเหนือ'},
+    {no:10, nameTH:'อัศวินดำ',   nameEN:'Black Knight',   age:5, color:'ดำ',          sex:'ผู้',  rating:76, trainer:'ป. วิชัย',     owner:'คอกม้าอัศวิน'}
+  ],
   searchMock:[
     {type:'horse',   name:'สายฟ้าทอง (Golden Thunder)', label:'ม้า · เรตติ้ง 96', go:'horse'},
-    {type:'horse',   name:'มังกรเขียว (Green Dragon)',   label:'ม้า · เรตติ้ง 88', go:'horse'},
-    {type:'jockey',  name:'ก. ธนากร',                    label:'จ็อกกี้',          go:'racecard', opts:{no:3}},
-    {type:'trainer', name:'ส. ประเสริฐ',                 label:'เทรนเนอร์',        go:'racecard', opts:{no:3}},
+    {type:'horse',   name:'มังกรเขียว (Green Dragon)',   label:'ม้า · เรตติ้ง 88', go:'horses'},
+    {type:'jockey',  name:'ก. ธนากร',                    label:'จ็อกกี้',          go:'jockey'},
+    {type:'trainer', name:'ส. ประเสริฐ',                 label:'เทรนเนอร์',        go:'trainer'},
     {type:'owner',   name:'คอกม้าราชพฤกษ์',              label:'เจ้าของ',          go:'horse'}
   ]
 };
@@ -931,7 +1183,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 function placeholder(msg){openModal('ตัวอย่าง (Prototype)',el('p',{class:'muted'},msg));}
 
 /* ============ ROUTER ============ */
-const PAGES=['landing','raceday','racecard','horse'];
+const PAGES=['landing','raceday','racecard','horse','jockey','trainer','horses'];
 const RENDERERS={}; // each page registers RENDERERS[id]=fn
 const RENDERED={};
 function showPage(id,opts){
@@ -944,7 +1196,10 @@ function showPage(id,opts){
   setLang(document.documentElement.getAttribute('data-lang')||'th'); // re-localize freshly rendered nodes
   sec.classList.add('active');
   // nav active state
-  $$('nav.main a[data-go]').forEach(a=>a.classList.toggle('active', a.dataset.go===id || (id==='racecard' && a.dataset.go==='raceday')));
+  $$('nav.main a[data-go]').forEach(a=>a.classList.toggle('active',
+    a.dataset.go===id
+    || (id==='racecard' && a.dataset.go==='raceday')
+    || (['horse','jockey','trainer'].includes(id) && a.dataset.go==='horses')));
   $('#mainNav').classList.remove('open'); $('#hamburger').setAttribute('aria-expanded','false');
   window.scrollTo(0,0);
 }
@@ -984,6 +1239,11 @@ $('#hamburger').addEventListener('click',()=>{
   const nav=$('#mainNav'); const open=nav.classList.toggle('open');
   $('#hamburger').setAttribute('aria-expanded',open);
 });
+
+/* ============ LIVE STREAM (placeholder) ============ */
+['liveBtn','liveNav'].forEach(id=>{const e=document.getElementById(id); if(e)e.addEventListener('click',ev=>{
+  ev.preventDefault(); $('#mainNav').classList.remove('open');
+  placeholder('การถ่ายทอดสด (Live Stream) จะรับชมได้ในเวอร์ชันจริง — prototype นี้เป็นเพียงตัวอย่าง');});});
 
 /* ============ SEARCH (icon → expanding panel) ============ */
 function closeSearch(){const s=$('#search'); s.classList.remove('open'); $('#searchToggle').setAttribute('aria-expanded','false');}
@@ -1119,7 +1379,79 @@ RENDERERS.landing=function(sec){
   wrap.append(hero);
   sec.append(wrap);
 
-  /* 3. QUICK-ACCESS SHORTCUTS */
+  /* 3. CALENDAR + DAY PROGRAMME (Bahrain "Season Calendar + Racecards & Results") */
+  const todayIdx=DATA.fixtures.findIndex(f=>f.today);
+  if(RENDERERS.landing.calIdx==null) RENDERERS.landing.calIdx = todayIdx>=0?todayIdx:0;
+  const calIdx=RENDERERS.landing.calIdx;
+  const selFx=DATA.fixtures[calIdx]||DATA.fixtures[0];
+  const isSelToday=!!selFx.today;
+  const rerenderHome=()=>{ RENDERERS.landing(sec); setLang(document.documentElement.getAttribute('data-lang')||'th'); };
+  const calSec=el('div',{class:'section-gap'});
+  calSec.append(el('div',{class:'section-head'},
+    el('h2',{class:'i18n h-inline','data-th':'ปฏิทินแข่ง & โปรแกรม','data-en':'Calendar & Programme'},'ปฏิทินแข่ง & โปรแกรม'),
+    el('span',{class:'muted small'},'เลือกวันแข่งจากปฏิทิน')));
+  const calLeft=el('div',{class:'home-cal-left'});
+  [...new Set(DATA.fixtures.map(f=>f.mon))].forEach(mn=>{ const mi=THAI_MONTHS.indexOf(mn);
+    calLeft.append(raceMonthGrid(2026, mi, DATA.fixtures, idx=>{ RENDERERS.landing.calIdx=idx; rerenderHome(); })); });
+  calLeft.append(el('div',{class:'muted small',style:'margin-top:var(--s2)'}, el('span',{class:'cal-legend-dot'}),' = วันแข่ง (กดเพื่อดูโปรแกรม)'));
+  const prog=el('div',{class:'home-prog'});
+  prog.append(el('div',{class:'home-prog-head'},
+    el('div',{style:'min-width:0'}, el('div',{class:'hp-day'}, selFx.dow+' '+selFx.dd+' '+selFx.mon+' 2026'), el('div',{class:'hp-name'}, selFx.name)),
+    statusChip(isSelToday?m.status:selFx.status)));
+  if(isSelToday){
+    const list=el('div',{class:'home-prog-list'});
+    m.races.forEach(r=>{
+      const btn = r.status==='done'
+        ? el('button',{class:'btn btn-ghost btn-sm',onclick:()=>placeholder('ผลการแข่งเรซ '+r.no+' จะแสดงในเวอร์ชันจริง')},'ผล')
+        : el('button',{class:'btn btn-primary btn-sm',onclick:()=>go('racecard',{no:r.no})},'ดู Race Card');
+      list.append(el('div',{class:'hp-race'+(r.feature?' feat':'')},
+        el('span',{class:'hp-time mono'}, r.time),
+        el('span',{class:'hp-rnum'}, String(r.no)),
+        el('div',{class:'hp-rname'}, r.name, r.feature?el('span',{class:'badge-feat'},icon('star',12),' Feature'):null),
+        btn));
+    });
+    prog.append(list);
+  } else {
+    prog.append(el('div',{class:'note-banner',style:'margin:var(--s3) 0 0'}, icon('info',16),' เรซการ์ดของวันนี้จะเผยแพร่ก่อนวันแข่ง 48 ชั่วโมง'));
+    prog.append(el('div',{class:'meta-strip',style:'margin-top:var(--s3)'},
+      metaItem('clock','เริ่มแข่ง', selFx.post+' น.'),
+      metaItem('list','จำนวนเรซ', selFx.races+' เรซ'),
+      metaItem('trophy','เรซเด่น', selFx.feature)));
+  }
+  prog.append(el('button',{class:'btn btn-ghost',style:'margin-top:var(--s3);width:100%',onclick:()=>go('raceday')}, icon('calendar',16),' ดูหน้าเรซการ์ดแบบเต็ม'));
+  calSec.append(el('div',{class:'home-cal-grid'}, calLeft, prog));
+  sec.append(calSec);
+
+  /* 4. RACE-DAY UPDATES FEED */
+  const updSec=el('div',{class:'section-gap'});
+  updSec.append(el('div',{class:'section-head'},
+    el('h2',{class:'i18n h-inline','data-th':'อัปเดตวันแข่ง','data-en':'Race-Day Updates'},'อัปเดตวันแข่ง'),
+    el('span',{class:'muted small'},'ประกาศล่าสุดวันนี้')));
+  const UPD_ICON={going:'horseshoe',scratch:'minus-circle',draw:'flag',handicap:'star'};
+  const feed=el('div',{class:'updates-feed'});
+  DATA.updates.forEach(u=>{
+    feed.append(el('div',{class:'upd-row'},
+      el('span',{class:'upd-ico upd-'+u.type,'aria-hidden':'true'}, icon(UPD_ICON[u.type]||'info',16)),
+      el('div',{class:'upd-body'}, el('div',{class:'upd-text'},u.text), el('div',{class:'upd-time mono'},u.time))));
+  });
+  updSec.append(feed); sec.append(updSec);
+
+  /* 5. TWO BIG CTA CARDS (issue 5, Bahrain image-cards) */
+  const bigCard=(img,eyebrow,title,sub,onClick)=>{
+    const c=el('button',{class:'big-card',style:"background-image:linear-gradient(180deg,rgba(20,32,56,.30),rgba(20,32,56,.92)),url('"+img+"')"},
+      el('span',{class:'bc-eyebrow'},eyebrow),
+      el('span',{class:'bc-title'},title),
+      el('span',{class:'bc-sub'},sub),
+      el('span',{class:'bc-go'}, el('span',{},'เข้าชม'), icon('arrow-right',16)));
+    c.addEventListener('click',onClick); return c;
+  };
+  sec.append(el('div',{class:'big-cards section-gap'},
+    bigCard('images/news-tips.jpg','วิเคราะห์ & ทำนายผล','เจาะลึกตัวเต็งแต่ละเรซ','บทวิเคราะห์เชิงลึกและตัวเต็งของทีมงานในแต่ละเรซ พร้อมจุดชี้ขาด',
+      ()=>{ rcState.tab='eval'; go('racecard',{no:3}); }),
+    bigCard('images/news-preview.jpg','เรซใหญ่ที่จะมาถึง','MRC Gold Cup','Class 1 · 1,600ม. · เงินรางวัลรวม 1,500,000 บาท · บ่ายวันอาทิตย์นี้',
+      ()=>{ rcState.tab='runners'; go('racecard',{no:3}); })));
+
+  /* 6. QUICK-ACCESS SHORTCUTS (8 tiles) — after the big cards */
   const scSec=el('div',{class:'section-gap'});
   scSec.append(el('div',{class:'section-head'},
     el('h2',{class:'i18n h-inline','data-th':'เมนูด่วน','data-en':'Quick Access'},'เมนูด่วน'),
@@ -1138,7 +1470,7 @@ RENDERERS.landing=function(sec){
   });
   scSec.append(scGrid); sec.append(scSec);
 
-  /* 4. NEWS BLOG — big highlight left + 3 compact items right */
+  /* 8. NEWS BLOG — big feature story left + 3 compact items right */
   const newsSec=el('div',{class:'section-gap'});
   const seeAllNews=el('a',{href:'#',class:'inline-link'},'ดูทั้งหมด',icon('arrow-right',16));
   seeAllNews.addEventListener('click',e=>{e.preventDefault(); placeholder('หน้ารวมข่าวอยู่นอกขอบเขต prototype');});
@@ -1146,15 +1478,21 @@ RENDERERS.landing=function(sec){
     el('h2',{class:'i18n h-inline','data-th':'ข่าวสนามแข่ง','data-en':'Race News'},'ข่าวสนามแข่ง'), seeAllNews));
   const feat=DATA.news.find(n=>n.feature)||DATA.news[0];
   const sideNews=DATA.news.filter(n=>n!==feat).slice(0,3);
-  const hlCard=el('div',{class:'news-hl'});
-  hlCard.addEventListener('click',()=>placeholder('บทความข่าวฉบับเต็มจะแสดงในเวอร์ชันจริง'));
+  const hlCard=el('div',{class:'news-hl feature-story'});
+  const featCTA = feat.raceNo
+    ? (()=>{ const b=el('button',{class:'btn btn-gold btn-sm',style:'margin-top:var(--s3)'}, feat.cta||'อ่านต่อ', icon('arrow-right',15));
+        b.addEventListener('click',e=>{e.stopPropagation(); go('racecard',{no:feat.raceNo});}); return b; })()
+    : null;
+  hlCard.addEventListener('click',()=> feat.raceNo ? go('racecard',{no:feat.raceNo}) : placeholder('บทความข่าวฉบับเต็มจะแสดงในเวอร์ชันจริง'));
   hlCard.append(
-    el('div',{class:'hl-img'}, el('img',{src:feat.img,alt:feat.cat,loading:'eager'})),
+    el('div',{class:'hl-img'}, el('img',{src:feat.img,alt:feat.cat,loading:'lazy'}),
+      el('span',{class:'hl-eyebrow'}, icon('star',13),' เรื่องเด่น')),
     el('div',{class:'hl-body'},
       el('span',{class:'hl-cat'},feat.cat),
       el('div',{class:'hl-title'},feat.title),
       el('div',{class:'hl-ex'},feat.excerpt),
-      el('div',{class:'hl-date'},icon('calendar',13),feat.date)));
+      el('div',{class:'hl-date'},icon('calendar',13),feat.date),
+      featCTA));
   const sideList=el('div',{class:'news-side'});
   sideNews.forEach(n=>{
     const item=el('div',{class:'ns-item'});
@@ -1166,34 +1504,35 @@ RENDERERS.landing=function(sec){
   });
   newsSec.append(el('div',{class:'news-blog'}, hlCard, sideList));
   sec.append(newsSec);
-
-  /* 5. AUDIENCE CARDS */
-  const audienceCard=(ico,title,variant,links)=>{
-    const ul=el('ul');
-    links.forEach(l=>{
-      const a=el('a',{href:'#'}, l.t);
-      if(l.dead){a.append(el('span',{class:'badge-demo'},'demo'));
-        a.addEventListener('click',e=>{e.preventDefault(); placeholder('ส่วน "'+l.t+'" อยู่นอกขอบเขต prototype');});}
-      else a.addEventListener('click',e=>{e.preventDefault(); go(l.go,l.opts);});
-      ul.append(el('li',{},a));
-    });
-    return el('div',{class:'card audience-card'+(variant==='blue'?' blue':'')},
-      el('h3',{}, el('span',{'aria-hidden':'true'}, icon(ico,20)), el('span',{class:'i18n','data-th':title.th,'data-en':title.en}, title.th)), ul);
-  };
-  sec.append(el('div',{class:'dual-grid section-gap'},
-    audienceCard('info',{th:'มือใหม่หัดดู?',en:'New to racing?'},'green',[
-      {t:'วิธีอ่าน Race Card', go:'racecard', opts:{no:3}},
-      {t:'อภิธานศัพท์แข่งม้า', dead:true},
-      {t:'ข้อมูลบัตร & เวลาเปิดสนาม', dead:true}]),
-    audienceCard('list',{th:'ฟอร์ม & ข้อมูล',en:'Form & Data'},'blue',[
-      {t:'Race Cards ทุกเรซ', go:'raceday'},
-      {t:'ผลการแข่งย้อนหลัง', dead:true},
-      {t:'เรตติ้ง & แฮนดิแคป', dead:true},
-      {t:'ตารางคะแนน (Leaderboard)', dead:true}])
-  ));
 };
 
 /* ============ P2 — RACE DAY DETAIL (§4.4) ============ */
+const THAI_MONTHS=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+const THAI_DOW=['อา','จ','อ','พ','พฤ','ศ','ส'];
+/* month-calendar grid with race days highlighted (P3.1, Bahrain Ref 2 / HKJC Ref 3) */
+function raceMonthGrid(year, mi, fixtures, onPick){
+  const monLabel=THAI_MONTHS[mi];
+  const inMonth=fixtures.map((f,idx)=>({f,idx})).filter(o=>o.f.mon===monLabel);
+  const first=new Date(year,mi,1).getDay();
+  const days=new Date(year,mi+1,0).getDate();
+  const grid=el('div',{class:'cal-month'});
+  grid.append(el('div',{class:'cal-title'}, monLabel+' '+year));
+  const g=el('div',{class:'cal-grid'});
+  THAI_DOW.forEach(d=>g.append(el('span',{class:'cal-dow'},d)));
+  for(let i=0;i<first;i++)g.append(el('span',{class:'cal-cell empty'}));
+  for(let d=1;d<=days;d++){
+    const dd=String(d).padStart(2,'0');
+    const race=inMonth.find(o=>o.f.dd===dd);
+    if(race){
+      const sel=race.idx===rdState.idx;
+      const c=el('button',{class:'cal-cell cal-race'+(sel?' cal-sel':''),title:race.f.name+' · '+race.f.feature}, String(d));
+      c.addEventListener('click',()=>onPick(race.idx));
+      g.append(c);
+    } else g.append(el('span',{class:'cal-cell'}, String(d)));
+  }
+  grid.append(g);
+  return grid;
+}
 RENDERERS.raceday=function(sec){
   const m=DATA.meeting; sec.innerHTML='';
   const rerender=()=>{ RENDERERS.raceday(sec); setLang(document.documentElement.getAttribute('data-lang')||'th'); };
@@ -1213,6 +1552,54 @@ RENDERERS.raceday=function(sec){
     dateTabs.append(b);
   });
   sec.append(dateTabs);
+
+  /* 2b. FULL-SEASON CALENDAR + MONTH ACCORDION + FILTER (P3.1/P3.2, collapsible) */
+  const calBtn=el('button',{class:'cal-toggle'+(rdState.calOpen?' on':''),'aria-expanded':!!rdState.calOpen},
+    icon('calendar',16), el('span',{},' ดูปฏิทินทั้งฤดูกาล'), icon(rdState.calOpen?'chevron-up':'chevron-down',16));
+  calBtn.addEventListener('click',()=>{ rdState.calOpen=!rdState.calOpen; rerender(); });
+  sec.append(calBtn);
+  if(rdState.calOpen){
+    const months=[...new Set(DATA.fixtures.map(f=>f.mon))];
+    const filter=rdState.fxFilter||'all';
+    const showMonths=months.filter(mn=>filter==='all'||filter===mn);
+    const panel=el('div',{class:'cal-panel'});
+    /* filter bar (P3.2) */
+    const fbar=el('div',{class:'cal-filter'});
+    fbar.append(el('span',{class:'muted small',style:'align-self:center'},'เดือน:'));
+    [['all','ทั้งหมด'],...months.map(mn=>[mn,mn])].forEach(([id,lab])=>{
+      const c=el('button',{class:'ff-chip'+(filter===id?' on':'')}, lab);
+      c.addEventListener('click',()=>{ rdState.fxFilter=id; rerender(); });
+      fbar.append(c);
+    });
+    panel.append(fbar);
+    /* calendar grids */
+    const cals=el('div',{class:'cal-months'});
+    showMonths.forEach(mn=>{ const mi=THAI_MONTHS.indexOf(mn);
+      cals.append(raceMonthGrid(2026, mi, DATA.fixtures, idx=>{ rdState.idx=idx; rdState.calOpen=false; rerender(); })); });
+    panel.append(cals);
+    panel.append(el('div',{class:'muted small',style:'margin:var(--s2) 0 var(--s4)'},
+      el('span',{class:'cal-legend-dot'}),' = วันแข่ง (กดวันที่เพื่อเลือก)'));
+    /* month accordion list */
+    const acc=el('div',{class:'fx-accordion'});
+    showMonths.forEach(mn=>{
+      const fxs=DATA.fixtures.map((f,idx)=>({f,idx})).filter(o=>o.f.mon===mn);
+      const det=el('details',{open:'open'});
+      det.append(el('summary',{}, mn+' 2026 · '+fxs.length+' วันแข่ง'));
+      fxs.forEach(o=>{
+        const pickB=el('button',{class:'btn btn-ghost btn-sm'}, o.idx===rdState.idx?'กำลังดู':'เลือก');
+        pickB.addEventListener('click',()=>{ rdState.idx=o.idx; rdState.calOpen=false; rerender(); });
+        det.append(el('div',{class:'fx-acc-row'+(o.idx===rdState.idx?' sel':'')},
+          el('div',{class:'fx-date'}, el('span',{class:'fx-dd'},o.f.dd), el('span',{class:'fx-mon'},o.f.mon)),
+          el('div',{style:'flex:1;min-width:0'},
+            el('div',{class:'fx-name'}, o.f.name),
+            el('div',{class:'fx-meta'}, icon('flag',13),' '+o.f.feature,' · ',o.f.races+' เรซ · เริ่ม '+o.f.post+' น.')),
+          pickB));
+      });
+      acc.append(det);
+    });
+    panel.append(acc);
+    sec.append(panel);
+  }
 
   /* 3. MEETING HEADER */
   sec.append(el('div',{class:'page-head'},
@@ -1368,7 +1755,23 @@ RENDERERS.racecard=function(sec,opts){
     sec.append(el('div',{class:'note-banner'}, icon('info',18),' ข้อมูลม้าแบบละเอียดมีเฉพาะเรซ 3 (MRC Gold Cup) ในตัวอย่างนี้ — รายชื่อด้านล่างเป็นข้อมูลสาธิต'));
   }
 
-  /* 4. ⭐ VIEW TOGGLE ง่าย/เต็ม (default Simple) */
+  /* 4. SUB-TABS — รายชื่อม้า / วิเคราะห์ / ผลย้อนหลัง (detailed race only; Bahrain Ref 5) */
+  const subTab = isDetailed ? (rcState.tab||'runners') : 'runners';
+  if(isDetailed){
+    const stabs=el('div',{class:'sub-tabs',role:'tablist','aria-label':'มุมมองเรซ'});
+    [['runners','รายชื่อม้า','Runners'],['eval','วิเคราะห์','Analysis'],['winners','ผลย้อนหลัง','Past Winners']].forEach(([id,th,en])=>{
+      const b=el('button',{class:'sub-tab'+(subTab===id?' on':''),role:'tab','aria-selected':subTab===id},
+        el('span',{class:'i18n','data-th':th,'data-en':en},th));
+      b.addEventListener('click',()=>{ if((rcState.tab||'runners')!==id){rcState.tab=id; rerender();} });
+      stabs.append(b);
+    });
+    sec.append(stabs);
+  }
+
+  if(subTab==='eval'){ sec.append(evaluationPanel(rd)); }
+  else if(subTab==='winners'){ sec.append(pastWinnersPanel(rd)); }
+  else {
+  /* ===== RUNNERS TAB: view toggle + runners + handicap + legend ===== */
   const toggleRow=el('div',{class:'flex between center wrap',style:'gap:var(--s3); margin:var(--s4) 0 var(--s3)'},
     el('div',{class:'flex gap2 center'},
       el('h2',{class:'i18n h-inline','data-th':'รายชื่อม้า','data-en':'Runners'},'รายชื่อม้า'),
@@ -1378,14 +1781,12 @@ RENDERERS.racecard=function(sec,opts){
       btnView('full','เต็ม','Full',rerender)));
   sec.append(toggleRow);
 
-  /* 5. RUNNERS — Simple cards or Full table */
   const runners=rd.runners;
   const topRating=Math.max(...runners.map(r=>r.rating));
   const bestForm=Math.min(...runners.map(r=>formScore(r.form)));
   if(rcState.view==='simple') sec.append(renderSimple(runners));
   else sec.append(renderFull(runners,topRating,bestForm,rerender));
 
-  /* 6. HANDICAP BOX */
   const hcap=el('div',{class:'section-gap'});
   const hcLabel=el('div',{class:'flex gap2 center',style:'margin-bottom:var(--s2)'},
     el('h3',{class:'h-inline'},'น้ำหนักแฮนดิแคป'),
@@ -1402,7 +1803,6 @@ RENDERERS.racecard=function(sec,opts){
     el('div',{class:'hcap-ends'}, el('span',{},minW+' กก.'), el('span',{},maxW+' กก.'))));
   sec.append(hcap);
 
-  /* 7. COLLAPSIBLE GEAR LEGEND */
   const legend=el('div',{class:'section-gap legend'});
   const dl=el('div',{class:'gear-legend-grid'});
   [['B','บังตา (Blinkers) — ช่วยให้ม้าโฟกัสไปข้างหน้า'],
@@ -1414,7 +1814,44 @@ RENDERERS.racecard=function(sec,opts){
   legend.append(el('details',{},
     el('summary',{},'อภิธานอุปกรณ์ม้า (Gear) — กดเพื่อดู'), dl));
   sec.append(legend);
+  }
 };
+/* race-card sub-tab panels (P3.3 / P3.4) */
+function evaluationPanel(rd){
+  const ev=rd.evaluation||{}; const wrap=el('div',{class:'section-gap'});
+  const pick=rd.runners.find(r=>r.num===ev.pickNum);
+  wrap.append(el('div',{class:'eval-pick'},
+    el('div',{class:'ep-label'}, icon('star',16), el('span',{class:'i18n','data-th':' ตัวเต็งของทีมวิเคราะห์','data-en':' Analysts’ top pick'},' ตัวเต็งของทีมวิเคราะห์')),
+    el('div',{class:'ep-main'},
+      el('span',{class:'rc-num-badge'}, String(ev.pickNum||'-')),
+      el('span',{class:'silks silks-lg',style:'--sc:'+(pick?pick.silksColor:'#264068')}),
+      el('div',{}, el('div',{class:'ep-name'}, ev.pickName||'—'),
+        el('div',{class:'muted small'}, pick?('เรตติ้ง '+pick.rating+' · จ็อกกี้ '+pick.jockey):'')))));
+  wrap.append(el('p',{class:'eval-text'}, ev.text||''));
+  if(ev.pace)wrap.append(el('div',{class:'eval-pace'}, el('strong',{},'จังหวะเกม: '), ev.pace));
+  wrap.append(el('div',{class:'muted small',style:'margin-top:var(--s3)'}, icon('info',14),' บทวิเคราะห์เป็นความเห็นประกอบการตัดสินใจ ไม่ใช่การรับประกันผล'));
+  return wrap;
+}
+function pastWinnersPanel(rd){
+  const wrap=el('div',{class:'section-gap'});
+  wrap.append(el('div',{class:'flex gap2 center',style:'margin-bottom:var(--s3)'},
+    el('h3',{class:'h-inline'},'ผู้ชนะย้อนหลัง'),
+    tooltip('รายชื่อม้าที่ชนะเรซนี้ในปีก่อน ๆ — ช่วยให้เห็นว่าเรซนี้เหมาะกับม้าแบบไหน (น้ำหนักแบก/สภาพสนาม)')));
+  const tbl=el('table',{class:'simple-table'});
+  tbl.append(el('thead',{}, el('tr',{},
+    el('th',{},'ปี'), el('th',{},'ม้าที่ชนะ'), el('th',{},'จ็อกกี้'),
+    el('th',{class:'num'},'นน.'), el('th',{},'สนาม'), el('th',{class:'num'},'เวลา'))));
+  const tb=el('tbody');
+  (rd.pastWinners||[]).forEach(w=>{
+    const jLink=el('a',{href:'#',class:'ent-link'}, w.jockey);
+    jLink.addEventListener('click',e=>{e.preventDefault(); go('jockey');});
+    tb.append(el('tr',{},
+      el('td',{class:'mono'}, w.year), el('td',{}, w.horse), el('td',{}, jLink),
+      el('td',{class:'num mono'}, String(w.weight)), el('td',{}, w.going), el('td',{class:'num mono'}, w.time)));
+  });
+  tbl.append(tb); wrap.append(el('div',{class:'simple-table-wrap'}, tbl));
+  return wrap;
+}
 
 function btnView(view,th,en,rerender){
   const b=el('button',{class:(rcState.view===view?'on':''),'aria-pressed':rcState.view===view},
@@ -1423,11 +1860,12 @@ function btnView(view,th,en,rerender){
   return b;
 }
 
-/* horse / person drill-down link */
+/* horse / jockey / trainer drill-down link (P2.4 — information scent end-to-end) */
 function entityLink(label,kind){
-  const a=el('a',{href:'#',class:kind==='horse'?'rc-name':''}, label);
+  const dest=kind==='horse'?'horse':kind==='jockey'?'jockey':kind==='trainer'?'trainer':null;
+  const a=el('a',{href:'#',class:kind==='horse'?'rc-name':'ent-link'}, label);
   a.addEventListener('click',e=>{e.preventDefault();
-    kind==='horse'?go('horse'):placeholder('โปรไฟล์ของ '+label+' อยู่นอกขอบเขต prototype (ทำเฉพาะโปรไฟล์ม้า)'); });
+    dest?go(dest):placeholder('โปรไฟล์ของ '+label+' อยู่นอกขอบเขต prototype'); });
   return a;
 }
 
@@ -1448,8 +1886,8 @@ function renderSimple(runners){
         isOut?el('span',{class:'rc-scratch-badge'}, icon('minus-circle',14),' ถอนตัว'):null),
       isOut?el('div',{class:'rc-scratch-reason'}, icon('info',14),' ', r.scratchReason||'ถอนจากการแข่ง'):null,
       el('div',{class:'rc-card-grid'},
-        kv('จ็อกกี้', entityLink(r.jockey,'person')),
-        kv('เทรนเนอร์', entityLink(r.trainer,'person')),
+        kv('จ็อกกี้', entityLink(r.jockey,'jockey')),
+        kv('เทรนเนอร์', entityLink(r.trainer,'trainer')),
         kv('น้ำหนัก', r.weight+' กก.','น้ำหนักที่ม้าต้องแบก ยิ่งมาก = ฝีเท้ายิ่งดี (แฮนดิแคป)'),
         kv('ประตู', 'Gate '+r.gate,'ตำแหน่งประตูออกตัว')),
       el('div',{class:'rc-form-row'},
@@ -1507,8 +1945,8 @@ function renderFull(runners,topRating,bestForm,rerender){
       el('td',{class:'c-silks'}, el('span',{class:'silks',style:'--sc:'+r.silksColor})),
       el('td',{class:'c-horse'+(r.feature?' feat':'')}, horseA, isOut?el('span',{class:'rc-scratch-badge sm',title:r.scratchReason||''}, ' ถอนตัว'):null),
       el('td',{class:'form-cell'+(isBestF?' hi':'')}, r.form),
-      el('td',{}, entityLink(r.trainer,'person')),
-      el('td',{}, entityLink(r.jockey,'person')),
+      el('td',{}, entityLink(r.trainer,'trainer')),
+      el('td',{}, entityLink(r.jockey,'jockey')),
       el('td',{class:'num-cell'}, String(r.weight)),
       el('td',{class:'num-cell'}, String(r.gate)),
       el('td',{class:'num-cell'+(isTopR?' hi':'')}, String(r.rating)),
@@ -1524,7 +1962,7 @@ function renderFull(runners,topRating,bestForm,rerender){
 
 /* ============ P4 — HORSE PROFILE (§4.3) ============ */
 /* dual-audience past-performance: cards (อ่านง่าย) / dense table (เปรียบเทียบ) */
-const horseState={showAll:false, view:'cards', groups:{result:true, cond:false, time:false, money:false, team:true}};
+const horseState={showAll:false, view:'cards', filter:'all', groups:{result:true, cond:false, time:false, money:false, team:true}};
 const PP_GROUPS=[{id:'result',label:'ผลการแข่ง'},{id:'cond',label:'สภาพ'},{id:'time',label:'เวลา'},{id:'money',label:'เงินรางวัล'},{id:'team',label:'ทีมงาน'}];
 /* col defs — core cols are frozen; others belong to a toggleable group */
 const PP_COLS=[
@@ -1607,6 +2045,70 @@ function careerStrip(h){
     card('star', s.third, 'ที่ 3'),
     card('list', s.winPct+'%', 'อัตราชนะ'),
     wr);
+}
+/* ===== rating-trend line-chart (narrative §10) — inline SVG, no chart lib ===== */
+function ratingChart(h){
+  const data=(h.form||[]).filter(f=>typeof f.rtg==='number').slice().reverse(); // oldest→newest
+  if(data.length<3) return null;
+  const NS='http://www.w3.org/2000/svg';
+  const mk=(t,a,txt)=>{const n=document.createElementNS(NS,t); for(const k in a)n.setAttribute(k,a[k]); if(txt!=null)n.textContent=txt; return n;};
+  const ratings=data.map(f=>f.rtg);
+  const minR=Math.min(...ratings), maxR=Math.max(...ratings);
+  const lo=minR-3, hi=maxR+3;
+  const W=720,H=210,padL=42,padR=18,padT=18,padB=34;
+  const plotW=W-padL-padR, plotH=H-padT-padB, baseY=padT+plotH;
+  const xAt=i=> data.length<2?padL+plotW/2 : padL+(i/(data.length-1))*plotW;
+  const yAt=r=> padT+(1-(r-lo)/(hi-lo))*plotH;
+  const svg=mk('svg',{viewBox:'0 0 '+W+' '+H,role:'img','aria-label':'กราฟแนวโน้มเรตติ้งย้อนหลัง'});
+  /* gradient defs for the area fill */
+  const defs=mk('defs',{}); const grad=mk('linearGradient',{id:'rcgrad',x1:0,y1:0,x2:0,y2:1});
+  grad.append(mk('stop',{offset:'0%','stop-color':'var(--gold-500)','stop-opacity':'.22'}));
+  grad.append(mk('stop',{offset:'100%','stop-color':'var(--gold-500)','stop-opacity':'0'}));
+  defs.append(grad); svg.append(defs);
+  /* y gridlines + labels (min, mid, max) */
+  [...new Set([minR, Math.round((minR+maxR)/2), maxR])].forEach(v=>{
+    const y=yAt(v);
+    svg.append(mk('line',{x1:padL,y1:y,x2:W-padR,y2:y,class:'rc-grid'}));
+    svg.append(mk('text',{x:padL-8,y:y+4,class:'rc-axislab','text-anchor':'end'},String(v)));
+  });
+  /* area + line */
+  let dArea='M '+xAt(0)+' '+yAt(ratings[0]);
+  data.forEach((f,i)=>{ dArea+=' L '+xAt(i)+' '+yAt(f.rtg); });
+  dArea+=' L '+xAt(data.length-1)+' '+baseY+' L '+xAt(0)+' '+baseY+' Z';
+  svg.append(mk('path',{d:dArea,class:'rc-area'}));
+  let dLine='M '+xAt(0)+' '+yAt(ratings[0]);
+  data.forEach((f,i)=>{ if(i>0)dLine+=' L '+xAt(i)+' '+yAt(f.rtg); });
+  svg.append(mk('path',{d:dLine,class:'rc-line'}));
+  /* points coloured by finish (traffic-light) */
+  const dotColor=f=> f.pos===1?'var(--gold-500)':(f.pos>=2&&f.pos<=3)?'var(--good)':f.pos===0?'var(--bad)':'var(--green-700)';
+  data.forEach((f,i)=>{
+    const c=mk('circle',{cx:xAt(i),cy:yAt(f.rtg),r:4.5,class:'rc-dot',fill:dotColor(f)});
+    c.append(mk('title',{},f.date+' · '+(f.pos===0?'ไม่จบ':'อันดับ '+f.pos+'/'+f.field)+' · เรตติ้ง '+f.rtg));
+    svg.append(c);
+  });
+  /* x labels: first & last meeting date (timespan) */
+  svg.append(mk('text',{x:xAt(0),y:H-12,class:'rc-axislab','text-anchor':'start'},data[0].date));
+  svg.append(mk('text',{x:xAt(data.length-1),y:H-12,class:'rc-axislab','text-anchor':'end'},data[data.length-1].date));
+  /* caption — states the trend in words (a11y: colour is never the only signal) */
+  const first=ratings[0], last=ratings[ratings.length-1], diff=last-first;
+  const up=diff>=3, down=diff<=-3;
+  const capText=(diff===0||(!up&&!down))
+    ? 'เรตติ้งทรงตัวราว '+last+' ตลอด '+data.length+' เรซล่าสุด'
+    : 'เรตติ้ง'+(up?'ขยับขึ้น':'ปรับลดลง')+' '+(diff>0?'+'+diff:diff)+' จาก '+first+' เป็น '+last+' ใน '+data.length+' เรซล่าสุด';
+  const wrap=el('div',{class:'section-gap'});
+  wrap.append(el('div',{class:'flex gap2 center',style:'margin-bottom:var(--s3)'},
+    el('h2',{class:'i18n h-inline','data-th':'แนวโน้มเรตติ้ง','data-en':'Rating Trend'},'แนวโน้มเรตติ้ง'),
+    tooltip('เรตติ้งอย่างเป็นทางการในแต่ละครั้งที่ลงแข่ง เรียงจากเก่า (ซ้าย) ไปใหม่ (ขวา) — แนวโน้มขึ้นสะท้อนฟอร์มที่กำลังพัฒนา')));
+  const cardEl=el('div',{class:'rating-chart'});
+  cardEl.append(svg);
+  cardEl.append(el('div',{class:'rc-caption'+(up?' up':down?' down':'')},
+    icon(up?'trend-up':down?'trend-down':'minus-circle',18), el('span',{},capText)));
+  cardEl.append(el('div',{class:'rc-legend'},
+    el('span',{}, el('i',{style:'background:var(--gold-500)'}),'ชนะ'),
+    el('span',{}, el('i',{style:'background:var(--good)'}),'ที่ 2–3'),
+    el('span',{}, el('i',{style:'background:var(--green-700)'}),'อันดับอื่น')));
+  wrap.append(cardEl);
+  return wrap;
 }
 /* ===== horse health & racing status ===== */
 const HORSE_STATUS={
@@ -1713,7 +2215,10 @@ RENDERERS.horse=function(sec){
   /* 2b. CAREER STATS STRIP (derived from form) */
   sec.append(careerStrip(h));
 
-  /* 2c. HEALTH & RACING STATUS */
+  /* 2c. ⭐ RATING TREND CHART (narrative §10) */
+  const rtChart=ratingChart(h); if(rtChart)sec.append(rtChart);
+
+  /* 2d. HEALTH & RACING STATUS */
   const hp=healthPanel(h); if(hp)sec.append(hp);
 
   /* 3. BASIC INFO PANEL (key-value) */
@@ -1740,7 +2245,22 @@ RENDERERS.horse=function(sec){
     el('div',{class:'view-toggle',role:'group','aria-label':'มุมมอง'},
       vbtn('cards','การ์ด','Cards'), vbtn('table','ตาราง','Table'))));
 
-  const rows = horseState.showAll ? h.form : h.form.slice(0,6);
+  /* form filter chips (P3.5, Abu Dhabi Ref 4) */
+  const FILTERS=[['all','ทั้งหมด',f=>true],['wins','เฉพาะชนะ',f=>f.pos===1],['places','เข้าป้าย (1–3)',f=>f.pos>=1&&f.pos<=3]];
+  const fchips=el('div',{class:'form-filter'});
+  fchips.append(el('span',{class:'muted small',style:'align-self:center'},'กรอง:'));
+  FILTERS.forEach(([id,lab,fn])=>{
+    const on=horseState.filter===id;
+    const cnt=h.form.filter(fn).length;
+    const c=el('button',{class:'ff-chip'+(on?' on':''),'aria-pressed':on}, lab+' ('+cnt+')');
+    c.addEventListener('click',()=>{ if(horseState.filter!==id){horseState.filter=id; horseState.showAll=false; rerenderH();} });
+    fchips.append(c);
+  });
+  pp.append(fchips);
+
+  const filterFn=(FILTERS.find(f=>f[0]===horseState.filter)||FILTERS[0])[2];
+  const filtered=h.form.filter(filterFn);
+  const rows = horseState.showAll ? filtered : filtered.slice(0,6);
 
   if(horseState.view==='table'){
     /* group filter chips */
@@ -1812,22 +2332,17 @@ RENDERERS.horse=function(sec){
     pp.append(grid);
   }
 
-  if(h.form.length>6){
+  if(filtered.length>6){
     const btn=el('button',{class:'btn btn-ghost',style:'margin-top:var(--s3)'},
-      horseState.showAll?'แสดงน้อยลง':'ดูทั้งหมด ('+h.form.length+' รายการ)');
+      horseState.showAll?'แสดงน้อยลง':'ดูทั้งหมด ('+filtered.length+' รายการ)');
     btn.addEventListener('click',()=>{ horseState.showAll=!horseState.showAll; rerenderH(); });
     pp.append(btn);
   }
+  if(!filtered.length){ pp.append(el('div',{class:'empty-state'},
+    el('span',{class:'es-ico'},icon('search-off',36)), el('div',{class:'es-title'},'ไม่มีรายการตรงกับตัวกรองนี้'))); }
   sec.append(pp);
 
-  /* 5. RATING HISTORY — SVG line chart */
-  const rc=el('div',{class:'section-gap'});
-  rc.append(el('div',{class:'section-head'},
-    el('h2',{class:'i18n','data-th':'พัฒนาการเรตติ้ง','data-en':'Rating History'},'พัฒนาการเรตติ้ง'),
-    el('span',{class:'muted small'}, h.ratingHistory.length+' การแข่งล่าสุด')));
-  rc.append(el('div',{class:'rating-chart'}, ratingSVG(h.ratingHistory),
-    el('div',{class:'muted small',style:'margin-top:var(--s2)'},'เส้นสูง = เรตติ้งดีกว่า · เส้นขึ้น = ฟอร์มกำลังพัฒนา (กดจุดเพื่อดูค่า)')));
-  sec.append(rc);
+  /* (rating trend chart moved up to §2c — narrative right after the verdict) */
 
   /* 6. STEWARDS (collapsible, default closed) */
   const st=el('div',{class:'section-gap stewards'});
@@ -1837,13 +2352,15 @@ RENDERERS.horse=function(sec){
   st.append(el('details',{}, el('summary',{},'รายงานกรรมการ (Stewards) — '+h.stewards.length+' รายการ'), stBody));
   sec.append(st);
 
-  /* 7. RELATED ENTITIES (dead + demo tag) */
+  /* 7. RELATED ENTITIES — trainer/jockey now link to live profiles (P2.4) */
   const rel=el('div',{class:'section-gap'});
   rel.append(el('h2',{class:'i18n','data-th':'ข้อมูลที่เกี่ยวข้อง','data-en':'Related'},'ข้อมูลที่เกี่ยวข้อง'));
   const links=el('div',{class:'related-links'});
   h.related.forEach(r=>{
-    const a=el('a',{href:'#'}, r.label, el('span',{class:'badge-demo'},'demo'));
-    a.addEventListener('click',e=>{e.preventDefault(); placeholder('โปรไฟล์ "'+r.label+'" อยู่นอกขอบเขต prototype (ทำเฉพาะโปรไฟล์ม้า)');});
+    const dest=r.kind==='trainer'?'trainer':r.kind==='jockey'?'jockey':null;
+    const a=el('a',{href:'#'}, r.label, dest?null:el('span',{class:'badge-demo'},'demo'));
+    a.addEventListener('click',e=>{e.preventDefault();
+      dest?go(dest):placeholder('โปรไฟล์ "'+r.label+'" อยู่นอกขอบเขต prototype');});
     links.append(a);
   });
   rel.append(links); sec.append(rel);
@@ -1878,6 +2395,150 @@ function ratingSVG(data){
   });
   return svg;
 }
+
+/* ============ P5 — JOCKEY / TRAINER PROFILE (Bahrain Ref 7) ============ */
+const personState={jockey:'season', trainer:'season'};
+function resultChip(pos,field){
+  const cls=pos===1?'res-win':(pos>=2&&pos<=3?'res-place':'res-back');
+  return el('span',{class:'res-chip '+cls}, pos===0?'ไม่จบ':('ที่ '+pos+(field?'/'+field:'')));
+}
+function personStatCard(ico,num,lab,gold){
+  return el('div',{class:'stat-card'+(gold?' gold':'')},
+    el('div',{class:'sc-ico'},icon(ico,22)), el('div',{class:'sc-num'},String(num)), el('div',{class:'sc-lab'},lab));
+}
+function renderPerson(sec,key){
+  const isJockey=key==='jockey';
+  const d=isJockey?DATA.jockey:DATA.trainer;
+  const role=isJockey?'จ็อกกี้':'เทรนเนอร์';
+  const countLab=isJockey?'การลงแข่ง':'ส่งลงแข่ง';
+  const countField=isJockey?'rides':'runners';
+  const list=isJockey?d.rides:d.runners;
+  sec.innerHTML='';
+  const rerender=()=>{ renderPerson(sec,key); setLang(document.documentElement.getAttribute('data-lang')||'th'); };
+  /* breadcrumb + header (Identity) */
+  sec.append(breadcrumb([{t:'ม้า & บุคคล',go:'horses'},{t:d.nameTH,current:true}]));
+  sec.append(el('div',{class:'page-head'},
+    el('div',{},
+      el('div',{class:'eyebrow-line'}, role+' · MRC'),
+      el('h1',{class:'i18n','data-th':d.nameTH,'data-en':d.nameEN}, d.nameTH),
+      el('div',{class:'muted'}, d.nameEN+' · '+d.since)),
+    el('span',{class:'person-role-chip'}, icon(isJockey?'horse':'shield',16),' '+role)));
+  /* CAREER / SEASON tabs */
+  const tab=personState[key];
+  const tabs=el('div',{class:'race-tabs',style:'margin-bottom:var(--s4)','aria-label':'ช่วงสถิติ'});
+  [['season','ฤดูกาลนี้','This Season'],['career','ตลอดอาชีพ','Career']].forEach(([id,th,en])=>{
+    const b=el('button',{class:'wide '+(tab===id?'on':''),'aria-pressed':tab===id},
+      el('span',{class:'i18n','data-th':th,'data-en':en},th));
+    b.addEventListener('click',()=>{ if(personState[key]!==id){personState[key]=id; rerender();} });
+    tabs.append(b);
+  });
+  sec.append(tabs);
+  /* stat-strip (Verdict) */
+  const s=tab==='season'?d.seasonStat:d.career;
+  sec.append(el('div',{class:'person-stats'},
+    personStatCard('trophy', s.wins, 'ชนะ', true),
+    personStatCard(isJockey?'horse':'list', s[countField], countLab),
+    personStatCard('star', s.sec, 'ที่ 2'),
+    personStatCard('star', s.third, 'ที่ 3'),
+    personStatCard('list', s.winPct+'%', 'อัตราชนะ'),
+    personStatCard('flag', s.placePct+'%', 'เข้าป้าย')));
+  /* rides / runners table (Evidence) */
+  const wrap=el('div',{class:'section-gap'});
+  wrap.append(el('div',{class:'flex gap2 center',style:'margin-bottom:var(--s3)'},
+    el('h2',{class:'i18n h-inline','data-th':isJockey?'ผลการขี่ล่าสุด':'ผลม้าในคอกล่าสุด','data-en':isJockey?'Recent Rides':'Recent Runners'}, isJockey?'ผลการขี่ล่าสุด':'ผลม้าในคอกล่าสุด'),
+    el('span',{class:'muted small'}, list.length+' รายการ')));
+  const otherLab=isJockey?'เทรนเนอร์':'จ็อกกี้';
+  const tbl=el('table',{class:'simple-table'});
+  tbl.append(el('thead',{}, el('tr',{},
+    el('th',{},'วันที่'), el('th',{},'ผล'), el('th',{},'รุ่น'), el('th',{},'ม้า'), el('th',{},otherLab))));
+  const tb=el('tbody');
+  list.forEach(r=>{
+    const horseLink=el('a',{href:'#',class:'ent-link'}, r.horse);
+    horseLink.addEventListener('click',e=>{e.preventDefault(); go('horse');});
+    const otherName=isJockey?r.trainer:r.jockey;
+    const otherLink=el('a',{href:'#',class:'ent-link'}, otherName);
+    otherLink.addEventListener('click',e=>{e.preventDefault(); go(isJockey?'trainer':'jockey');});
+    tb.append(el('tr',{},
+      el('td',{class:'mono'}, r.date),
+      el('td',{}, resultChip(r.result, r.field)),
+      el('td',{}, r.cls),
+      el('td',{}, horseLink),
+      el('td',{}, otherLink)));
+  });
+  tbl.append(tb); wrap.append(el('div',{class:'simple-table-wrap'}, tbl)); sec.append(wrap);
+  sec.append(el('button',{class:'btn btn-ghost',style:'margin-top:var(--s4)',onclick:()=>go('horses')},
+    icon('arrow-left',16),' กลับไปหน้า ม้า & บุคคล'));
+}
+RENDERERS.jockey=function(sec){ renderPerson(sec,'jockey'); };
+RENDERERS.trainer=function(sec){ renderPerson(sec,'trainer'); };
+
+/* ============ P6 — HORSE DIRECTORY (Bahrain Ref 5) ============ */
+const horsesState={q:''};
+RENDERERS.horses=function(sec){
+  sec.innerHTML='';
+  sec.append(breadcrumb([{t:'หน้าแรก',go:'landing'},{t:'ม้า & บุคคล',current:true}]));
+  sec.append(el('div',{class:'page-head'},
+    el('div',{},
+      el('div',{class:'eyebrow-line'},'ไดเรกทอรี'),
+      el('h1',{class:'i18n','data-th':'ม้า & บุคคล','data-en':'Horses & People'},'ม้า & บุคคล'),
+      el('div',{class:'muted'},'ค้นหาและเรียกดูม้าทั้งหมด พร้อมทางลัดสู่โปรไฟล์จ็อกกี้และเทรนเนอร์'))));
+  /* people quick-access (Journey: profiles reachable without a race) */
+  const peopleCard=(ico,role,name,dest)=>{
+    const c=el('button',{class:'people-card'},
+      el('span',{class:'pa-ico'},icon(ico,22)),
+      el('span',{class:'pa-text'}, el('span',{class:'pa-role'},role), el('span',{class:'pa-name'},name)),
+      icon('chevron-right',18));
+    c.addEventListener('click',()=>go(dest)); return c;
+  };
+  sec.append(el('div',{class:'people-access'},
+    peopleCard('horse','จ็อกกี้นำตาราง', DATA.jockey.nameTH, 'jockey'),
+    peopleCard('shield','เทรนเนอร์นำตาราง', DATA.trainer.nameTH, 'trainer')));
+  /* quick finder */
+  const finder=el('div',{class:'finder'});
+  finder.append(el('span',{class:'finder-ico','aria-hidden':'true'}, icon('search',18)));
+  const input=el('input',{type:'search',placeholder:'พิมพ์ชื่อม้า (ไทย/อังกฤษ)…','aria-label':'ค้นหาม้า'});
+  input.value=horsesState.q;
+  finder.append(input);
+  sec.append(el('div',{class:'section-gap'},
+    el('div',{class:'flex gap2 center',style:'margin-bottom:var(--s3)'},
+      el('h2',{class:'i18n h-inline','data-th':'รายชื่อม้าทั้งหมด','data-en':'All Horses'},'รายชื่อม้าทั้งหมด'),
+      el('span',{class:'muted small'}, DATA.horses.length+' ตัว')),
+    finder));
+  const wrap=el('div',{class:'simple-table-wrap'});
+  const tbl=el('table',{class:'simple-table'});
+  tbl.append(el('thead',{}, el('tr',{},
+    el('th',{},'#'), el('th',{},'ชื่อม้า'), el('th',{class:'num'},'อายุ'), el('th',{},'สี'),
+    el('th',{},'เพศ'), el('th',{class:'num'},'เรตติ้ง'), el('th',{},'เทรนเนอร์'), el('th',{},'เจ้าของ'))));
+  const tb=el('tbody'); tbl.append(tb); wrap.append(tbl);
+  const empty=el('div',{class:'empty-state',style:'display:none'},
+    el('span',{class:'es-ico'},icon('search-off',40)),
+    el('div',{class:'es-title'},'ไม่พบม้าที่ตรงกับคำค้น'),
+    el('div',{class:'muted small'},'ลองพิมพ์ชื่ออื่น หรือล้างช่องค้นหา'));
+  function renderRows(){
+    const q=horsesState.q.trim().toLowerCase();
+    const rows=DATA.horses.filter(h=>!q||h.nameTH.toLowerCase().includes(q)||h.nameEN.toLowerCase().includes(q));
+    tb.innerHTML='';
+    rows.forEach(h=>{
+      const nameLink=el('a',{href:'#',class:'ent-link strong'}, h.nameTH+' ', el('span',{class:'muted small'},'('+h.nameEN+')'));
+      nameLink.addEventListener('click',e=>{e.preventDefault(); go('horse');});
+      const trLink=el('a',{href:'#',class:'ent-link'}, h.trainer);
+      trLink.addEventListener('click',e=>{e.preventDefault(); go('trainer');});
+      tb.append(el('tr',{},
+        el('td',{class:'mono'}, String(h.no)),
+        el('td',{}, nameLink),
+        el('td',{class:'num mono'}, h.age),
+        el('td',{}, h.color),
+        el('td',{}, h.sex),
+        el('td',{class:'num mono'}, String(h.rating)),
+        el('td',{}, trLink),
+        el('td',{}, h.owner)));
+    });
+    wrap.style.display=rows.length?'':'none';
+    empty.style.display=rows.length?'none':'';
+  }
+  input.addEventListener('input',()=>{ horsesState.q=input.value; renderRows(); });
+  sec.append(wrap, empty); renderRows();
+};
 
 /* ============ BOOT ============ */
 window.addEventListener('DOMContentLoaded',()=>{ if(!location.hash)location.hash='#landing'; route(); });
