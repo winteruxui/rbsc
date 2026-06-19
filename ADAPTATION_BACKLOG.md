@@ -134,12 +134,24 @@ Each item must still pass the §14 Per-Page Consistency Checklist and the §12 a
 
 ---
 
-# SOW Roadmap (gap analysis vs Brief - SOW.pdf §3.2/§3.3)
+# SOW Roadmap (gap analysis vs full Brief - SOW.pdf Article 3 §3.1–§3.7)
 
-> Status of the SOW's "Racing data + Horses & People" scope after this round. **Shipped:** Race
-> calendar (home + race-day hub), race card/programme with sub-tabs + handicap box, Horses/Jockeys/
-> Trainers/Owners **directories** (search + sort) + Horse/Jockey/Trainer profiles + a **basic Owner
-> profile**, dropdown nav. **Not yet built** (this is the prioritized backlog):
+> **UPDATE — Article 3 read in full via WinRT render (image-only PDF).** Nearly all of Article 3 is
+> now **SHIPPED**:
+> - **§3.1** Leaderboard (under Race Cards menu) ✓ · Jockeys/Trainers/Owners directories + profiles ✓ ·
+>   jockey current weight ✓ · trainer horses-in-care ✓ · owner silks + horses-owned ✓ · TH+EN search ✓
+> - **§3.2** Handicap box + **rating↔weight table** ✓ · Calendar (month + **race-type** filter +
+>   **entry conditions**) ✓ · Race card/programme + sub-tabs ✓ · **Results page** (placings + stewards
+>   summary + video) ✓ · PDF = `placeholder()`
+> - **§3.3** Horse DB + **type grouping** (Thoroughbred/New/Country-Bred) ✓ · rich horse profile ✓
+> - **§3.4** News listing page (category filter) ✓
+> - **§3.5** About/Club page (story + committee + dept + contact) ✓
+> - **§3.6** Venue page (track map + going + **rules/regulations PDFs**) ✓
+> - **§3.7** Experience page (tickets/VIP + dress + newcomer tips + video/live) ✓
+>
+> **Remaining (true backlog):** embedded race-replay video player, full CMS/SEO/GA4/hosting (§4 —
+> backend, out of prototype scope), real PDF generation, deeper directory column-sorting. Items below
+> are the original screenshot-era backlog kept for reference:
 
 ### S1 — **Leaderboard**  · effort M · *placement: under the Race Cards (เรซการ์ด) menu*
 - **SOW:** "ลีดเดอร์บอร์ด (Leaderboard) — แสดงภาพรวมของทั้งฤดูกาล". Per user decision it lives under the
